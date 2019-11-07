@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using tools_paratext_preview_plugin.util;
+using tools_paratext_preview_plugin.Util;
+using tools_paratext_preview_plugin.Workflow;
 
 namespace tools_paratext_preview_plugin
 {
@@ -16,12 +17,15 @@ namespace tools_paratext_preview_plugin
      * Positions the launch for the Translation Validation Plugin in the Main Tools drop down in Paratext.
      */
     [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = "1.0", Publisher = "Biblica")]
-    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting Preview ")]
+    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting Preview")]
     [QualificationData(PluginMetaDataKeys.insertAfterMenuName, "Tools|")]
     [QualificationData(PluginMetaDataKeys.multipleInstances, CreateInstanceRule.always)]
     public class TypesettingPreviewPlugin : IParatextAddIn2
     {
-        public Dictionary<string, IPluginDataFileMergeInfo> DataFileKeySpecifications => throw new NotImplementedException();
+        public Dictionary<string, IPluginDataFileMergeInfo> DataFileKeySpecifications
+        {
+            get { return null; }
+        }
 
         public void Activate(string activeProjectName)
         {
@@ -36,6 +40,7 @@ namespace tools_paratext_preview_plugin
         {
             lock (this)
             {
+
                 ErrorUtil.Host = host;
                 ErrorUtil.TranslationValidationPlugin = this;
 
@@ -44,9 +49,19 @@ namespace tools_paratext_preview_plugin
                     Application.EnableVisualStyles();
                     Thread uiThread = new Thread(() =>
                     {
-                        /*
-                        Environment.Exit(0);
-                        */
+                        try
+                        {
+                            TypesettingPreviewWorkflow previewWorkflow = new TypesettingPreviewWorkflow();
+                            previewWorkflow.Run(host, activeProjectName);
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorUtil.ReportError("Can't run workflow", ex);
+                        }
+                        finally
+                        {
+                            Environment.Exit(0);
+                        }
                     });
 
                     uiThread.IsBackground = false;
@@ -59,7 +74,6 @@ namespace tools_paratext_preview_plugin
                     throw;
                 }
             }
-
         }
     }
 }

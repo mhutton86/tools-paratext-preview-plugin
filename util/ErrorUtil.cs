@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace tools_paratext_preview_plugin.util
+namespace tools_paratext_preview_plugin.Util
 {
     public class ErrorUtil
     {
@@ -19,10 +19,10 @@ namespace tools_paratext_preview_plugin.util
 
         public static void ReportError(Exception ex)
         {
-            reportError(null, ex);
+            ReportError(null, ex);
         }
 
-        public static void reportError(string prefix, Exception ex)
+        public static void ReportError(string prefix, Exception ex)
         {
             string text = (prefix ?? "") + Environment.NewLine
                 + ex.Message + Environment.NewLine
