@@ -124,15 +124,8 @@ namespace tools_paratext_preview_plugin.Workflow
             PreviewForm previewForm = new PreviewForm();
             previewForm.FormClosed += PreviewForm_FormClosed;
 
-            try
-            {
-                previewForm.SetPreviewFile(_previewJob, _previewFile);
-                previewForm.ShowDialog();
-            }
-            finally
-            {
-                previewForm.Hide();
-            }
+            previewForm.SetPreviewFile(_previewJob, _previewFile);
+            previewForm.ShowDialog();
 
             _previewFile.Delete();
         }
