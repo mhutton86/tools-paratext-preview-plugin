@@ -84,19 +84,18 @@ namespace TptMain.Workflow
             DetailsUpdated?.Invoke(this, _projectDetails);
 
             // Create & show setup form to user to get preview input.
-            SetupForm setupForm = new SetupForm();
+            SetupForm setupForm = CreateSetupForm();
             setupForm.SetProjectDetails(_projectDetails);
 
             ShowModalForm(setupForm);
-
-            if (!setupForm.IsCreating)
+            if (setupForm.IsCancelled)
             {
                 return;
             }
 
             // Create, instrument, and show progress form.
             ProgressForm progressForm = new ProgressForm();
-            progressForm.Cancelled += ProgressFormCancelled;
+            progressForm.Cancelled += OnProgressFormCancelled;
 
             ShowModelessForm(progressForm);
 
@@ -168,7 +167,7 @@ namespace TptMain.Workflow
             {
                 // Create, instrument, and show preview form
                 PreviewForm previewForm = new PreviewForm();
-                previewForm.FormClosed += PreviewFormFormClosed;
+                previewForm.FormClosed += OnPreviewFormFormClosed;
 
                 previewForm.SetPreviewFile(_previewJob, _previewFile);
                 ShowModalForm(previewForm);
@@ -188,7 +187,7 @@ namespace TptMain.Workflow
         /// </summary>
         /// <param name="sender">Event source (form).</param>
         /// <param name="e">Form closed details.</param>
-        public virtual void PreviewFormFormClosed(object sender, FormClosedEventArgs e)
+        public virtual void OnPreviewFormFormClosed(object sender, FormClosedEventArgs e)
         {
             if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated.ToString("u")}?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -248,7 +247,7 @@ namespace TptMain.Workflow
         /// </summary>
         /// <param name="sender">Event source (cancel button).</param>
         /// <param name="e">Event args.</param>
-        public virtual void ProgressFormCancelled(object sender, EventArgs e)
+        public virtual void OnProgressFormCancelled(object sender, EventArgs e)
         {
             if (_previewJob == null)
             {
@@ -383,6 +382,15 @@ namespace TptMain.Workflow
         public virtual DialogResult ShowMessageBox(string messageText, MessageBoxButtons messageButtons, MessageBoxIcon messageIcon)
         {
             return MessageBox.Show(messageText, "Notice...", messageButtons, messageIcon);
+        }
+
+        /// <summary>
+        /// Overridable utility method to create setup form.
+        /// </summary>
+        /// <returns>Setup form.</returns>
+        public virtual SetupForm CreateSetupForm()
+        {
+            return new SetupForm();
         }
     }
 }

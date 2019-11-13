@@ -29,12 +29,12 @@ namespace TptMain.Form
         /// <summary>
         /// Preview job, created here.
         /// </summary>
-        public PreviewJob PreviewJob { get => _previewJob; }
+        public virtual PreviewJob PreviewJob { get => _previewJob; }
 
         /// <summary>
         /// True if user wants to create preview (clicked "Create"), false otherwise.
         /// </summary>
-        public bool IsCreating { get; set; }
+        public virtual bool IsCancelled { get; set; }
 
         /// <summary>
         /// Basic ctor.
@@ -52,8 +52,6 @@ namespace TptMain.Form
         /// <param name="e">Event args.</param>
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            IsCreating = true;
-
             PopulatePreviewJob();
             Close();
         }
@@ -65,6 +63,8 @@ namespace TptMain.Form
         /// <param name="e">Event args.</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            IsCancelled = true;
+
             PopulatePreviewJob();
             Close();
         }
@@ -229,7 +229,7 @@ namespace TptMain.Form
         /// Sets server-side project details and populates related labels.
         /// </summary>
         /// <param name="projectDetails">Project details (required).</param>
-        internal void SetProjectDetails(ProjectDetails projectDetails)
+        public virtual void SetProjectDetails(ProjectDetails projectDetails)
         {
             _projectDetails = projectDetails;
 
