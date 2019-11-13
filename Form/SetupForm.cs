@@ -7,37 +7,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using tools_tpt_transformation_service.Models;
+using TptMain.Models;
 
-namespace tools_paratext_preview_plugin.Form
+namespace TptMain.Form
 {
+    /// <summary>
+    /// Setup form that captures user settings for a preview job.
+    /// </summary>
     public partial class SetupForm : System.Windows.Forms.Form
     {
+        /// <summary>
+        /// Project details, from server.
+        /// </summary>
         private ProjectDetails _projectDetails;
 
+        /// <summary>
+        /// Preview job, created here.
+        /// </summary>
+        private PreviewJob _previewJob;
+
+        /// <summary>
+        /// Preview job, created here.
+        /// </summary>
+        public PreviewJob PreviewJob { get => _previewJob; }
+
+        /// <summary>
+        /// True if user wants to create preview (clicked "Create"), false otherwise.
+        /// </summary>
         public bool IsCreating { get; set; }
 
+        /// <summary>
+        /// Basic ctor.
+        /// </summary>
         public SetupForm()
         {
             InitializeComponent();
+            _previewJob = new PreviewJob();
         }
 
-        private void SetupForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Create button handler.
+        /// </summary>
+        /// <param name="sender">Event source (button).</param>
+        /// <param name="e">Event args.</param>
         private void btnCreate_Click(object sender, EventArgs e)
         {
             IsCreating = true;
+
+            PopulatePreviewJob();
             Close();
         }
 
+        /// <summary>
+        /// Cancel button handler.
+        /// </summary>
+        /// <param name="sender">Event source (button).</param>
+        /// <param name="e">Event args.</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            PopulatePreviewJob();
             Close();
         }
 
+        /// <summary>
+        /// Default text options handler. Disables text options fields, when checked.
+        /// </summary>
+        /// <param name="sender">Event source (radio button).</param>
+        /// <param name="e">Event args.</param>
         private void rdoTextOptionsDefaults_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoTextOptionsDefaults.Checked)
@@ -46,6 +82,11 @@ namespace tools_paratext_preview_plugin.Form
             }
         }
 
+        /// <summary>
+        /// Custom text options handler. Enables text options fields, when checked.
+        /// </summary>
+        /// <param name="sender">Event source (radio button).</param>
+        /// <param name="e">Event args.</param>
         private void rdoTextOptionsCustom_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoTextOptionsCustom.Checked)
@@ -54,6 +95,10 @@ namespace tools_paratext_preview_plugin.Form
             }
         }
 
+        /// <summary>
+        /// Enables/disabled text options.
+        /// </summary>
+        /// <param name="isEnabled">True to enable text options, false otherwise.</param>
         private void ControlTextOptions(bool isEnabled)
         {
             lblFontSize.Enabled = isEnabled;
@@ -65,6 +110,25 @@ namespace tools_paratext_preview_plugin.Form
             lblFontLeadingUnits.Enabled = isEnabled;
         }
 
+        /// <summary>
+        /// Fill out preview job with user settings.
+        /// </summary>
+        private void PopulatePreviewJob()
+        {
+            _previewJob.ProjectName = ProjectName;
+            _previewJob.BookFormat = BookFormat;
+            _previewJob.FontSizeInPts = FontSizeInPts;
+            _previewJob.FontLeadingInPts = FontLeadingInPts;
+            _previewJob.PageHeightInPts = PageHeightInPts;
+            _previewJob.PageWidthInPts = PageWidthInPts;
+            _previewJob.PageHeaderInPts = PageHeaderInPts;
+        }
+
+        /// <summary>
+        /// Default page options handler. Disables page options fields, when checked.
+        /// </summary>
+        /// <param name="sender">Event source (radio button).</param>
+        /// <param name="e">Event args.</param>
         private void rdoPageOptionsDefaults_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoPageOptionsDefaults.Checked)
@@ -73,6 +137,11 @@ namespace tools_paratext_preview_plugin.Form
             }
         }
 
+        /// <summary>
+        /// Custom page options handler. Enables page options fields, when checked.
+        /// </summary>
+        /// <param name="sender">Event source (radio button).</param>
+        /// <param name="e">Event args.</param>
         private void rdoPageOptionsCustom_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoPageOptionsCustom.Checked)
@@ -81,6 +150,10 @@ namespace tools_paratext_preview_plugin.Form
             }
         }
 
+        /// <summary>
+        /// Enables/disabled page options.
+        /// </summary>
+        /// <param name="isEnabled">True to enable page options, false otherwise.</param>
         private void ControlPageOptions(bool isEnabled)
         {
             lblPageHeight.Enabled = isEnabled;
@@ -96,41 +169,66 @@ namespace tools_paratext_preview_plugin.Form
             lblPageHeaderUnits.Enabled = isEnabled;
         }
 
+        /// <summary>
+        /// Font size in points if custom text options enabled, null otherwise.
+        /// </summary>
         public float? FontSizeInPts
         {
             get { return rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontSize.Value); }
         }
 
+        /// <summary>
+        /// Font leading in points if custom text options enabled, null otherwise.
+        /// </summary>
         public float? FontLeadingInPts
         {
             get { return rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontLeading.Value); }
         }
 
+        /// <summary>
+        /// Page height in points if custom page options enabled, null otherwise.
+        /// </summary>
         public float? PageHeightInPts
         {
             get { return rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeight.Value); }
         }
 
+        /// <summary>
+        /// Page width in points if custom page options enabled, null otherwise.
+        /// </summary>
         public float? PageWidthInPts
         {
             get { return rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageWidth.Value); }
         }
 
+        /// <summary>
+        /// Page header in points if custom page options enabled, null otherwise.
+        /// </summary>
         public float? PageHeaderInPts
         {
             get { return rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeader.Value); }
         }
 
+        /// <summary>
+        /// Book format accessor.
+        /// </summary>
         public BookFormat BookFormat
         {
             get { return rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb; }
         }
 
+        /// <summary>
+        /// Project name accessor.
+        /// </summary>
         public string ProjectName
         {
             get { return lblProjectNameText.Text; }
         }
 
+        /// <summary>
+        /// Sets server-side project details and populates related labels.
+        /// </summary>
+        /// <param name="projectDetails">Project details (required).</param>
         internal void SetProjectDetails(ProjectDetails projectDetails)
         {
             _projectDetails = projectDetails;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tools_tpt_transformation_service.Models
+namespace TptMain.Models
 {
     /// <summary>
     /// Model for tracking Typesetting Preview jobs.

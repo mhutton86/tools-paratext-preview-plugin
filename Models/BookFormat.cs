@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tools_tpt_transformation_service.Models
+namespace TptMain.Models
 {
     /// <summary>
-    /// Book format.
+    /// Book format enumerations.
     /// </summary>
     public enum BookFormat
     {
+        /// <summary>
+        /// The Books of the Bible
+        /// </summary>
         tbotb,
+        /// <summary>
+        /// Chapter and Verse.
+        /// </summary>
         cav
     }
 }

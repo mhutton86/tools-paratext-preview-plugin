@@ -64,12 +64,6 @@
     <Compile Include="Form\ProgressForm.Designer.cs">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\ResultForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form\ResultForm.Designer.cs">
-      <DependentUpon>ResultForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form\SetupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,9 +88,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form\ResultForm.resx">
-      <DependentUpon>ResultForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\SetupForm.resx">
       <DependentUpon>SetupForm.cs</DependentUpon>

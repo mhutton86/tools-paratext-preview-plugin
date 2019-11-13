@@ -11,20 +11,54 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using tools_paratext_preview_plugin.Form;
-using tools_paratext_preview_plugin.Util;
-using tools_tpt_transformation_service.Models;
+using TptMain.Form;
+using TptMain.Util;
+using TptMain.Models;
 using static System.Environment;
 
-namespace tools_paratext_preview_plugin.Workflow
+namespace TptMain.Workflow
 {
+    /// <summary>
+    /// Main typesetting preview workflow.
+    /// </summary>
     public class TypesettingPreviewWorkflow
     {
+        /// <summary>
+        /// Current, observed project details from server.
+        /// </summary>
         private ProjectDetails _projectDetails;
+
+        /// <summary>
+        /// Current, observed preview job from server.
+        /// </summary>
         private PreviewJob _previewJob;
+
+        /// <summary>
+        /// Current preview file, downloaded from server.
+        /// </summary>
         private FileInfo _previewFile;
 
-        public void Run(IHost host, string activeProjectName)
+        /// <summary>
+        /// Details updated event handler.
+        /// </summary>
+        public EventHandler<ProjectDetails> DetailsUpdated;
+
+        /// <summary>
+        /// Job updated event handler.
+        /// </summary>
+        public EventHandler<PreviewJob> JobUpdated;
+
+        /// <summary>
+        /// File downloaded event handler.
+        /// </summary>
+        public EventHandler<FileInfo> FileDownloaded;
+
+        /// <summary>
+        /// Entry point method.
+        /// </summary>
+        /// <param name="host">Host interface, providing Paratext services (required).</param>
+        /// <param name="activeProjectName">Active Paratext project name (required).</param>
+        public virtual void Run(IHost host, string activeProjectName)
         {
             if (host == null)
             {
@@ -36,51 +70,54 @@ namespace tools_paratext_preview_plugin.Workflow
             }
 
 #if DEBUG
-            MessageBox.Show($"Attach debugger now to PID {Process.GetCurrentProcess().Id}, if needed!",
-                "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Provided because plugins are separate processes that may only be attached to,
+            // once instantiated (can't run Paratext and automatically attach, as with shared libraries).
+            ShowMessageBox($"Attach debugger now to PID {Process.GetCurrentProcess().Id}, if needed!",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
-
-            if (!CheckProjectName(activeProjectName, out _projectDetails))
+            // Ensures the active project is available on the server.
+            _projectDetails = CheckProjectName(activeProjectName);
+            if (_projectDetails == null)
             {
                 return;
             }
+            DetailsUpdated?.Invoke(this, _projectDetails);
 
+            // Create & show setup form to user to get preview input.
             SetupForm setupForm = new SetupForm();
             setupForm.SetProjectDetails(_projectDetails);
 
-            setupForm.ShowDialog();
+            ShowModalForm(setupForm);
 
             if (!setupForm.IsCreating)
             {
                 return;
             }
 
+            // Create, instrument, and show progress form.
             ProgressForm progressForm = new ProgressForm();
-            progressForm.Cancelled += ProgressForm_Cancelled;
-            progressForm.Show();
+            progressForm.Cancelled += ProgressFormCancelled;
+
+            ShowModelessForm(progressForm);
 
             try
             {
-                PreviewJob newPreviewJob = new PreviewJob();
+                // Create preview job on server and start monitoring.
+                _previewJob = CreatePreviewJob(setupForm.PreviewJob);
+                JobUpdated?.Invoke(this, _previewJob);
 
-                newPreviewJob.ProjectName = setupForm.ProjectName;
-                newPreviewJob.BookFormat = setupForm.BookFormat;
-                newPreviewJob.FontSizeInPts = setupForm.FontSizeInPts;
-                newPreviewJob.FontLeadingInPts = setupForm.FontLeadingInPts;
-                newPreviewJob.PageWidthInPts = setupForm.PageWidthInPts;
-                newPreviewJob.PageHeightInPts = setupForm.PageHeightInPts;
-                newPreviewJob.PageHeaderInPts = setupForm.PageHeaderInPts;
-
-                _previewJob = CreatePreviewJob(newPreviewJob);
+                // Update preview form with initial status.
                 progressForm.SetStatus(_previewJob);
-
                 DateTime lastCheckTime = DateTime.Now;
                 int threadSleepInMs = (int)(1000f / (float)MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
 
+                // Update preview form at fast interval (e.g., 20x/sec) to keep UI lively, but
+                // update job status at slow interval (e.g., every 5sec) to keep network traffic sane.
                 while (!_previewJob.IsError
                     && !_previewJob.IsCancelled
                     && !_previewJob.IsCompleted)
                 {
+                    // Recalcs progress bar, even if using previous job status
                     progressForm.SetStatus(_previewJob);
 
                     Application.DoEvents();
@@ -94,21 +131,23 @@ namespace tools_paratext_preview_plugin.Workflow
                             && !_previewJob.IsCancelled
                             && !_previewJob.IsCompleted)
                         {
+                            // Check if it's time to update status and do so, as needed.
                             DateTime nowTime = DateTime.Now;
                             if (nowTime.Subtract(lastCheckTime).TotalSeconds > MainConsts.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC)
                             {
-                                _previewJob = UpdatePreviewJob(_previewJob);
+                                _previewJob = UpdatePreviewJob(_previewJob.Id);
+                                JobUpdated?.Invoke(this, _previewJob);
+
                                 lastCheckTime = nowTime;
                             }
                         }
                     }
                 }
 
+                // Deal with error or cancel
                 if (_previewJob.IsError)
                 {
-                    MessageBox.Show($"Can't preview project\n\nPlease contact support (server error, reference ID: {_previewJob.Id}).",
-                        "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    throw new ApplicationException("Server error");
                 }
                 else if (_previewJob.IsCancelled)
                 {
@@ -120,26 +159,50 @@ namespace tools_paratext_preview_plugin.Workflow
                 progressForm.Hide();
             }
 
+            // Retrieve file from server, if we've made it this far
+            // (download errors will throw from here).
             _previewFile = DownloadPreviewFile(_previewJob);
-            PreviewForm previewForm = new PreviewForm();
-            previewForm.FormClosed += PreviewForm_FormClosed;
+            FileDownloaded?.Invoke(this, _previewFile);
 
-            previewForm.SetPreviewFile(_previewJob, _previewFile);
-            previewForm.ShowDialog();
+            try
+            {
+                // Create, instrument, and show preview form
+                PreviewForm previewForm = new PreviewForm();
+                previewForm.FormClosed += PreviewFormFormClosed;
 
-            _previewFile.Delete();
+                previewForm.SetPreviewFile(_previewJob, _previewFile);
+                ShowModalForm(previewForm);
+            }
+            finally
+            {
+                // Get rid of temp dir preview file, no matter what
+                if (_previewFile.Exists)
+                {
+                    _previewFile.Delete();
+                }
+            }
         }
 
-        private void PreviewForm_FormClosed(object sender, FormClosedEventArgs e)
+        /// <summary>
+        /// Gives user opportunity to save preview file someplace else.
+        /// </summary>
+        /// <param name="sender">Event source (form).</param>
+        /// <param name="e">Form closed details.</param>
+        public virtual void PreviewFormFormClosed(object sender, FormClosedEventArgs e)
         {
-            if (MessageBox.Show("Save preview file?",
-                "Notice...", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated.ToString("u")}?",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 using (SaveFileDialog saveFile = new SaveFileDialog())
                 {
                     string dateTimeText = _projectDetails.ProjectUpdated.ToString("yyyyMMdd'T'HHmmss'Z'");
+
                     saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
                     saveFile.InitialDirectory = Environment.GetFolderPath(SpecialFolder.MyDocuments);
+                    saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                    saveFile.DefaultExt = "pdf";
+                    saveFile.AddExtension = true;
+                    saveFile.OverwritePrompt = true;
 
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
@@ -156,24 +219,36 @@ namespace tools_paratext_preview_plugin.Workflow
             }
         }
 
-        private FileInfo DownloadPreviewFile(PreviewJob previewJob)
+        /// <summary>
+        /// Downloads preview file from service to temp file.
+        /// </summary>
+        /// <param name="previewJob">Preview job (required).</param>
+        /// <returns>Downloaded temp file.</returns>
+        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob)
         {
-            FileInfo fileInfo = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+            FileInfo downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
             WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
             webRequest.Method = HttpMethod.Get.Method;
 
             using (Stream inputStream = webRequest.GetResponse().GetResponseStream())
             {
-                using (FileStream outputStream = fileInfo.OpenWrite())
+                using (FileStream outputStream = downloadFile.OpenWrite())
                 {
                     inputStream.CopyTo(outputStream);
                 }
             }
 
-            return fileInfo;
+            return downloadFile;
         }
 
-        private void ProgressForm_Cancelled(object sender, EventArgs e)
+        /// <summary>
+        /// Called when user cancels render process.
+        /// 
+        /// Locks on workflow instance, as this overwrites member _previewJob (no return from event handler).
+        /// </summary>
+        /// <param name="sender">Event source (cancel button).</param>
+        /// <param name="e">Event args.</param>
+        public virtual void ProgressFormCancelled(object sender, EventArgs e)
         {
             if (_previewJob == null)
             {
@@ -192,11 +267,16 @@ namespace tools_paratext_preview_plugin.Workflow
             }
         }
 
-        private PreviewJob CreatePreviewJob(PreviewJob previewJob)
+        /// <summary>
+        /// Creates (starts) preview job on server.
+        /// </summary>
+        /// <param name="previewJob">Input preview job, with user settings.</param>
+        /// <returns>Created preview job, with user settings, server-side status, and ID.</returns>
+        public virtual PreviewJob CreatePreviewJob(PreviewJob previewJob)
         {
             WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs");
             webRequest.Method = HttpMethod.Post.Method;
-            webRequest.ContentType = "application/json";
+            webRequest.ContentType = MainConsts.APPLICATION_JSON_MIME_TYPE;
 
             using (StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream()))
             {
@@ -208,9 +288,14 @@ namespace tools_paratext_preview_plugin.Workflow
             }
         }
 
-        private PreviewJob UpdatePreviewJob(PreviewJob previewJob)
+        /// <summary>
+        /// Update the preview job from the server, using its ID.
+        /// </summary>
+        /// <param name="jobId">Job ID (required).</param>
+        /// <returns>Updated preview job, with user settings, server-side status, and ID.</returns>
+        public virtual PreviewJob UpdatePreviewJob(string jobId)
         {
-            WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{previewJob.Id}");
+            WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
             webRequest.Method = HttpMethod.Get.Method;
 
             using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
@@ -219,7 +304,12 @@ namespace tools_paratext_preview_plugin.Workflow
             }
         }
 
-        private bool CheckProjectName(string projectName, out ProjectDetails projectDetails)
+        /// <summary>
+        /// Checks whether project name exists on server and retrieves last update time.
+        /// </summary>
+        /// <param name="projectName">Paratext project name (required).</param>
+        /// <returns>Project details if found, null otherwise.</returns>
+        public virtual ProjectDetails CheckProjectName(string projectName)
         {
             try
             {
@@ -230,38 +320,69 @@ namespace tools_paratext_preview_plugin.Workflow
                 {
                     List<ProjectDetails> allProjectDetails = JsonConvert.DeserializeObject<List<ProjectDetails>>(streamReader.ReadToEnd());
 
+                    // It's possible there aren't any.
                     if (allProjectDetails.Count < 1)
                     {
-                        projectDetails = null;
+                        ShowMessageBox($"Can't preview project: \"{projectName}\" (none present on server).\n\nPlease try again later or contact support.",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        MessageBox.Show($"Can't preview project \"{projectName}\" (none present on server).\n\nPlease try again later or contact support.",
-                        "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return false;
+                        return null;
                     }
 
-                    projectDetails = allProjectDetails
+                    // Find the one that matters to us.
+                    ProjectDetails result = allProjectDetails
                         .FirstOrDefault(detailsItem => detailsItem.ProjectName.Equals(projectName, StringComparison.CurrentCultureIgnoreCase));
 
-                    if (projectDetails == null)
+                    // Not found = error, done.
+                    if (result == null)
                     {
+                        // Sort and list projects we do have.
                         allProjectDetails.Sort((l, r) => l.ProjectName.CompareTo(r.ProjectName));
-                        string availableProjects = string.Join("\", \"", allProjectDetails.Select(detailItem => detailItem.ProjectName));
+                        string availableProjects = string.Join(", ", allProjectDetails.Select(detailItem => $"\"{detailItem.ProjectName}\""));
 
-                        MessageBox.Show($"Can't preview project \"{projectName}\" (not present on server).\n\nPlease try again later or contact support (available projects: \"{availableProjects}\").",
-                        "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return false;
+                        ShowMessageBox($"Can't preview project: \"{projectName}\" (not present on server).\n\nPlease try again later or contact support (available projects: {availableProjects}).",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+
+                    return result;
                 }
-                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Can't contact typesetting preview server.\n\nPlease check Internet connection and try again, or contact support (Details: {ex.Message}).",
-                    "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                projectDetails = null;
-                return false;
+                ShowMessageBox($"Can't contact typesetting preview server.\n\nPlease check Internet connection and try again, or contact support (Details: {ex.Message}).",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
             }
+        }
+
+        /// <summary>
+        /// Overridable utility method to show forms modally.
+        /// </summary>
+        /// <param name="inputForm">Input form (required).</param>
+        public virtual void ShowModalForm(System.Windows.Forms.Form inputForm)
+        {
+            Application.Run(inputForm);
+        }
+
+        /// <summary>
+        /// Overridable utility method to show forms modelessly.
+        /// </summary>
+        /// <param name="inputForm">Input form (required).</param>
+        public virtual void ShowModelessForm(System.Windows.Forms.Form inputForm)
+        {
+            inputForm.Show();
+        }
+
+        /// <summary>
+        /// Overridable utility method to show message boxes.
+        /// </summary>
+        /// <param name="messageText">Message box text (required).</param>
+        /// <param name="messageButtons">Message box buttons (required).</param>
+        /// <param name="messageIcon">Message box icon (required).</param>
+        /// <returns>Result from message box call (e.g., "Cancel").</returns>
+        public virtual DialogResult ShowMessageBox(string messageText, MessageBoxButtons messageButtons, MessageBoxIcon messageIcon)
+        {
+            return MessageBox.Show(messageText, "Notice...", messageButtons, messageIcon);
         }
     }
 }

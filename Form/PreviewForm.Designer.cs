@@ -1,4 +1,4 @@
-﻿namespace tools_paratext_preview_plugin.Form
+﻿namespace TptMain.Form
 {
     partial class PreviewForm
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreviewForm));
             this.webPreview = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             this.ClientSize = new System.Drawing.Size(1261, 776);
             this.Controls.Add(this.webPreview);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PreviewForm";
             this.ResumeLayout(false);
 

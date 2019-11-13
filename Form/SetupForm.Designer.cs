@@ -1,4 +1,4 @@
-﻿namespace tools_paratext_preview_plugin.Form
+﻿namespace TptMain.Form
 {
     partial class SetupForm
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label3 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupForm));
             this.grpLayout = new System.Windows.Forms.GroupBox();
             this.rdoLayoutTbotb = new System.Windows.Forms.RadioButton();
             this.rdoLayoutCav = new System.Windows.Forms.RadioButton();
@@ -70,14 +70,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).BeginInit();
             this.grpProject.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(152, 33);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 13);
-            this.label3.TabIndex = 3;
             // 
             // grpLayout
             // 
@@ -263,6 +255,11 @@
             // 
             this.nudPageHeader.DecimalPlaces = 1;
             this.nudPageHeader.Enabled = false;
+            this.nudPageHeader.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudPageHeader.Location = new System.Drawing.Point(202, 112);
             this.nudPageHeader.Maximum = new decimal(new int[] {
             1000,
@@ -287,6 +284,11 @@
             // 
             this.nudPageHeight.DecimalPlaces = 1;
             this.nudPageHeight.Enabled = false;
+            this.nudPageHeight.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudPageHeight.Location = new System.Drawing.Point(202, 81);
             this.nudPageHeight.Maximum = new decimal(new int[] {
             1000,
@@ -311,6 +313,11 @@
             // 
             this.nudPageWidth.DecimalPlaces = 1;
             this.nudPageWidth.Enabled = false;
+            this.nudPageWidth.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudPageWidth.Location = new System.Drawing.Point(202, 51);
             this.nudPageWidth.Maximum = new decimal(new int[] {
             1000,
@@ -456,7 +463,7 @@
             this.lblProjectUpdatedText.Name = "lblProjectUpdatedText";
             this.lblProjectUpdatedText.Size = new System.Drawing.Size(145, 22);
             this.lblProjectUpdatedText.TabIndex = 8;
-            this.lblProjectUpdatedText.Text = "2019-10-31 10:53:15 (UTC)";
+            this.lblProjectUpdatedText.Text = "None";
             this.lblProjectUpdatedText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblProjectUpdated
@@ -498,7 +505,7 @@
             this.lblProjectNameText.Name = "lblProjectNameText";
             this.lblProjectNameText.Size = new System.Drawing.Size(145, 22);
             this.lblProjectNameText.TabIndex = 9;
-            this.lblProjectNameText.Text = "spaNVI15";
+            this.lblProjectNameText.Text = "None";
             this.lblProjectNameText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SetupForm
@@ -515,12 +522,11 @@
             this.Controls.Add(this.grpPageOptions);
             this.Controls.Add(this.grpTextOptions);
             this.Controls.Add(this.grpLayout);
-            this.Controls.Add(this.label3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SetupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create Print Preview...";
-            this.Load += new System.EventHandler(this.SetupForm_Load);
             this.grpLayout.ResumeLayout(false);
             this.grpLayout.PerformLayout();
             this.grpTextOptions.ResumeLayout(false);
@@ -535,12 +541,10 @@
             this.grpProject.ResumeLayout(false);
             this.grpProject.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox grpLayout;
         private System.Windows.Forms.RadioButton rdoLayoutTbotb;
         private System.Windows.Forms.RadioButton rdoLayoutCav;

@@ -1,4 +1,4 @@
-﻿namespace tools_paratext_preview_plugin.Form
+﻿namespace TptMain.Form
 {
     partial class ProgressForm
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressForm));
             this.btnCancel = new System.Windows.Forms.Button();
             this.pbrStatus = new System.Windows.Forms.ProgressBar();
             this.lblStatusText = new System.Windows.Forms.Label();
@@ -85,6 +86,7 @@
             this.Controls.Add(this.pbrStatus);
             this.Controls.Add(this.btnCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProgressForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
