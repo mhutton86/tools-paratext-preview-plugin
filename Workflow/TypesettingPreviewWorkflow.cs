@@ -269,7 +269,7 @@ namespace TptMain.Workflow
         }
 
         /// <summary>
-        /// Creates (starts) preview job on server.
+        /// Creates and starts preview job on server.
         /// </summary>
         /// <param name="previewJob">Input preview job, with user settings.</param>
         /// <returns>Created preview job, with user settings, server-side status, and ID.</returns>
