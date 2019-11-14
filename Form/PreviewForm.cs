@@ -43,7 +43,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="previewJob">Preview job (required).</param>
         /// <param name="previewFile">Preview temp file (required).</param>
-        internal void SetPreviewFile(PreviewJob previewJob, FileInfo previewFile)
+        public virtual void SetPreviewFile(PreviewJob previewJob, FileInfo previewFile)
         {
             _previewJob = previewJob;
             _previewFile = previewFile;

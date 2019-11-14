@@ -44,7 +44,7 @@ namespace TptMain.Form
         /// - If job has started and has been running for >=90sec, progress bar will go back to indeterminate with different label text.
         /// </summary>
         /// <param name="previewJob"></param>
-        internal void SetStatus(PreviewJob previewJob)
+        public virtual void SetStatus(PreviewJob previewJob)
         {
             _previewJob = previewJob;
             DateTime nowTime = DateTime.UtcNow;

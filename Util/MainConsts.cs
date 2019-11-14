@@ -22,6 +22,11 @@ namespace TptMain.Util
         public const string DEFAULT_SERVER_URI = "http://10.20.2.4:9875/api";
 
         /// <summary>
+        /// Default web request timeout in milliseconds.
+        /// </summary>
+        public const int DEFAULT_REQUEST_TIMEOUT_IN_MS = 5000;
+
+        /// <summary>
         /// Progress form update frequency in x/sec.
         /// </summary>
         public const int PROGRESS_FORM_UPDATE_RATE_IN_FPS = 10;
@@ -34,7 +39,7 @@ namespace TptMain.Util
         /// <summary>
         /// Target preview job time.
         /// 
-        /// This is used to animate preview progress bar, as there's no server-side incremental progress, at this time
+        /// This is used to animate preview progress bar, as there's no server-side incremental progress at this time
         /// (generally accurate, as enqued but not executing jobs are distinguishable and indicated differently).
         /// </summary>
         public const int TARGET_PREVIEW_JOB_TIME_IN_SEC = 90;

@@ -94,7 +94,7 @@ namespace TptMain.Workflow
             }
 
             // Create, instrument, and show progress form.
-            ProgressForm progressForm = new ProgressForm();
+            ProgressForm progressForm = CreateProgressForm();
             progressForm.Cancelled += OnProgressFormCancelled;
 
             ShowModelessForm(progressForm);
@@ -155,7 +155,7 @@ namespace TptMain.Workflow
             }
             finally
             {
-                progressForm.Hide();
+                HideModelessForm(progressForm);
             }
 
             // Retrieve file from server, if we've made it this far
@@ -166,7 +166,7 @@ namespace TptMain.Workflow
             try
             {
                 // Create, instrument, and show preview form
-                PreviewForm previewForm = new PreviewForm();
+                PreviewForm previewForm = CreatePreviewForm();
                 previewForm.FormClosed += OnPreviewFormFormClosed;
 
                 previewForm.SetPreviewFile(_previewJob, _previewFile);
@@ -228,6 +228,7 @@ namespace TptMain.Workflow
             FileInfo downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
             WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
             webRequest.Method = HttpMethod.Get.Method;
+            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (Stream inputStream = webRequest.GetResponse().GetResponseStream())
             {
@@ -258,6 +259,7 @@ namespace TptMain.Workflow
             {
                 WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
                 webRequest.Method = HttpMethod.Delete.Method;
+                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
                 {
@@ -275,6 +277,7 @@ namespace TptMain.Workflow
         {
             WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs");
             webRequest.Method = HttpMethod.Post.Method;
+            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
             webRequest.ContentType = MainConsts.APPLICATION_JSON_MIME_TYPE;
 
             using (StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream()))
@@ -296,6 +299,7 @@ namespace TptMain.Workflow
         {
             WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
             webRequest.Method = HttpMethod.Get.Method;
+            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
             {
@@ -314,6 +318,7 @@ namespace TptMain.Workflow
             {
                 WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ProjectDetails");
                 webRequest.Method = HttpMethod.Get.Method;
+                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
                 {
@@ -373,6 +378,15 @@ namespace TptMain.Workflow
         }
 
         /// <summary>
+        /// Overridable utility method to hide modeless forms.
+        /// </summary>
+        /// <param name="inputForm">Input form (required).</param>
+        public virtual void HideModelessForm(System.Windows.Forms.Form inputForm)
+        {
+            inputForm.Hide();
+        }
+
+        /// <summary>
         /// Overridable utility method to show message boxes.
         /// </summary>
         /// <param name="messageText">Message box text (required).</param>
@@ -391,6 +405,24 @@ namespace TptMain.Workflow
         public virtual SetupForm CreateSetupForm()
         {
             return new SetupForm();
+        }
+
+        /// <summary>
+        /// Overridable utility method to create progress form.
+        /// </summary>
+        /// <returns>Progress form.</returns>
+        public virtual ProgressForm CreateProgressForm()
+        {
+            return new ProgressForm();
+        }
+
+        /// <summary>
+        /// Overridable utility method to create preview form.
+        /// </summary>
+        /// <returns>Preview form.</returns>
+        public virtual PreviewForm CreatePreviewForm()
+        {
+            return new PreviewForm();
         }
     }
 }
