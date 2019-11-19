@@ -77,8 +77,8 @@ namespace TptMain
             lock (this)
             {
                 // track host & plugin reference for static error utilities
-                ErrorUtil.Host = host;
-                ErrorUtil.TranslationValidationPlugin = this;
+                HostUtil.Instance.Host = host;
+                HostUtil.Instance.TypesettingPreviewPlugin = this;
 
                 try
                 {
@@ -105,20 +105,20 @@ namespace TptMain
                                 && _previewJob != null
                                 && _projectDetails != null)
                             {
-                                ErrorUtil.ReportError($"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError($"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
                             }
                             else if (_previewJob != null
                                 && _projectDetails != null)
                             {
-                                ErrorUtil.ReportError($"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError($"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
                             }
                             else if (_projectDetails != null)
                             {
-                                ErrorUtil.ReportError($"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError($"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
                             }
                             else
                             {
-                                ErrorUtil.ReportError($"Can't execute workflow.", ex);
+                                HostUtil.Instance.ReportError($"Can't execute workflow.", ex);
                             }
                         }
                         finally
@@ -136,7 +136,7 @@ namespace TptMain
                 catch (Exception ex)
                 {
                     // Log any errors that make it this far and re-throw to give Paratext a heads-up.
-                    ErrorUtil.ReportError(ex);
+                    HostUtil.Instance.ReportError(ex);
                     throw;
                 }
             }

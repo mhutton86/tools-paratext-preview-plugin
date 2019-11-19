@@ -75,7 +75,7 @@
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="TypesettingPreviewPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\ErrorUtil.cs" />
+    <Compile Include="Util\HostUtil.cs" />
     <Compile Include="Util\MainConsts.cs" />
     <Compile Include="Workflow\TypesettingPreviewWorkflow.cs" />
   </ItemGroup>
