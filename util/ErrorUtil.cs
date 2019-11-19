@@ -16,7 +16,7 @@ namespace TptMain.Util
         /// <summary>
         /// Global reference to plugin, to route logging.
         /// </summary>
-        static private TypesettingPreviewPlugin translationValidationPlugin;
+        static private TypesettingPreviewPlugin typesettingPreviewPlugin;
 
         /// <summary>
         /// Global reference to host interface, providing Paratext services including logging.
@@ -26,7 +26,7 @@ namespace TptMain.Util
         /// <summary>
         /// Property for assignment from plugin entry method.
         /// </summary>
-        public static TypesettingPreviewPlugin TranslationValidationPlugin { set => translationValidationPlugin = value; }
+        public static TypesettingPreviewPlugin TranslationValidationPlugin { set => typesettingPreviewPlugin = value; }
 
         /// <summary>
         /// Property for assignment from plugin entry method.
@@ -56,7 +56,7 @@ namespace TptMain.Util
 
             if (host != null)
             {
-                host.WriteLineToLog(translationValidationPlugin, $"Error: {messageText}");
+                host.WriteLineToLog(typesettingPreviewPlugin, $"Error: {messageText}");
             }
         }
     }

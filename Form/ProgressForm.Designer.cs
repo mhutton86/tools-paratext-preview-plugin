@@ -67,7 +67,7 @@
             // lblElapsedTime
             // 
             this.lblElapsedTime.AutoSize = true;
-            this.lblElapsedTime.Location = new System.Drawing.Point(12, 64);
+            this.lblElapsedTime.Location = new System.Drawing.Point(9, 64);
             this.lblElapsedTime.Name = "lblElapsedTime";
             this.lblElapsedTime.Size = new System.Drawing.Size(34, 13);
             this.lblElapsedTime.TabIndex = 3;

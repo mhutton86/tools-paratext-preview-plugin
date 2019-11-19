@@ -7,8 +7,8 @@
     <ProjectGuid>{642BD59B-9CC8-4247-A95C-0CC772F3C7F6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>tools_paratext_preview_plugin</RootNamespace>
-    <AssemblyName>tools-paratext-preview-plugin</AssemblyName>
+    <RootNamespace>TptMain</RootNamespace>
+    <AssemblyName>TypesettingPreviewPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -92,6 +92,11 @@
     <EmbeddedResource Include="Form\SetupForm.resx">
       <DependentUpon>SetupForm.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\biblica-16x16.ico" />
+    <Content Include="Resources\biblica-32x32.ico" />
+    <Content Include="Resources\biblica-96x96.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
