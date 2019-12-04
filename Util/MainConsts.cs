@@ -19,7 +19,7 @@ namespace TptMain.Util
         /// <summary>
         /// Default server URI. Needs to be configurable, in future.
         /// </summary>
-        public const string DEFAULT_SERVER_URI = "http://10.20.2.4:9875/api";
+        public const string DEFAULT_SERVER_URI = "http://172.31.10.90:9875/api";
 
         /// <summary>
         /// Default web request timeout in milliseconds.
