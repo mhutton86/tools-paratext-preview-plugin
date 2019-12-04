@@ -63,6 +63,11 @@ namespace TptMain.Util
             LogLine($"Error: {messageText}", true);
         }
 
+        /// <summary>
+        /// Log text to Paratext's app log and the console.
+        /// </summary>
+        /// <param name="inputText">Input text (required).</param>
+        /// <param name="isError">Error flag.</param>
         public void LogLine(String inputText, bool isError)
         {
             (isError ? Console.Error : Console.Out).WriteLine(inputText);
