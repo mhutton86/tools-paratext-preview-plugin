@@ -85,9 +85,15 @@ namespace TptMain
                             // Create and instrument workflow
                             var previewWorkflow = new TypesettingPreviewWorkflow();
 
-                            previewWorkflow.DetailsUpdated += (currWorkflow, projectDetails) => { _projectDetails = projectDetails; };
+                            previewWorkflow.DetailsUpdated += (currWorkflow, projectDetails) =>
+                            {
+                                _projectDetails = projectDetails;
+                            };
                             previewWorkflow.JobUpdated += (currWorkflow, previewJob) => { _previewJob = previewJob; };
-                            previewWorkflow.FileDownloaded += (currWorkflow, previewFile) => { _previewFile = previewFile; };
+                            previewWorkflow.FileDownloaded += (currWorkflow, previewFile) =>
+                            {
+                                _previewFile = previewFile;
+                            };
 
                             // Execute workflow. Will not return until complete.
                             previewWorkflow.Run(host, activeProjectName);
@@ -99,16 +105,22 @@ namespace TptMain
                                 && _previewJob != null
                                 && _projectDetails != null)
                             {
-                                HostUtil.Instance.ReportError($"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError(
+                                    $"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                    ex);
                             }
                             else if (_previewJob != null
-                                && _projectDetails != null)
+                                     && _projectDetails != null)
                             {
-                                HostUtil.Instance.ReportError($"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError(
+                                    $"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                    ex);
                             }
                             else if (_projectDetails != null)
                             {
-                                HostUtil.Instance.ReportError($"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError(
+                                    $"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                    ex);
                             }
                             else
                             {
@@ -120,10 +132,10 @@ namespace TptMain
                             // Exit process (terminate plugin) once complete, no matter what.
                             Environment.Exit(0);
                         }
-                    });
+                    })
+                    { IsBackground = false };
 
                     // Execute main thread.
-                    uiThread.IsBackground = false;
                     uiThread.SetApartmentState(ApartmentState.STA);
                     uiThread.Start();
                 }
