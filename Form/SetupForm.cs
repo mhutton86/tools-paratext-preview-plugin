@@ -29,7 +29,7 @@ namespace TptMain.Form
         /// <summary>
         /// Preview job, created here.
         /// </summary>
-        public virtual PreviewJob PreviewJob { get => _previewJob; }
+        public virtual PreviewJob PreviewJob => _previewJob;
 
         /// <summary>
         /// True if user wants to create preview (clicked "Create"), false otherwise.
@@ -172,58 +172,37 @@ namespace TptMain.Form
         /// <summary>
         /// Font size in points if custom text options enabled, null otherwise.
         /// </summary>
-        public float? FontSizeInPts
-        {
-            get { return rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontSize.Value); }
-        }
+        public float? FontSizeInPts => rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontSize.Value);
 
         /// <summary>
         /// Font leading in points if custom text options enabled, null otherwise.
         /// </summary>
-        public float? FontLeadingInPts
-        {
-            get { return rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontLeading.Value); }
-        }
+        public float? FontLeadingInPts => rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontLeading.Value);
 
         /// <summary>
         /// Page height in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageHeightInPts
-        {
-            get { return rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeight.Value); }
-        }
+        public float? PageHeightInPts => rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeight.Value);
 
         /// <summary>
         /// Page width in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageWidthInPts
-        {
-            get { return rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageWidth.Value); }
-        }
+        public float? PageWidthInPts => rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageWidth.Value);
 
         /// <summary>
         /// Page header in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageHeaderInPts
-        {
-            get { return rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeader.Value); }
-        }
+        public float? PageHeaderInPts => rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeader.Value);
 
         /// <summary>
         /// Book format accessor.
         /// </summary>
-        public BookFormat BookFormat
-        {
-            get { return rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb; }
-        }
+        public BookFormat BookFormat => rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb;
 
         /// <summary>
         /// Project name accessor.
         /// </summary>
-        public string ProjectName
-        {
-            get { return lblProjectNameText.Text; }
-        }
+        public string ProjectName => lblProjectNameText.Text;
 
         /// <summary>
         /// Sets server-side project details and populates related labels.

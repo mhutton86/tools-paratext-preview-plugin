@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TptMain.Util;
 using TptMain.Models;
+using TptMain.Util;
 
 namespace TptMain.Form
 {
@@ -36,8 +30,8 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Updates with new preview job instance and recaclulates progress bar, as needed.
-        /// 
+        /// Updates with new preview job instance and recalculates progress bar, as needed.
+        ///
         /// Notes:
         /// - If job is still enqued (not being rendered), progress bar will be indeterminate with appropriate label text.
         /// - If job has started (being rendered) and has been running for <90sec, progress bar will start and animate with a target time of 90sec, as there is no server-side progress information.
@@ -47,14 +41,14 @@ namespace TptMain.Form
         public virtual void SetStatus(PreviewJob previewJob)
         {
             _previewJob = previewJob;
-            DateTime nowTime = DateTime.UtcNow;
+            var nowTime = DateTime.UtcNow;
 
             if (_previewJob.IsStarted)
             {
-                TimeSpan timeSpan = DateTime.UtcNow.Subtract(_previewJob.DateStarted ?? nowTime);
+                var timeSpan = DateTime.UtcNow.Subtract(_previewJob.DateStarted ?? nowTime);
                 lblElapsedTime.Text = GetElapsedTime(timeSpan);
 
-                int runTimeInSec = (int)timeSpan.TotalSeconds;
+                var runTimeInSec = (int)timeSpan.TotalSeconds;
                 if (runTimeInSec >= MainConsts.TARGET_PREVIEW_JOB_TIME_IN_SEC)
                 {
                     lblStatusText.Text = "Rendering preview (taking longer than expected)...";
@@ -82,11 +76,11 @@ namespace TptMain.Form
         /// <returns>Reported time text.</returns>
         private string GetElapsedTime(TimeSpan timeSpan)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(string.Format("{0:D2}", (int)timeSpan.TotalMinutes));
+            stringBuilder.Append($"{(int)timeSpan.TotalMinutes:D2}");
             stringBuilder.Append(((timeSpan.Seconds % 2) == 0) ? " " : ":");
-            stringBuilder.Append(string.Format("{0:D2}", timeSpan.Seconds));
+            stringBuilder.Append($"{timeSpan.Seconds:D2}");
 
             return stringBuilder.ToString();
         }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TptMain.Util
+﻿namespace TptMain.Util
 {
     /// <summary>
     /// Utility constants.
@@ -37,8 +31,13 @@ namespace TptMain.Util
         public const int PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC = 5;
 
         /// <summary>
+        /// Default output file name format.
+        /// </summary>
+        public const string DEFAULT_OUTPUT_FILE_NAME_FORMAT = "yyyyMMdd'T'HHmmss'Z'";
+
+        /// <summary>
         /// Target preview job time.
-        /// 
+        ///
         /// This is used to animate preview progress bar, as there's no server-side incremental progress at this time
         /// (generally accurate, as enqued but not executing jobs are distinguishable and indicated differently).
         /// </summary>

@@ -1,9 +1,5 @@
 ﻿using AddInSideViews;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TptMain.Util
@@ -15,10 +11,7 @@ namespace TptMain.Util
     {
         private static readonly HostUtil _instance = new HostUtil();
 
-        public static HostUtil Instance
-        {
-            get => _instance;
-        }
+        public static HostUtil Instance => _instance;
 
         /// <summary>
         /// Global reference to plugin, to route logging.
@@ -56,7 +49,7 @@ namespace TptMain.Util
         /// <param name="ex">Exception (required).</param>
         public void ReportError(string prefixText, Exception ex)
         {
-            string messageText = (prefixText ?? "Error: Please contact support.")
+            var messageText = (prefixText ?? "Error: Please contact support.")
                 + Environment.NewLine + Environment.NewLine
                 + "Details: " + ex.ToString() + Environment.NewLine;
             MessageBox.Show(messageText, "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -68,7 +61,7 @@ namespace TptMain.Util
         /// </summary>
         /// <param name="inputText">Input text (required).</param>
         /// <param name="isError">Error flag.</param>
-        public void LogLine(String inputText, bool isError)
+        public void LogLine(string inputText, bool isError)
         {
             (isError ? Console.Error : Console.Out).WriteLine(inputText);
             if (_host != null)
