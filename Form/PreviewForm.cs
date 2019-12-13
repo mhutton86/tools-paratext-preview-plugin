@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using TptMain.Models;
 
 namespace TptMain.Form
 {
     /// <summary>
     /// Displays a downloaded preview file using the WebBrowser control.
-    /// 
-    /// Note: Requires a PDF reader to be installed on system and registered 
+    ///
+    /// Note: Requires a PDF reader to be installed on system and registered
     /// as browser addin (e.g., Adobe Reader).
     /// </summary>
     public partial class PreviewForm : System.Windows.Forms.Form

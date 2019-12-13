@@ -19,7 +19,7 @@ namespace TptTest
         /// <summary>
         /// Test project name.
         /// </summary>
-        private const string TEST_PROJECT_NAME = "testProjectName";
+        private const string TestProjectName = "testProjectName";
 
         /// <summary>
         /// Test where project is missing from server.
@@ -38,17 +38,17 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(It.IsAny<String>()))
+                workflowItem.CheckProjectName(It.IsAny<string>()))
                 .Returns((ProjectDetails)null);
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
 
@@ -75,7 +75,7 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME))
+                workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
@@ -89,13 +89,13 @@ namespace TptTest
                 .Returns(true);
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -131,7 +131,7 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME))
+                workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
@@ -158,13 +158,13 @@ namespace TptTest
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -212,7 +212,7 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME))
+                workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
@@ -234,7 +234,7 @@ namespace TptTest
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreatePreviewJob(testPreviewJob1))
-                .Returns(() => { return testPreviewJob2; });
+                .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
@@ -242,13 +242,13 @@ namespace TptTest
                 .Throws(new IOException());
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -293,7 +293,7 @@ namespace TptTest
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
-            int setStatusCtr = 0;
+            var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -301,7 +301,7 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME))
+                workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
@@ -323,7 +323,7 @@ namespace TptTest
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreatePreviewJob(testPreviewJob1))
-                .Returns(() => { return testPreviewJob2; });
+                .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
@@ -343,13 +343,13 @@ namespace TptTest
                 });
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -394,7 +394,7 @@ namespace TptTest
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
-            int setStatusCtr = 0;
+            var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -402,7 +402,7 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME))
+                workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
@@ -424,7 +424,7 @@ namespace TptTest
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreatePreviewJob(testPreviewJob1))
-                .Returns(() => { return testPreviewJob2; });
+                .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
@@ -447,13 +447,13 @@ namespace TptTest
                 .Throws(new IOException());
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -505,7 +505,7 @@ namespace TptTest
             testPreviewFile.Refresh();
             Assert.IsTrue(testPreviewFile.Exists);
 
-            int setStatusCtr = 0;
+            var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -513,7 +513,7 @@ namespace TptTest
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME))
+                workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
@@ -535,7 +535,7 @@ namespace TptTest
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreatePreviewJob(testPreviewJob1))
-                .Returns(() => { return testPreviewJob2; });
+                .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
@@ -563,13 +563,13 @@ namespace TptTest
                 formItem.SetPreviewFile(testPreviewJob2, testPreviewFile));
 
             // execute
-            mockWorkflow.Object.Run(mockHost.Object, TEST_PROJECT_NAME);
+            mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.Run(mockHost.Object, TEST_PROJECT_NAME), Times.Once);
+                workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CheckProjectName(TEST_PROJECT_NAME), Times.Once);
+                workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -616,7 +616,7 @@ namespace TptTest
         {
             return new ProjectDetails
             {
-                ProjectName = TEST_PROJECT_NAME,
+                ProjectName = TestProjectName,
                 ProjectUpdated = DateTime.UtcNow
             };
         }
@@ -629,7 +629,7 @@ namespace TptTest
         {
             return new PreviewJob
             {
-                ProjectName = TEST_PROJECT_NAME,
+                ProjectName = TestProjectName,
                 BookFormat = BookFormat.cav,
                 FontSizeInPts = 123.4f,
                 FontLeadingInPts = 234.5f,

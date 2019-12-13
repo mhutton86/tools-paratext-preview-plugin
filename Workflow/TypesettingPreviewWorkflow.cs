@@ -3,17 +3,16 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TptMain.Form;
-using TptMain.Util;
 using TptMain.Models;
+using TptMain.Util;
 using static System.Environment;
 
 namespace TptMain.Workflow
@@ -21,6 +20,7 @@ namespace TptMain.Workflow
     /// <summary>
     /// Main typesetting preview workflow.
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentlySynchronizedField")]
     public class TypesettingPreviewWorkflow
     {
         /// <summary>
@@ -84,7 +84,7 @@ namespace TptMain.Workflow
             DetailsUpdated?.Invoke(this, _projectDetails);
 
             // Create & show setup form to user to get preview input.
-            SetupForm setupForm = CreateSetupForm();
+            var setupForm = CreateSetupForm();
             setupForm.SetProjectDetails(_projectDetails);
 
             ShowModalForm(setupForm);
@@ -94,7 +94,7 @@ namespace TptMain.Workflow
             }
 
             // Create, instrument, and show progress form.
-            ProgressForm progressForm = CreateProgressForm();
+            var progressForm = CreateProgressForm();
             progressForm.Cancelled += OnProgressFormCancelled;
 
             ShowModelessForm(progressForm);
@@ -107,8 +107,8 @@ namespace TptMain.Workflow
 
                 // Update preview form with initial status.
                 progressForm.SetStatus(_previewJob);
-                DateTime lastCheckTime = DateTime.Now;
-                int threadSleepInMs = (int)(1000f / (float)MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
+                var lastCheckTime = DateTime.Now;
+                var threadSleepInMs = (int)(1000f / (float)MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
 
                 // Update preview form at fast interval (e.g., 20x/sec) to keep UI lively, but
                 // update job status at slow interval (e.g., every 5sec) to keep network traffic sane.
@@ -124,14 +124,14 @@ namespace TptMain.Workflow
 
                     lock (this)
                     {
-                        // double-check locking to prevent 
+                        // double-check locking to prevent
                         // crossover with manual cancel
                         if (!_previewJob.IsError
                             && !_previewJob.IsCancelled
                             && !_previewJob.IsCompleted)
                         {
                             // Check if it's time to update status and do so, as needed.
-                            DateTime nowTime = DateTime.Now;
+                            var nowTime = DateTime.Now;
                             if (nowTime.Subtract(lastCheckTime).TotalSeconds > MainConsts.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC)
                             {
                                 _previewJob = UpdatePreviewJob(_previewJob.Id);
@@ -166,7 +166,7 @@ namespace TptMain.Workflow
             try
             {
                 // Create, instrument, and show preview form
-                PreviewForm previewForm = CreatePreviewForm();
+                var previewForm = CreatePreviewForm();
                 previewForm.FormClosed += OnPreviewFormFormClosed;
 
                 previewForm.SetPreviewFile(_previewJob, _previewFile);
@@ -189,12 +189,12 @@ namespace TptMain.Workflow
         /// <param name="e">Form closed details.</param>
         public virtual void OnPreviewFormFormClosed(object sender, FormClosedEventArgs e)
         {
-            if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated.ToString("u")}?",
+            if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated:u}?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                using (SaveFileDialog saveFile = new SaveFileDialog())
+                using (var saveFile = new SaveFileDialog())
                 {
-                    string dateTimeText = _projectDetails.ProjectUpdated.ToString("yyyyMMdd'T'HHmmss'Z'");
+                    var dateTimeText = _projectDetails.ProjectUpdated.ToString(MainConsts.DEFAULT_OUTPUT_FILE_NAME_FORMAT);
 
                     saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
                     saveFile.InitialDirectory = Environment.GetFolderPath(SpecialFolder.MyDocuments);
@@ -205,14 +205,13 @@ namespace TptMain.Workflow
 
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
-                        using (Stream outputStream = saveFile.OpenFile())
+                        using (var outputStream = saveFile.OpenFile())
                         {
-                            using (FileStream inputStream = _previewFile.OpenRead())
+                            using (var inputStream = _previewFile.OpenRead())
                             {
                                 inputStream.CopyTo(outputStream);
                             }
                         }
-
                     }
                 }
             }
@@ -225,16 +224,16 @@ namespace TptMain.Workflow
         /// <returns>Downloaded temp file.</returns>
         public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob)
         {
-            FileInfo downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
-            WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
+            var downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
             webRequest.Method = HttpMethod.Get.Method;
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-            using (Stream inputStream = webRequest.GetResponse().GetResponseStream())
+            using (var inputStream = webRequest.GetResponse().GetResponseStream())
             {
-                using (FileStream outputStream = downloadFile.OpenWrite())
+                using (var outputStream = downloadFile.OpenWrite())
                 {
-                    inputStream.CopyTo(outputStream);
+                    inputStream?.CopyTo(outputStream);
                 }
             }
 
@@ -243,7 +242,7 @@ namespace TptMain.Workflow
 
         /// <summary>
         /// Called when user cancels render process.
-        /// 
+        ///
         /// Locks on workflow instance, as this overwrites member _previewJob (no return from event handler).
         /// </summary>
         /// <param name="sender">Event source (cancel button).</param>
@@ -257,11 +256,12 @@ namespace TptMain.Workflow
 
             lock (this)
             {
-                WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
+                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
                 webRequest.Method = HttpMethod.Delete.Method;
                 webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-                using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
+                using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
+                                                                    ?? throw new InvalidOperationException("Can't open response stream")))
                 {
                     _previewJob = JsonConvert.DeserializeObject<PreviewJob>(streamReader.ReadToEnd());
                 }
@@ -275,16 +275,17 @@ namespace TptMain.Workflow
         /// <returns>Created preview job, with user settings, server-side status, and ID.</returns>
         public virtual PreviewJob CreatePreviewJob(PreviewJob previewJob)
         {
-            WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs");
+            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs");
             webRequest.Method = HttpMethod.Post.Method;
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
             webRequest.ContentType = MainConsts.APPLICATION_JSON_MIME_TYPE;
 
-            using (StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream()))
+            using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
             {
                 streamWriter.Write(JsonConvert.SerializeObject(previewJob));
             }
-            using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
+            using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
+                                                                ?? throw new InvalidOperationException("Can't open response stream")))
             {
                 return JsonConvert.DeserializeObject<PreviewJob>(streamReader.ReadToEnd());
             }
@@ -297,11 +298,12 @@ namespace TptMain.Workflow
         /// <returns>Updated preview job, with user settings, server-side status, and ID.</returns>
         public virtual PreviewJob UpdatePreviewJob(string jobId)
         {
-            WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
+            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
             webRequest.Method = HttpMethod.Get.Method;
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-            using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
+            using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
+                                                                ?? throw new InvalidOperationException("Can't open response stream")))
             {
                 return JsonConvert.DeserializeObject<PreviewJob>(streamReader.ReadToEnd());
             }
@@ -316,13 +318,14 @@ namespace TptMain.Workflow
         {
             try
             {
-                WebRequest webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ProjectDetails");
+                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ProjectDetails");
                 webRequest.Method = HttpMethod.Get.Method;
                 webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-                using (StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
+                using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
+                                                                    ?? throw new InvalidOperationException("Can't open response stream")))
                 {
-                    List<ProjectDetails> allProjectDetails = JsonConvert.DeserializeObject<List<ProjectDetails>>(streamReader.ReadToEnd());
+                    var allProjectDetails = JsonConvert.DeserializeObject<List<ProjectDetails>>(streamReader.ReadToEnd());
 
                     // It's possible there aren't any.
                     if (allProjectDetails.Count < 1)
@@ -334,15 +337,15 @@ namespace TptMain.Workflow
                     }
 
                     // Find the one that matters to us.
-                    ProjectDetails result = allProjectDetails
+                    var result = allProjectDetails
                         .FirstOrDefault(detailsItem => detailsItem.ProjectName.Equals(projectName, StringComparison.CurrentCultureIgnoreCase));
 
                     // Not found = error, done.
                     if (result == null)
                     {
                         // Sort and list projects we do have.
-                        allProjectDetails.Sort((l, r) => l.ProjectName.CompareTo(r.ProjectName));
-                        string availableProjects = string.Join(", ", allProjectDetails.Select(detailItem => $"\"{detailItem.ProjectName}\""));
+                        allProjectDetails.Sort((l, r) => string.Compare(l.ProjectName, r.ProjectName, StringComparison.Ordinal));
+                        var availableProjects = string.Join(", ", allProjectDetails.Select(detailItem => $"\"{detailItem.ProjectName}\""));
 
                         ShowMessageBox($"Can't preview project: \"{projectName}\" (not present on server).\n\nPlease try again later or contact support (available projects: {availableProjects}).",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);

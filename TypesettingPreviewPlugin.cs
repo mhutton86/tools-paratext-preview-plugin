@@ -4,14 +4,11 @@ using System.AddIn;
 using System.AddIn.Pipeline;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using TptMain.Models;
 using TptMain.Util;
 using TptMain.Workflow;
-using TptMain.Models;
 
 namespace TptMain
 {
@@ -42,14 +39,11 @@ namespace TptMain
         /// <summary>
         /// No-op, to fulfill IParatextAddIn2 contract.
         /// </summary>
-        public Dictionary<string, IPluginDataFileMergeInfo> DataFileKeySpecifications
-        {
-            get { return null; }
-        }
+        public Dictionary<string, IPluginDataFileMergeInfo> DataFileKeySpecifications => null;
 
         /// <summary>
-        /// No-op, to fulfill IParatextAddIn2 contract. 
-        /// 
+        /// No-op, to fulfill IParatextAddIn2 contract.
+        ///
         /// Should never by invoked when CreateInstanceRule.always setting in place (above).
         /// </summary>
         /// <param name="activeProjectName">Active Paratext project name.</param>
@@ -58,8 +52,8 @@ namespace TptMain
         }
 
         /// <summary>
-        /// Called when plugin is requested to shut down. 
-        /// 
+        /// Called when plugin is requested to shut down.
+        ///
         /// Terminates process, since plugins are standalone processes (not in-process libraries).
         /// </summary>
         public void RequestShutdown()
@@ -84,16 +78,22 @@ namespace TptMain
                 {
                     // Create main thread & delegate
                     Application.EnableVisualStyles();
-                    Thread uiThread = new Thread(() =>
+                    var uiThread = new Thread(() =>
                     {
                         try
                         {
                             // Create and instrument workflow
-                            TypesettingPreviewWorkflow previewWorkflow = new TypesettingPreviewWorkflow();
+                            var previewWorkflow = new TypesettingPreviewWorkflow();
 
-                            previewWorkflow.DetailsUpdated += (currWorkflow, projectDetails) => { _projectDetails = projectDetails; };
+                            previewWorkflow.DetailsUpdated += (currWorkflow, projectDetails) =>
+                            {
+                                _projectDetails = projectDetails;
+                            };
                             previewWorkflow.JobUpdated += (currWorkflow, previewJob) => { _previewJob = previewJob; };
-                            previewWorkflow.FileDownloaded += (currWorkflow, previewFile) => { _previewFile = previewFile; };
+                            previewWorkflow.FileDownloaded += (currWorkflow, previewFile) =>
+                            {
+                                _previewFile = previewFile;
+                            };
 
                             // Execute workflow. Will not return until complete.
                             previewWorkflow.Run(host, activeProjectName);
@@ -105,16 +105,22 @@ namespace TptMain
                                 && _previewJob != null
                                 && _projectDetails != null)
                             {
-                                HostUtil.Instance.ReportError($"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError(
+                                    $"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                    ex);
                             }
                             else if (_previewJob != null
-                                && _projectDetails != null)
+                                     && _projectDetails != null)
                             {
-                                HostUtil.Instance.ReportError($"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError(
+                                    $"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                    ex);
                             }
                             else if (_projectDetails != null)
                             {
-                                HostUtil.Instance.ReportError($"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated.ToString("u")}).", ex);
+                                HostUtil.Instance.ReportError(
+                                    $"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                    ex);
                             }
                             else
                             {
@@ -126,10 +132,10 @@ namespace TptMain
                             // Exit process (terminate plugin) once complete, no matter what.
                             Environment.Exit(0);
                         }
-                    });
+                    })
+                    { IsBackground = false };
 
                     // Execute main thread.
-                    uiThread.IsBackground = false;
                     uiThread.SetApartmentState(ApartmentState.STA);
                     uiThread.Start();
                 }

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace TptMain.Models
 {
     /// <summary>
     /// Book format enumerations.
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum BookFormat
     {
         /// <summary>
         /// The Books of the Bible
         /// </summary>
         tbotb,
+
         /// <summary>
         /// Chapter and Verse.
         /// </summary>
