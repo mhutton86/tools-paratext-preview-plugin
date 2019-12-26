@@ -87,9 +87,9 @@
             this.rdoLayoutTbotb.AutoSize = true;
             this.rdoLayoutTbotb.Location = new System.Drawing.Point(19, 51);
             this.rdoLayoutTbotb.Name = "rdoLayoutTbotb";
-            this.rdoLayoutTbotb.Size = new System.Drawing.Size(180, 17);
+            this.rdoLayoutTbotb.Size = new System.Drawing.Size(181, 17);
             this.rdoLayoutTbotb.TabIndex = 10;
-            this.rdoLayoutTbotb.Text = " The books of the Bible (TBOTB)";
+            this.rdoLayoutTbotb.Text = " The Books of the Bible (TBOTB)";
             this.rdoLayoutTbotb.UseVisualStyleBackColor = true;
             // 
             // rdoLayoutCav
@@ -98,10 +98,10 @@
             this.rdoLayoutCav.Checked = true;
             this.rdoLayoutCav.Location = new System.Drawing.Point(19, 28);
             this.rdoLayoutCav.Name = "rdoLayoutCav";
-            this.rdoLayoutCav.Size = new System.Drawing.Size(150, 17);
+            this.rdoLayoutCav.Size = new System.Drawing.Size(146, 17);
             this.rdoLayoutCav.TabIndex = 9;
             this.rdoLayoutCav.TabStop = true;
-            this.rdoLayoutCav.Text = " Chapters and verse (CAV)";
+            this.rdoLayoutCav.Text = " Chapter and Verse (CAV)";
             this.rdoLayoutCav.UseVisualStyleBackColor = true;
             // 
             // rdoTextOptionsDefaults
