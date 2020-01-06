@@ -18,7 +18,7 @@
         /// <summary>
         /// Default web request timeout in milliseconds.
         /// </summary>
-        public const int DEFAULT_REQUEST_TIMEOUT_IN_MS = 10000;
+        public const int DEFAULT_REQUEST_TIMEOUT_IN_MS = 30000;
 
         /// <summary>
         /// Progress form update frequency in x/sec.
