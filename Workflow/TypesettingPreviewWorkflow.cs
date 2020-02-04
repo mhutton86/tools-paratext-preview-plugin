@@ -86,6 +86,7 @@ namespace TptMain.Workflow
             // Create & show setup form to user to get preview input.
             var setupForm = CreateSetupForm();
             setupForm.SetProjectDetails(_projectDetails);
+            setupForm.User = host.UserName;
 
             ShowModalForm(setupForm);
             if (setupForm.IsCancelled)
