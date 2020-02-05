@@ -41,8 +41,9 @@ namespace TptMain.Form
         public virtual void SetStatus(PreviewJob previewJob)
         {
             _previewJob = previewJob;
-            var nowTime = DateTime.UtcNow;
+            Text = $"Project: \"{_previewJob.ProjectName}\", Format: {_previewJob.BookFormat}, Font: {_previewJob.FontSizeInPts}pts, Leading: {_previewJob.FontLeadingInPts}pts";
 
+            var nowTime = DateTime.UtcNow;
             if (_previewJob.IsStarted)
             {
                 var timeSpan = DateTime.UtcNow.Subtract(_previewJob.DateStarted ?? nowTime);
