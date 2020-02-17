@@ -54,6 +54,15 @@ namespace TptMain.Workflow
         public EventHandler<FileInfo> FileDownloaded;
 
         /// <summary>
+        /// TypesettingPreviewWorkflow ctor.
+        /// </summary>
+        public TypesettingPreviewWorkflow()
+        {
+            // Use the TLS 1.2 protocol for HTTPS requests.
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
+        /// <summary>
         /// Entry point method.
         /// </summary>
         /// <param name="host">Host interface, providing Paratext services (required).</param>
@@ -323,8 +332,8 @@ namespace TptMain.Workflow
                 webRequest.Method = HttpMethod.Get.Method;
                 webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-                using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
-                                                                    ?? throw new InvalidOperationException("Can't open response stream")))
+                using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream())
+                                                                    ?? throw new InvalidOperationException("Can't open response stream"))
                 {
                     var allProjectDetails = JsonConvert.DeserializeObject<List<ProjectDetails>>(streamReader.ReadToEnd());
 
