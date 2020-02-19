@@ -16,8 +16,9 @@ namespace TptMain
     /// Typesetting preview plugin root class.
     /// </summary>
     [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = "1.0", Publisher = "Biblica")]
-    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting Preview")]
+    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting-Preview")]
     [QualificationData(PluginMetaDataKeys.insertAfterMenuName, "Tools|")]
+    [QualificationData(PluginMetaDataKeys.enableWhen, WhenToEnable.anyProjectActive)]
     [QualificationData(PluginMetaDataKeys.multipleInstances, CreateInstanceRule.always)]
     public class TypesettingPreviewPlugin : IParatextAddIn2
     {
