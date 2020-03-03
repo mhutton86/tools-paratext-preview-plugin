@@ -13,7 +13,7 @@
         /// <summary>
         /// Default server URI. Needs to be configurable, in future.
         /// </summary>
-        public const string DEFAULT_SERVER_URI = "http://172.31.10.90:9875/api";
+        public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
 
         /// <summary>
         /// Default web request timeout in milliseconds.

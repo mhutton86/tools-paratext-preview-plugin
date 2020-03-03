@@ -36,6 +36,11 @@ namespace TptMain.Form
         public virtual bool IsCancelled { get; set; }
 
         /// <summary>
+        /// User setter/getter.
+        /// </summary>
+        public string User { get; set; }
+
+        /// <summary>
         /// Basic ctor.
         /// </summary>
         public SetupForm()
@@ -115,6 +120,7 @@ namespace TptMain.Form
         private void PopulatePreviewJob()
         {
             _previewJob.ProjectName = ProjectName;
+            _previewJob.User = User;
             _previewJob.BookFormat = BookFormat;
             _previewJob.FontSizeInPts = FontSizeInPts;
             _previewJob.FontLeadingInPts = FontLeadingInPts;

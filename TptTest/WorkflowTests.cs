@@ -22,6 +22,11 @@ namespace TptTest
         private const string TestProjectName = "testProjectName";
 
         /// <summary>
+        /// Test user.
+        /// </summary>
+        private const string TestUser = "testUser";
+
+        /// <summary>
         /// Test where project is missing from server.
         /// </summary>
         [TestMethod]
@@ -68,6 +73,8 @@ namespace TptTest
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -92,6 +99,8 @@ namespace TptTest
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert
+            mockHost.Verify(hostItem =>
+                hostItem.UserName, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -124,6 +133,8 @@ namespace TptTest
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+               .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -205,6 +216,8 @@ namespace TptTest
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+               .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -293,6 +306,8 @@ namespace TptTest
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -394,6 +409,8 @@ namespace TptTest
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -505,6 +522,8 @@ namespace TptTest
             testPreviewFile.Refresh();
             Assert.IsTrue(testPreviewFile.Exists);
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -566,6 +585,8 @@ namespace TptTest
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
+            mockHost.Verify(hostItem => 
+                hostItem.UserName, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -630,6 +651,7 @@ namespace TptTest
             return new PreviewJob
             {
                 ProjectName = TestProjectName,
+                User = TestUser,
                 BookFormat = BookFormat.cav,
                 FontSizeInPts = 123.4f,
                 FontLeadingInPts = 234.5f,
