@@ -192,7 +192,7 @@
             this.lblFontLeadingUnits.Name = "lblFontLeadingUnits";
             this.lblFontLeadingUnits.Size = new System.Drawing.Size(21, 13);
             this.lblFontLeadingUnits.TabIndex = 17;
-            this.lblFontLeadingUnits.Text = "pts";
+            this.lblFontLeadingUnits.Text = "pt";
             this.lblFontLeadingUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblFontSizeUnits
@@ -204,7 +204,7 @@
             this.lblFontSizeUnits.Name = "lblFontSizeUnits";
             this.lblFontSizeUnits.Size = new System.Drawing.Size(21, 13);
             this.lblFontSizeUnits.TabIndex = 16;
-            this.lblFontSizeUnits.Text = "pts";
+            this.lblFontSizeUnits.Text = "pt";
             this.lblFontSizeUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblFontLeading
@@ -347,7 +347,7 @@
             this.lblPageHeaderUnits.Name = "lblPageHeaderUnits";
             this.lblPageHeaderUnits.Size = new System.Drawing.Size(21, 13);
             this.lblPageHeaderUnits.TabIndex = 20;
-            this.lblPageHeaderUnits.Text = "pts";
+            this.lblPageHeaderUnits.Text = "pt";
             this.lblPageHeaderUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageHeightUnits
@@ -359,7 +359,7 @@
             this.lblPageHeightUnits.Name = "lblPageHeightUnits";
             this.lblPageHeightUnits.Size = new System.Drawing.Size(21, 13);
             this.lblPageHeightUnits.TabIndex = 19;
-            this.lblPageHeightUnits.Text = "pts";
+            this.lblPageHeightUnits.Text = "pt";
             this.lblPageHeightUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageWidthUnits
@@ -371,7 +371,7 @@
             this.lblPageWidthUnits.Name = "lblPageWidthUnits";
             this.lblPageWidthUnits.Size = new System.Drawing.Size(21, 13);
             this.lblPageWidthUnits.TabIndex = 18;
-            this.lblPageWidthUnits.Text = "pts";
+            this.lblPageWidthUnits.Text = "pptts";
             this.lblPageWidthUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageHeader

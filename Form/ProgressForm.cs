@@ -34,14 +34,14 @@ namespace TptMain.Form
         ///
         /// Notes:
         /// - If job is still enqued (not being rendered), progress bar will be indeterminate with appropriate label text.
-        /// - If job has started (being rendered) and has been running for <90sec, progress bar will start and animate with a target time of 90sec, as there is no server-side progress information.
-        /// - If job has started and has been running for >=90sec, progress bar will go back to indeterminate with different label text.
+        /// - If job has started (being rendered) and has been running for &lt; the max time, progress bar will start and animate with a target time of 90sec, as there is no server-side progress information.
+        /// - If job has started and has been running for &gt;= the max time, progress bar will go back to indeterminate with different label text.
         /// </summary>
         /// <param name="previewJob"></param>
         public virtual void SetStatus(PreviewJob previewJob)
         {
             _previewJob = previewJob;
-            Text = $"Project: \"{_previewJob.ProjectName}\", Format: {_previewJob.BookFormat}, Font: {_previewJob.FontSizeInPts}pts, Leading: {_previewJob.FontLeadingInPts}pts";
+            Text = $"Project: \"{_previewJob.ProjectName}\", Format: {_previewJob.BookFormat}, Font: {_previewJob.FontSizeInPts}pt, Leading: {_previewJob.FontLeadingInPts}pt";
 
             var nowTime = DateTime.UtcNow;
             if (_previewJob.IsStarted)
@@ -59,7 +59,7 @@ namespace TptMain.Form
                 {
                     lblStatusText.Text = "Rendering preview...";
                     pbrStatus.Style = ProgressBarStyle.Continuous;
-                    pbrStatus.Value = (int)(((float)runTimeInSec / (float)MainConsts.TARGET_PREVIEW_JOB_TIME_IN_SEC) * 100f);
+                    pbrStatus.Value = (int)((runTimeInSec / (float)MainConsts.TARGET_PREVIEW_JOB_TIME_IN_SEC) * 100f);
                 }
             }
             else

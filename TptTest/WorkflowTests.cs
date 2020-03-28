@@ -129,7 +129,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
 
@@ -210,7 +209,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -300,7 +298,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -403,7 +400,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -511,7 +507,6 @@ namespace TptTest
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var mockPreviewForm = new Mock<PreviewForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -585,7 +580,7 @@ namespace TptTest
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
-            mockHost.Verify(hostItem => 
+            mockHost.Verify(hostItem =>
                 hostItem.UserName, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);

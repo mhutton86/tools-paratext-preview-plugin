@@ -51,7 +51,7 @@ namespace TptMain.Util
         {
             var messageText = (prefixText ?? "Error: Please contact support.")
                 + Environment.NewLine + Environment.NewLine
-                + "Details: " + ex.ToString() + Environment.NewLine;
+                + "Details: " + ex + Environment.NewLine;
             MessageBox.Show(messageText, "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             LogLine($"Error: {messageText}", true);
         }

@@ -118,7 +118,7 @@ namespace TptMain.Workflow
                 // Update preview form with initial status.
                 progressForm.SetStatus(_previewJob);
                 var lastCheckTime = DateTime.Now;
-                var threadSleepInMs = (int)(1000f / (float)MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
+                var threadSleepInMs = (int)(1000f / MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
 
                 // Update preview form at fast interval (e.g., 20x/sec) to keep UI lively, but
                 // update job status at slow interval (e.g., every 5sec) to keep network traffic sane.
