@@ -29,6 +29,7 @@ namespace TptTest
         /// <summary>
         /// Test where project is missing from server.
         /// </summary>
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestMissingProject()
         {
@@ -44,7 +45,7 @@ namespace TptTest
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CheckProjectName(It.IsAny<string>()))
-                .Returns((ProjectDetails)null);
+                .Throws<WorkflowException>();
 
             // execute
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
@@ -54,8 +55,6 @@ namespace TptTest
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
-            mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
 
             mockHost.VerifyNoOtherCalls();
             mockWorkflow.VerifyNoOtherCalls();
@@ -120,7 +119,7 @@ namespace TptTest
         /// <summary>
         /// Test error creating preview job on server.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestCreatePreviewJobError()
         {
@@ -200,7 +199,7 @@ namespace TptTest
         /// <summary>
         /// Test I/O error (client/server) finishing preview job on server.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestFinishPreviewJobError1()
         {
@@ -289,7 +288,7 @@ namespace TptTest
         /// <summary>
         /// Test server-side error finishing preview job.
         /// </summary>
-        [ExpectedException(typeof(ApplicationException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestFinishPreviewJobError2()
         {
@@ -391,7 +390,7 @@ namespace TptTest
         /// <summary>
         /// Test error downloading preview file.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestDownloadFileError()
         {

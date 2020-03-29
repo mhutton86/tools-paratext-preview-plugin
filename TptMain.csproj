@@ -73,6 +73,7 @@
     <Compile Include="Util\HostUtil.cs" />
     <Compile Include="Util\MainConsts.cs" />
     <Compile Include="Workflow\TypesettingPreviewWorkflow.cs" />
+    <Compile Include="Workflow\WorkflowException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

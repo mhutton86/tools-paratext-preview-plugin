@@ -1,4 +1,7 @@
-﻿namespace TptMain.Util
+﻿using System.Windows.Forms.VisualStyles;
+using TptMain.Models;
+
+namespace TptMain.Util
 {
     /// <summary>
     /// Utility constants.
@@ -42,5 +45,74 @@
         /// (generally accurate, as enqueued but not executing jobs are distinguishable and indicated differently).
         /// </summary>
         public const int TARGET_PREVIEW_JOB_TIME_IN_SEC = (60 * 10);
+
+        /// <summary>
+        /// Default preview book format.
+        /// </summary>
+        public const BookFormat DEFAULT_BOOK_FORMAT = BookFormat.cav;
+
+        /// <summary>
+        /// Settings for preview font size in points (min/max/default).
+        /// </summary>
+        public static readonly PreviewSetting FontSizeSettings
+            = new PreviewSetting(1f, 100f, 8f);
+
+        /// <summary>
+        /// Settings for preview font leading in points (min/max/default).
+        /// </summary>
+        public static readonly PreviewSetting FontLeadingSettings
+            = new PreviewSetting(1f, 100f, 9f);
+
+        /// <summary>
+        /// Settings for preview page width in points. (min/max/default).
+        /// </summary>
+        public static readonly PreviewSetting PageWidthSettings
+            = new PreviewSetting(1f, 1000f, 396f);
+
+        /// <summary>
+        /// Settings for preview page height in points (min/max/default).
+        /// </summary>
+        public static readonly PreviewSetting PageHeightSettings
+            = new PreviewSetting(1f, 2000f, 612f);
+
+        /// <summary>
+        /// Settings for preview page header in points (min/max/default).
+        /// </summary>
+        public static readonly PreviewSetting PageHeaderSettings
+            = new PreviewSetting(1f, 100f, 18f);
+
+        /// <summary>
+        /// Holder class for preview related settings (min, max, and default values).
+        /// </summary>
+        public class PreviewSetting
+        {
+            /// <summary>
+            /// Min value.
+            /// </summary>
+            public float MinValue { get; private set; }
+
+            /// <summary>
+            /// Max value.
+            /// </summary>
+            public float MaxValue { get; private set; }
+
+            /// <summary>
+            /// Default value.
+            /// </summary>
+            public float DefaultValue { get; private set; }
+
+            /// <summary>
+            /// Basic ctor.
+            /// </summary>
+            /// <param name="minValue">Min value.</param>
+            /// <param name="maxValue">Max value.</param>
+            /// <param name="defaultValue">Default value.</param>
+            public PreviewSetting(float minValue, float maxValue, float defaultValue)
+            {
+                MinValue = minValue;
+                MaxValue = maxValue;
+                DefaultValue = defaultValue;
+            }
+        }
     }
 }

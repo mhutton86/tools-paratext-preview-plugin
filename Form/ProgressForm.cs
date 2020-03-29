@@ -40,7 +40,7 @@ namespace TptMain.Form
         /// <param name="previewJob"></param>
         public virtual void SetStatus(PreviewJob previewJob)
         {
-            _previewJob = previewJob;
+            _previewJob = previewJob ?? throw new ArgumentNullException(nameof(previewJob));
             Text = $"Project: \"{_previewJob.ProjectName}\", Format: {_previewJob.BookFormat}, Font: {_previewJob.FontSizeInPts}pt, Leading: {_previewJob.FontLeadingInPts}pt";
 
             var nowTime = DateTime.UtcNow;
@@ -75,7 +75,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="timeSpan">Input time span (required).</param>
         /// <returns>Reported time text.</returns>
-        private string GetElapsedTime(TimeSpan timeSpan)
+        private static string GetElapsedTime(TimeSpan timeSpan)
         {
             var stringBuilder = new StringBuilder();
 
@@ -91,7 +91,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (button).</param>
         /// <param name="e">Event args.</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             Cancelled?.Invoke(sender, e);
         }

@@ -110,12 +110,12 @@
             this.rdoTextOptionsDefaults.Checked = true;
             this.rdoTextOptionsDefaults.Location = new System.Drawing.Point(19, 28);
             this.rdoTextOptionsDefaults.Name = "rdoTextOptionsDefaults";
-            this.rdoTextOptionsDefaults.Size = new System.Drawing.Size(64, 17);
+            this.rdoTextOptionsDefaults.Size = new System.Drawing.Size(59, 17);
             this.rdoTextOptionsDefaults.TabIndex = 10;
             this.rdoTextOptionsDefaults.TabStop = true;
-            this.rdoTextOptionsDefaults.Text = "Defaults";
+            this.rdoTextOptionsDefaults.Text = "Default";
             this.rdoTextOptionsDefaults.UseVisualStyleBackColor = true;
-            this.rdoTextOptionsDefaults.CheckedChanged += new System.EventHandler(this.rdoTextOptionsDefaults_CheckedChanged);
+            this.rdoTextOptionsDefaults.CheckedChanged += new System.EventHandler(this.RdoTextOptionsDefaults_CheckedChanged);
             // 
             // rdoTextOptionsCustom
             // 
@@ -126,7 +126,7 @@
             this.rdoTextOptionsCustom.TabIndex = 11;
             this.rdoTextOptionsCustom.Text = "Custom";
             this.rdoTextOptionsCustom.UseVisualStyleBackColor = true;
-            this.rdoTextOptionsCustom.CheckedChanged += new System.EventHandler(this.rdoTextOptionsCustom_CheckedChanged);
+            this.rdoTextOptionsCustom.CheckedChanged += new System.EventHandler(this.RdoTextOptionsCustom_CheckedChanged);
             // 
             // grpTextOptions
             // 
@@ -158,6 +158,7 @@
             this.nudFontLeading.Name = "nudFontLeading";
             this.nudFontLeading.Size = new System.Drawing.Size(102, 20);
             this.nudFontLeading.TabIndex = 25;
+            this.nudFontLeading.ThousandsSeparator = true;
             this.nudFontLeading.Value = new decimal(new int[] {
             9,
             0,
@@ -177,6 +178,7 @@
             this.nudFontSize.Name = "nudFontSize";
             this.nudFontSize.Size = new System.Drawing.Size(102, 20);
             this.nudFontSize.TabIndex = 24;
+            this.nudFontSize.ThousandsSeparator = true;
             this.nudFontSize.Value = new decimal(new int[] {
             8,
             0,
@@ -190,7 +192,7 @@
             this.lblFontLeadingUnits.Enabled = false;
             this.lblFontLeadingUnits.Location = new System.Drawing.Point(310, 81);
             this.lblFontLeadingUnits.Name = "lblFontLeadingUnits";
-            this.lblFontLeadingUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblFontLeadingUnits.Size = new System.Drawing.Size(16, 13);
             this.lblFontLeadingUnits.TabIndex = 17;
             this.lblFontLeadingUnits.Text = "pt";
             this.lblFontLeadingUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -202,7 +204,7 @@
             this.lblFontSizeUnits.Enabled = false;
             this.lblFontSizeUnits.Location = new System.Drawing.Point(310, 53);
             this.lblFontSizeUnits.Name = "lblFontSizeUnits";
-            this.lblFontSizeUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblFontSizeUnits.Size = new System.Drawing.Size(16, 13);
             this.lblFontSizeUnits.TabIndex = 16;
             this.lblFontSizeUnits.Text = "pt";
             this.lblFontSizeUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -274,6 +276,7 @@
             this.nudPageHeader.Name = "nudPageHeader";
             this.nudPageHeader.Size = new System.Drawing.Size(102, 20);
             this.nudPageHeader.TabIndex = 23;
+            this.nudPageHeader.ThousandsSeparator = true;
             this.nudPageHeader.Value = new decimal(new int[] {
             18,
             0,
@@ -303,6 +306,7 @@
             this.nudPageHeight.Name = "nudPageHeight";
             this.nudPageHeight.Size = new System.Drawing.Size(102, 20);
             this.nudPageHeight.TabIndex = 22;
+            this.nudPageHeight.ThousandsSeparator = true;
             this.nudPageHeight.Value = new decimal(new int[] {
             612,
             0,
@@ -332,6 +336,7 @@
             this.nudPageWidth.Name = "nudPageWidth";
             this.nudPageWidth.Size = new System.Drawing.Size(102, 20);
             this.nudPageWidth.TabIndex = 21;
+            this.nudPageWidth.ThousandsSeparator = true;
             this.nudPageWidth.Value = new decimal(new int[] {
             396,
             0,
@@ -345,7 +350,7 @@
             this.lblPageHeaderUnits.Enabled = false;
             this.lblPageHeaderUnits.Location = new System.Drawing.Point(310, 114);
             this.lblPageHeaderUnits.Name = "lblPageHeaderUnits";
-            this.lblPageHeaderUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblPageHeaderUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageHeaderUnits.TabIndex = 20;
             this.lblPageHeaderUnits.Text = "pt";
             this.lblPageHeaderUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -357,7 +362,7 @@
             this.lblPageHeightUnits.Enabled = false;
             this.lblPageHeightUnits.Location = new System.Drawing.Point(310, 83);
             this.lblPageHeightUnits.Name = "lblPageHeightUnits";
-            this.lblPageHeightUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblPageHeightUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageHeightUnits.TabIndex = 19;
             this.lblPageHeightUnits.Text = "pt";
             this.lblPageHeightUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -369,9 +374,9 @@
             this.lblPageWidthUnits.Enabled = false;
             this.lblPageWidthUnits.Location = new System.Drawing.Point(310, 53);
             this.lblPageWidthUnits.Name = "lblPageWidthUnits";
-            this.lblPageWidthUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblPageWidthUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageWidthUnits.TabIndex = 18;
-            this.lblPageWidthUnits.Text = "pptts";
+            this.lblPageWidthUnits.Text = "pt";
             this.lblPageWidthUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageHeader
@@ -419,7 +424,7 @@
             this.rdoPageOptionsCustom.TabIndex = 11;
             this.rdoPageOptionsCustom.Text = "Custom";
             this.rdoPageOptionsCustom.UseVisualStyleBackColor = true;
-            this.rdoPageOptionsCustom.CheckedChanged += new System.EventHandler(this.rdoPageOptionsCustom_CheckedChanged);
+            this.rdoPageOptionsCustom.CheckedChanged += new System.EventHandler(this.RdoPageOptionsCustom_CheckedChanged);
             // 
             // rdoPageOptionsDefaults
             // 
@@ -427,12 +432,12 @@
             this.rdoPageOptionsDefaults.Checked = true;
             this.rdoPageOptionsDefaults.Location = new System.Drawing.Point(19, 28);
             this.rdoPageOptionsDefaults.Name = "rdoPageOptionsDefaults";
-            this.rdoPageOptionsDefaults.Size = new System.Drawing.Size(64, 17);
+            this.rdoPageOptionsDefaults.Size = new System.Drawing.Size(59, 17);
             this.rdoPageOptionsDefaults.TabIndex = 10;
             this.rdoPageOptionsDefaults.TabStop = true;
-            this.rdoPageOptionsDefaults.Text = "Defaults";
+            this.rdoPageOptionsDefaults.Text = "Default";
             this.rdoPageOptionsDefaults.UseVisualStyleBackColor = true;
-            this.rdoPageOptionsDefaults.CheckedChanged += new System.EventHandler(this.rdoPageOptionsDefaults_CheckedChanged);
+            this.rdoPageOptionsDefaults.CheckedChanged += new System.EventHandler(this.RdoPageOptionsDefaults_CheckedChanged);
             // 
             // btnCreate
             // 
@@ -442,7 +447,7 @@
             this.btnCreate.TabIndex = 17;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
-            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            this.btnCreate.Click += new System.EventHandler(this.BtnCreate_Click);
             // 
             // btnCancel
             // 
@@ -453,7 +458,7 @@
             this.btnCancel.TabIndex = 18;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // lblProjectUpdatedText
             // 
@@ -471,9 +476,9 @@
             this.lblProjectUpdated.AutoSize = true;
             this.lblProjectUpdated.Location = new System.Drawing.Point(181, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
-            this.lblProjectUpdated.Size = new System.Drawing.Size(105, 13);
+            this.lblProjectUpdated.Size = new System.Drawing.Size(74, 13);
             this.lblProjectUpdated.TabIndex = 7;
-            this.lblProjectUpdated.Text = "Date/Time Updated:";
+            this.lblProjectUpdated.Text = "Last Updated:";
             // 
             // lblProjectName
             // 
