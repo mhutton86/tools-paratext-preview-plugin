@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 using TptMain.Models;
 using TptMain.Util;
@@ -120,19 +121,10 @@ namespace TptMain.Form
         /// <param name="isEnabled">True to enable text options, false otherwise.</param>
         private void ControlTextOptions(bool isEnabled)
         {
-            lblFontSize.Enabled = isEnabled;
-            nudFontSize.Enabled = isEnabled;
-            lblFontSizeUnits.Enabled = isEnabled;
-            nudFontSize.Value = isEnabled
-                ? nudFontSize.Value
-                : (decimal)MainConsts.FontSizeSettings.DefaultValue;
-
-            lblFontLeading.Enabled = isEnabled;
-            nudFontLeading.Enabled = isEnabled;
-            lblFontLeadingUnits.Enabled = isEnabled;
-            nudFontLeading.Value = isEnabled
-                ? nudFontLeading.Value
-                : (decimal)MainConsts.FontLeadingSettings.DefaultValue;
+            ToggleFieldControl(nudFontSize, lblFontSize, lblFontSizeUnits,
+                MainConsts.FontSizeSettings, isEnabled);
+            ToggleFieldControl(nudFontLeading, lblFontLeading, lblFontLeadingUnits,
+                MainConsts.FontLeadingSettings, isEnabled);
         }
 
         /// <summary>
@@ -246,26 +238,43 @@ namespace TptMain.Form
         /// <param name="isEnabled">True to enable page options, false otherwise.</param>
         private void ControlPageOptions(bool isEnabled)
         {
-            lblPageHeight.Enabled = isEnabled;
-            nudPageHeight.Enabled = isEnabled;
-            lblPageHeightUnits.Enabled = isEnabled;
-            nudPageHeight.Value = isEnabled
-                ? nudPageHeight.Value
-                : (decimal)MainConsts.PageHeightSettings.DefaultValue;
+            ToggleFieldControl(nudPageHeight, lblPageHeight, lblPageHeightUnits,
+                MainConsts.PageHeightSettings, isEnabled);
+            ToggleFieldControl(nudPageWidth, lblPageWidth, lblPageWidthUnits,
+                MainConsts.PageWidthSettings, isEnabled);
+            ToggleFieldControl(nudPageHeader, lblPageHeader, lblPageHeaderUnits,
+                MainConsts.PageHeaderSettings, isEnabled);
+        }
 
-            lblPageWidth.Enabled = isEnabled;
-            nudPageWidth.Enabled = isEnabled;
-            lblPageWidthUnits.Enabled = isEnabled;
-            nudPageWidth.Value = isEnabled
-                ? nudPageWidth.Value
-                : (decimal)MainConsts.PageWidthSettings.DefaultValue;
+        /// <summary>
+        /// Enable or disable a numeric up/down control and a pair of labels,
+        /// resetting default values as needed.
+        /// </summary>
+        /// <param name="fieldControl">Field control (required).</param>
+        /// <param name="fieldLabel">Field control primary label (required).</param>
+        /// <param name="unitsLabel">Field control units label (required).</param>
+        /// <param name="fieldSettings">Field settings (required).</param>
+        /// <param name="isEnabled">True to enable, false to disable.</param>
+        private void ToggleFieldControl(
+            NumericUpDown fieldControl,
+            Control fieldLabel,
+            Control unitsLabel,
+            MainConsts.PreviewSetting fieldSettings,
+            bool isEnabled)
+        {
+            // set control enabled
+            fieldControl.Enabled = isEnabled;
+            fieldLabel.Enabled = isEnabled;
+            unitsLabel.Enabled = isEnabled;
 
-            lblPageHeader.Enabled = isEnabled;
-            nudPageHeader.Enabled = isEnabled;
-            lblPageHeaderUnits.Enabled = isEnabled;
-            nudPageHeader.Value = isEnabled
-                ? nudPageHeader.Value
-                : (decimal)MainConsts.PageHeaderSettings.DefaultValue;
+            // reset value
+            fieldControl.Value = isEnabled
+                                 && !string.IsNullOrWhiteSpace(fieldControl.Text)
+                ? fieldControl.Value
+                : (decimal)fieldSettings.DefaultValue;
+
+            // copy value to text (not always aligned)
+            fieldControl.Text = fieldControl.Value.ToString(CultureInfo.CurrentCulture);
         }
 
         /// <summary>
