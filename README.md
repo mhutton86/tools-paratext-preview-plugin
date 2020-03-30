@@ -1,4 +1,9 @@
-*Dependencies*
+# Introduction
 
-The directory and file 'AddInViews' is sourced from Paratext 8/Pipeline directory. If PT has updated, be sure to copy a new version of the dll to the local project directory.
+This is the Paratext plugin side of the Transformation Preview capability, developed by Biblica.
 
+This plugin captures preview parameters from the user (e.g., project to render, font size, page height), triggers IDML, INDD, INDB, and PDF file generation, and retrieves completed preview files from the server for the user in a concise, self-contained workflow.
+
+# More Information
+
+Consult the [project wiki](https://github.com/biblica/api-bible-toolbox/wiki/Typesetting-Preview-Tool-Architecture) for additional information on this capability.
