@@ -6,4 +6,4 @@ This plugin captures preview parameters from the user (e.g., project to render, 
 
 # More Information
 
-Consult the [project wiki](https://github.com/biblica/api-bible-toolbox/wiki/Typesetting-Preview-Tool-Architecture) for additional information on this capability.
+Consult the [project wiki](https://operationalsystems.atlassian.net/wiki/spaces/BIB/pages/884965377/Typesetting+Preview+Feature) and [architecture documentation](https://github.com/biblica/api-bible-toolbox/wiki/Typesetting-Preview-Tool-Architecture) for additional information on this capability.
