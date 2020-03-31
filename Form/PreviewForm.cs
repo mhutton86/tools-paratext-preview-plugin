@@ -13,11 +13,6 @@ namespace TptMain.Form
     public partial class PreviewForm : System.Windows.Forms.Form
     {
         /// <summary>
-        /// Preview job, providing project name and preview settings.
-        /// </summary>
-        private PreviewJob _previewJob;
-
-        /// <summary>
         /// Preview temp file to display.
         /// </summary>
         private FileInfo _previewFile;
@@ -37,10 +32,12 @@ namespace TptMain.Form
         /// <param name="previewFile">Preview temp file (required).</param>
         public virtual void SetPreviewFile(PreviewJob previewJob, FileInfo previewFile)
         {
-            _previewJob = previewJob;
+            _ = previewJob ?? throw new ArgumentNullException(nameof(previewJob));
+            _ = previewFile ?? throw new ArgumentNullException(nameof(previewFile));
+
             _previewFile = previewFile;
 
-            Text = $"Preview - Project: \"{previewJob.ProjectName}\", Format: {previewJob.BookFormat}, Font: {previewJob.FontSizeInPts}pts, Leading: {previewJob.FontLeadingInPts}pts";
+            Text = $"Preview - Project: \"{previewJob.ProjectName}\", Format: {previewJob.BookFormat}, Font: {previewJob.FontSizeInPts}pt, Leading: {previewJob.FontLeadingInPts}pt";
             webPreview.Navigate(new Uri(_previewFile.FullName).AbsoluteUri);
         }
     }
