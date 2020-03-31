@@ -46,24 +46,33 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Paratext 8\plugins\TypesettingPreviewPlugin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AddInViews">
@@ -130,14 +139,14 @@
     <Content Include="Resources\biblica-32x32.ico" />
     <Content Include="Resources\biblica-96x96.ico" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild" Condition="$(Configuration) == 'Release'">
     <ItemGroup>
-      <ZipFiles Include="$(OutputPath)*.dll"/>
-	  <ZipFiles Include="$(OutputPath)*.pdb"/>
-	  <ZipFiles Include="$(OutputPath)*.config"/>
-	  <ZipFiles Include="$(OutputPath)*.xml"/>
+      <ZipFiles Include="$(OutputPath)*.dll" />
+      <ZipFiles Include="$(OutputPath)*.pdb" />
+      <ZipFiles Include="$(OutputPath)*.config" />
+      <ZipFiles Include="$(OutputPath)*.xml" />
     </ItemGroup>
     <Zip OutputFilename="$(OutputPath)$(TargetName)-$(Version).zip" Files="@(ZipFiles)" />
   </Target>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
