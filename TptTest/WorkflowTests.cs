@@ -29,6 +29,7 @@ namespace TptTest
         /// <summary>
         /// Test where project is missing from server.
         /// </summary>
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestMissingProject()
         {
@@ -44,7 +45,7 @@ namespace TptTest
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CheckProjectName(It.IsAny<string>()))
-                .Returns((ProjectDetails)null);
+                .Throws<WorkflowException>();
 
             // execute
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
@@ -54,8 +55,6 @@ namespace TptTest
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
-            mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
 
             mockHost.VerifyNoOtherCalls();
             mockWorkflow.VerifyNoOtherCalls();
@@ -120,7 +119,7 @@ namespace TptTest
         /// <summary>
         /// Test error creating preview job on server.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestCreatePreviewJobError()
         {
@@ -129,7 +128,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
 
@@ -201,7 +199,7 @@ namespace TptTest
         /// <summary>
         /// Test I/O error (client/server) finishing preview job on server.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestFinishPreviewJobError1()
         {
@@ -210,7 +208,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -291,7 +288,7 @@ namespace TptTest
         /// <summary>
         /// Test server-side error finishing preview job.
         /// </summary>
-        [ExpectedException(typeof(ApplicationException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestFinishPreviewJobError2()
         {
@@ -300,7 +297,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -394,7 +390,7 @@ namespace TptTest
         /// <summary>
         /// Test error downloading preview file.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestDownloadFileError()
         {
@@ -403,7 +399,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -511,7 +506,6 @@ namespace TptTest
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var mockPreviewForm = new Mock<PreviewForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -585,7 +579,7 @@ namespace TptTest
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
-            mockHost.Verify(hostItem => 
+            mockHost.Verify(hostItem =>
                 hostItem.UserName, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);

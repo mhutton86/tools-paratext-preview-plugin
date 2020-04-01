@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows.Forms;
 using TptMain.Models;
+using TptMain.Util;
 
 namespace TptMain.Form
 {
@@ -23,7 +19,7 @@ namespace TptMain.Form
         /// <summary>
         /// Preview job, created here.
         /// </summary>
-        private PreviewJob _previewJob;
+        private readonly PreviewJob _previewJob;
 
         /// <summary>
         /// Preview job, created here.
@@ -33,7 +29,7 @@ namespace TptMain.Form
         /// <summary>
         /// True if user wants to create preview (clicked "Create"), false otherwise.
         /// </summary>
-        public virtual bool IsCancelled { get; set; }
+        public virtual bool IsCancelled { get; protected set; }
 
         /// <summary>
         /// User setter/getter.
@@ -47,6 +43,26 @@ namespace TptMain.Form
         {
             InitializeComponent();
             _previewJob = new PreviewJob();
+
+            SetupFieldControl(nudFontSize, MainConsts.FontSizeSettings);
+            SetupFieldControl(nudFontLeading, MainConsts.FontLeadingSettings);
+            SetupFieldControl(nudPageHeight, MainConsts.PageHeightSettings);
+            SetupFieldControl(nudPageWidth, MainConsts.PageWidthSettings);
+            SetupFieldControl(nudPageHeader, MainConsts.PageHeaderSettings);
+        }
+
+        /// <summary>
+        /// Sets up a field control with min, max, and default values.
+        /// </summary>
+        /// <param name="fieldControl">Field control (required).</param>
+        /// <param name="fieldSettings">Field settings (required).</param>
+        private void SetupFieldControl(
+            NumericUpDown fieldControl,
+            MainConsts.PreviewSetting fieldSettings)
+        {
+            fieldControl.Minimum = (decimal)fieldSettings.MinValue;
+            fieldControl.Maximum = (decimal)fieldSettings.MaxValue;
+            fieldControl.Value = (decimal)fieldSettings.DefaultValue;
         }
 
         /// <summary>
@@ -54,10 +70,12 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (button).</param>
         /// <param name="e">Event args.</param>
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void BtnCreate_Click(object sender, EventArgs e)
         {
-            PopulatePreviewJob();
-            Close();
+            if (PopulatePreviewJob())
+            {
+                Close();
+            }
         }
 
         /// <summary>
@@ -65,11 +83,9 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (button).</param>
         /// <param name="e">Event args.</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             IsCancelled = true;
-
-            PopulatePreviewJob();
             Close();
         }
 
@@ -78,7 +94,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (radio button).</param>
         /// <param name="e">Event args.</param>
-        private void rdoTextOptionsDefaults_CheckedChanged(object sender, EventArgs e)
+        private void RdoTextOptionsDefaults_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoTextOptionsDefaults.Checked)
             {
@@ -91,7 +107,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (radio button).</param>
         /// <param name="e">Event args.</param>
-        private void rdoTextOptionsCustom_CheckedChanged(object sender, EventArgs e)
+        private void RdoTextOptionsCustom_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoTextOptionsCustom.Checked)
             {
@@ -105,20 +121,52 @@ namespace TptMain.Form
         /// <param name="isEnabled">True to enable text options, false otherwise.</param>
         private void ControlTextOptions(bool isEnabled)
         {
-            lblFontSize.Enabled = isEnabled;
-            nudFontSize.Enabled = isEnabled;
-            lblFontSizeUnits.Enabled = isEnabled;
-
-            lblFontLeading.Enabled = isEnabled;
-            nudFontLeading.Enabled = isEnabled;
-            lblFontLeadingUnits.Enabled = isEnabled;
+            ToggleFieldControl(nudFontSize, lblFontSize, lblFontSizeUnits,
+                MainConsts.FontSizeSettings, isEnabled);
+            ToggleFieldControl(nudFontLeading, lblFontLeading, lblFontLeadingUnits,
+                MainConsts.FontLeadingSettings, isEnabled);
         }
 
         /// <summary>
-        /// Fill out preview job with user settings.
+        /// Check user settings and fill out preview job.
         /// </summary>
-        private void PopulatePreviewJob()
+        private bool PopulatePreviewJob()
         {
+            if (!CheckFieldValue("font size", FontSizeInPts,
+                !nudFontSize.Enabled,
+                MainConsts.FontSizeSettings))
+            {
+                return false;
+            }
+
+            if (!CheckFieldValue("font leading", FontLeadingInPts,
+                !nudFontLeading.Enabled,
+                MainConsts.FontLeadingSettings))
+            {
+                return false;
+            }
+
+            if (!CheckFieldValue("page height", PageHeightInPts,
+                !nudPageHeight.Enabled,
+                MainConsts.PageHeightSettings))
+            {
+                return false;
+            }
+
+            if (!CheckFieldValue("page width", PageWidthInPts,
+                !nudPageWidth.Enabled,
+                MainConsts.PageWidthSettings))
+            {
+                return false;
+            }
+
+            if (!CheckFieldValue("page header", PageHeaderInPts,
+                !nudPageHeader.Enabled,
+                MainConsts.PageHeaderSettings))
+            {
+                return false;
+            }
+
             _previewJob.ProjectName = ProjectName;
             _previewJob.User = User;
             _previewJob.BookFormat = BookFormat;
@@ -127,6 +175,35 @@ namespace TptMain.Form
             _previewJob.PageHeightInPts = PageHeightInPts;
             _previewJob.PageWidthInPts = PageWidthInPts;
             _previewJob.PageHeaderInPts = PageHeaderInPts;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks whether a nullable value is set and between a min and max
+        /// and shows a warning box on failure.
+        /// </summary>
+        /// <param name="fieldName">Field name (required).</param>
+        /// <param name="inputValue">Input value (optional, may be null).</param>
+        /// <param name="isNullOk">True to allow null values, false otherwise.</param>
+        /// <param name="fieldSetting">Field settings (min/max/default; required).</param>
+        /// <returns>True if value is null or between min and max, false otherwise.</returns>
+        private static bool CheckFieldValue(
+            string fieldName,
+            float? inputValue,
+            bool isNullOk,
+            MainConsts.PreviewSetting fieldSetting)
+        {
+            if ((inputValue == null && isNullOk)
+                || (inputValue >= fieldSetting.MinValue && inputValue <= fieldSetting.MaxValue))
+            {
+                return true;
+            }
+
+            MessageBox.Show($"Invalid {fieldName}: {inputValue ?? 0}pt  (minimum: {fieldSetting.MinValue}pt, maximum: {fieldSetting.MaxValue}pt, default: {fieldSetting.DefaultValue}pt).",
+                "Notice...",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
 
         /// <summary>
@@ -134,7 +211,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (radio button).</param>
         /// <param name="e">Event args.</param>
-        private void rdoPageOptionsDefaults_CheckedChanged(object sender, EventArgs e)
+        private void RdoPageOptionsDefaults_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoPageOptionsDefaults.Checked)
             {
@@ -147,7 +224,7 @@ namespace TptMain.Form
         /// </summary>
         /// <param name="sender">Event source (radio button).</param>
         /// <param name="e">Event args.</param>
-        private void rdoPageOptionsCustom_CheckedChanged(object sender, EventArgs e)
+        private void RdoPageOptionsCustom_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoPageOptionsCustom.Checked)
             {
@@ -161,43 +238,89 @@ namespace TptMain.Form
         /// <param name="isEnabled">True to enable page options, false otherwise.</param>
         private void ControlPageOptions(bool isEnabled)
         {
-            lblPageHeight.Enabled = isEnabled;
-            nudPageHeight.Enabled = isEnabled;
-            lblPageHeightUnits.Enabled = isEnabled;
+            ToggleFieldControl(nudPageHeight, lblPageHeight, lblPageHeightUnits,
+                MainConsts.PageHeightSettings, isEnabled);
+            ToggleFieldControl(nudPageWidth, lblPageWidth, lblPageWidthUnits,
+                MainConsts.PageWidthSettings, isEnabled);
+            ToggleFieldControl(nudPageHeader, lblPageHeader, lblPageHeaderUnits,
+                MainConsts.PageHeaderSettings, isEnabled);
+        }
 
-            lblPageWidth.Enabled = isEnabled;
-            nudPageWidth.Enabled = isEnabled;
-            lblPageWidthUnits.Enabled = isEnabled;
+        /// <summary>
+        /// Enable or disable a numeric up/down control and a pair of labels,
+        /// resetting default values as needed.
+        /// </summary>
+        /// <param name="fieldControl">Field control (required).</param>
+        /// <param name="fieldLabel">Field control primary label (required).</param>
+        /// <param name="unitsLabel">Field control units label (required).</param>
+        /// <param name="fieldSettings">Field settings (required).</param>
+        /// <param name="isEnabled">True to enable, false to disable.</param>
+        private void ToggleFieldControl(
+            NumericUpDown fieldControl,
+            Control fieldLabel,
+            Control unitsLabel,
+            MainConsts.PreviewSetting fieldSettings,
+            bool isEnabled)
+        {
+            // set control enabled
+            fieldControl.Enabled = isEnabled;
+            fieldLabel.Enabled = isEnabled;
+            unitsLabel.Enabled = isEnabled;
 
-            lblPageHeader.Enabled = isEnabled;
-            nudPageHeader.Enabled = isEnabled;
-            lblPageHeaderUnits.Enabled = isEnabled;
+            // reset value
+            fieldControl.Value = isEnabled
+                                 && !string.IsNullOrWhiteSpace(fieldControl.Text)
+                ? fieldControl.Value
+                : (decimal)fieldSettings.DefaultValue;
+
+            // copy value to text (not always aligned)
+            fieldControl.Text = fieldControl.Value.ToString(CultureInfo.CurrentCulture);
         }
 
         /// <summary>
         /// Font size in points if custom text options enabled, null otherwise.
         /// </summary>
-        public float? FontSizeInPts => rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontSize.Value);
+        public float? FontSizeInPts => rdoTextOptionsDefaults.Checked
+            ? (float?)null
+            : string.IsNullOrWhiteSpace(nudFontSize.Text)
+                ? (float?)null
+                : Convert.ToSingle(nudFontSize.Value);
 
         /// <summary>
         /// Font leading in points if custom text options enabled, null otherwise.
         /// </summary>
-        public float? FontLeadingInPts => rdoTextOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudFontLeading.Value);
+        public float? FontLeadingInPts => rdoTextOptionsDefaults.Checked
+            ? (float?)null
+            : string.IsNullOrWhiteSpace(nudFontLeading.Text)
+                ? (float?)null
+                : Convert.ToSingle(nudFontLeading.Value);
 
         /// <summary>
         /// Page height in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageHeightInPts => rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeight.Value);
+        public float? PageHeightInPts => rdoPageOptionsDefaults.Checked
+            ? (float?)null
+            : string.IsNullOrWhiteSpace(nudPageHeight.Text)
+                ? (float?)null
+                : Convert.ToSingle(nudPageHeight.Value);
 
         /// <summary>
         /// Page width in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageWidthInPts => rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageWidth.Value);
+        public float? PageWidthInPts => rdoPageOptionsDefaults.Checked
+            ? (float?)null
+            : string.IsNullOrWhiteSpace(nudPageWidth.Text)
+                ? (float?)null
+                : Convert.ToSingle(nudPageWidth.Value);
 
         /// <summary>
         /// Page header in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageHeaderInPts => rdoPageOptionsDefaults.Checked ? (float?)null : Convert.ToSingle(nudPageHeader.Value);
+        public float? PageHeaderInPts => rdoPageOptionsDefaults.Checked
+            ? (float?)null
+            : string.IsNullOrWhiteSpace(nudPageHeader.Text)
+                ? (float?)null
+                : Convert.ToSingle(nudPageHeader.Value);
 
         /// <summary>
         /// Book format accessor.
@@ -218,7 +341,8 @@ namespace TptMain.Form
             _projectDetails = projectDetails;
 
             lblProjectNameText.Text = _projectDetails.ProjectName;
-            lblProjectUpdatedText.Text = _projectDetails.ProjectUpdated.ToString("u");
+            lblProjectUpdatedText.Text = _projectDetails.ProjectUpdated.ToShortDateString()
+                                         + " " + _projectDetails.ProjectUpdated.ToShortTimeString();
         }
     }
 }
