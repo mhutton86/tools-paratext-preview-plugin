@@ -22,8 +22,14 @@ namespace TptTest
         private const string TestProjectName = "testProjectName";
 
         /// <summary>
+        /// Test user.
+        /// </summary>
+        private const string TestUser = "testUser";
+
+        /// <summary>
         /// Test where project is missing from server.
         /// </summary>
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestMissingProject()
         {
@@ -39,7 +45,7 @@ namespace TptTest
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CheckProjectName(It.IsAny<string>()))
-                .Returns((ProjectDetails)null);
+                .Throws<WorkflowException>();
 
             // execute
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
@@ -49,8 +55,6 @@ namespace TptTest
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
-            mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
 
             mockHost.VerifyNoOtherCalls();
             mockWorkflow.VerifyNoOtherCalls();
@@ -68,6 +72,8 @@ namespace TptTest
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -92,6 +98,8 @@ namespace TptTest
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert
+            mockHost.Verify(hostItem =>
+                hostItem.UserName, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -111,7 +119,7 @@ namespace TptTest
         /// <summary>
         /// Test error creating preview job on server.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestCreatePreviewJobError()
         {
@@ -120,10 +128,11 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+               .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -190,7 +199,7 @@ namespace TptTest
         /// <summary>
         /// Test I/O error (client/server) finishing preview job on server.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestFinishPreviewJobError1()
         {
@@ -199,12 +208,13 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+               .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -278,7 +288,7 @@ namespace TptTest
         /// <summary>
         /// Test server-side error finishing preview job.
         /// </summary>
-        [ExpectedException(typeof(ApplicationException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestFinishPreviewJobError2()
         {
@@ -287,12 +297,13 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -379,7 +390,7 @@ namespace TptTest
         /// <summary>
         /// Test error downloading preview file.
         /// </summary>
-        [ExpectedException(typeof(IOException))]
+        [ExpectedException(typeof(WorkflowException))]
         [TestMethod]
         public void TestDownloadFileError()
         {
@@ -388,12 +399,13 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -494,7 +506,6 @@ namespace TptTest
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var mockPreviewForm = new Mock<PreviewForm>() { CallBase = true };
-            var testJobId = Guid.NewGuid().ToString();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -505,6 +516,8 @@ namespace TptTest
             testPreviewFile.Refresh();
             Assert.IsTrue(testPreviewFile.Exists);
 
+            mockHost.Setup(hostItem => hostItem.UserName)
+                .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -566,6 +579,8 @@ namespace TptTest
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
 
             // assert, in workflow execution order
+            mockHost.Verify(hostItem =>
+                hostItem.UserName, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.Run(mockHost.Object, TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -630,6 +645,7 @@ namespace TptTest
             return new PreviewJob
             {
                 ProjectName = TestProjectName,
+                User = TestUser,
                 BookFormat = BookFormat.cav,
                 FontSizeInPts = 123.4f,
                 FontLeadingInPts = 234.5f,
