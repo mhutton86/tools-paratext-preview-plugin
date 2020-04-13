@@ -505,7 +505,6 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
-            var mockPreviewForm = new Mock<PreviewForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -569,11 +568,6 @@ namespace TptTest
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.DownloadPreviewFile(testPreviewJob2))
                 .Returns(testPreviewFile);
-            mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreatePreviewForm())
-                .Returns(mockPreviewForm.Object);
-            mockPreviewForm.Setup(formItem =>
-                formItem.SetPreviewFile(testPreviewJob2, testPreviewFile));
 
             // execute
             mockWorkflow.Object.Run(mockHost.Object, TestProjectName);
@@ -609,17 +603,11 @@ namespace TptTest
                 formItem.SetStatus(testPreviewJob2), Times.Exactly(2));
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.DownloadPreviewFile(testPreviewJob2), Times.Once);
-            mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreatePreviewForm(), Times.Once);
-            mockPreviewForm.Verify(formItem =>
-                formItem.SetPreviewFile(testPreviewJob2, testPreviewFile), Times.Once);
-            mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowModalForm(mockPreviewForm.Object), Times.Once);
+
 
             // ensure preview file is cleaned up after process complete
             testPreviewFile.Refresh();
-            Assert.IsFalse(testPreviewFile.Exists);
-
+            Assert.IsTrue(testPreviewFile.Exists);
             mockHost.VerifyNoOtherCalls();
         }
 

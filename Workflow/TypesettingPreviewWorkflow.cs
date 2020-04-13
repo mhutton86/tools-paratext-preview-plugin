@@ -177,24 +177,7 @@ namespace TptMain.Workflow
                 // (download errors will throw from here).
                 _previewFile = DownloadPreviewFile(_previewJob);
                 FileDownloaded?.Invoke(this, _previewFile);
-
-                try
-                {
-                    // Create, instrument, and show preview form
-                    var previewForm = CreatePreviewForm();
-                    previewForm.FormClosed += OnPreviewFormFormClosed;
-
-                    previewForm.SetPreviewFile(_previewJob, _previewFile);
-                    ShowModalForm(previewForm);
-                }
-                finally
-                {
-                    // Get rid of temp dir preview file, no matter what
-                    if (_previewFile.Exists)
-                    {
-                        _previewFile.Delete();
-                    }
-                }
+                
             }
             catch (WorkflowException)
             {
@@ -211,11 +194,9 @@ namespace TptMain.Workflow
         }
 
         /// <summary>
-        /// Gives user opportunity to save preview file someplace else.
+        /// Kicks off the dialog for the user to save the typesetting preview file.
         /// </summary>
-        /// <param name="sender">Event source (form).</param>
-        /// <param name="e">Form closed details.</param>
-        public virtual void OnPreviewFormFormClosed(object sender, FormClosedEventArgs e)
+        public virtual void StartPreviewSaveDialog()
         {
             if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated:u}?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -443,14 +424,6 @@ namespace TptMain.Workflow
         {
             return new ProgressForm();
         }
-
-        /// <summary>
-        /// Overridable utility method to create preview form.
-        /// </summary>
-        /// <returns>Preview form.</returns>
-        public virtual PreviewForm CreatePreviewForm()
-        {
-            return new PreviewForm();
-        }
+    
     }
 }
