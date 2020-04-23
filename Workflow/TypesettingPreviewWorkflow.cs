@@ -39,6 +39,11 @@ namespace TptMain.Workflow
         private FileInfo _previewFile;
 
         /// <summary>
+        /// Current typesetting files, downloaded from server.
+        /// </summary>
+        private Boolean _isArchive;
+
+        /// <summary>
         /// Details updated event handler.
         /// </summary>
         public EventHandler<ProjectDetails> DetailsUpdated;
@@ -96,12 +101,14 @@ namespace TptMain.Workflow
                 var setupForm = CreateSetupForm();
                 setupForm.SetProjectDetails(_projectDetails);
                 setupForm.User = host.UserName;
-
+                
                 ShowModalForm(setupForm);
                 if (setupForm.IsCancelled)
                 {
                     return;
                 }
+
+                _isArchive = setupForm.IsArchive;
 
                 // Create, instrument, and show progress form.
                 var progressForm = CreateProgressForm();
@@ -174,8 +181,9 @@ namespace TptMain.Workflow
                 }
 
                 // Retrieve file from server, if we've made it this far
+                // _isArchive flag will downloand the file with the typesetting files.
                 // (download errors will throw from here).
-                _previewFile = DownloadPreviewFile(_previewJob);
+                _previewFile = DownloadPreviewFile(_previewJob, _isArchive);
                 FileDownloaded?.Invoke(this, _previewFile);
                 
             }
@@ -204,13 +212,22 @@ namespace TptMain.Workflow
                 using (var saveFile = new SaveFileDialog())
                 {
                     var dateTimeText = _projectDetails.ProjectUpdated.ToString(MainConsts.DEFAULT_OUTPUT_FILE_NAME_FORMAT);
-
-                    saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
                     saveFile.InitialDirectory = Environment.GetFolderPath(SpecialFolder.MyDocuments);
-                    saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
-                    saveFile.DefaultExt = "pdf";
                     saveFile.AddExtension = true;
                     saveFile.OverwritePrompt = true;
+
+                    if (_isArchive)
+                    {
+                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.zip";
+                        saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
+                        saveFile.DefaultExt = "zip";                        
+                    }
+                    else
+                    {
+                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
+                        saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                        saveFile.DefaultExt = "pdf";
+                    }
 
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
@@ -230,11 +247,21 @@ namespace TptMain.Workflow
         /// Downloads preview file from service to temp file.
         /// </summary>
         /// <param name="previewJob">Preview job (required).</param>
+        /// , bool isArchive
         /// <returns>Downloaded temp file.</returns>
-        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob)
+        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob, bool isArchive)
         {
-            var downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
+            FileInfo downloadFile;
+            if (isArchive)
+            {
+              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.zip"));
+            }
+            else
+            {
+                downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+            }
+            
+            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
             webRequest.Method = HttpMethod.Get.Method;
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 

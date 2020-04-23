@@ -32,6 +32,11 @@ namespace TptMain.Form
         public virtual bool IsCancelled { get; protected set; }
 
         /// <summary>
+        /// True if user wants to get an archive with the preview (clicked "Create"), false otherwise.
+        /// </summary>
+        public virtual bool IsArchive { get; protected set; }
+   
+        /// <summary>
         /// User setter/getter.
         /// </summary>
         public string User { get; set; }
@@ -74,6 +79,7 @@ namespace TptMain.Form
         {
             if (PopulatePreviewJob())
             {
+                IsArchive = typesettingMenuItem.Checked;
                 Close();
             }
         }
@@ -343,6 +349,18 @@ namespace TptMain.Form
             lblProjectNameText.Text = _projectDetails.ProjectName;
             lblProjectUpdatedText.Text = _projectDetails.ProjectUpdated.ToShortDateString()
                                          + " " + _projectDetails.ProjectUpdated.ToShortTimeString();
+        }
+
+        /// <summary>
+        /// Typesetting file menu item handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnTypesettingFileMenuClick(object sender, EventArgs e)
+        {
+            typesettingMenuItem.Checked = !typesettingMenuItem.Checked;
+            typesettingMenuItem.CheckState = typesettingMenuItem.Checked
+                ? CheckState.Checked : CheckState.Unchecked;            
         }
     }
 }
