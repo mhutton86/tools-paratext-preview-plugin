@@ -105,7 +105,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateSetupForm(), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -175,7 +175,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateSetupForm(), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -594,7 +594,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateSetupForm(), Times.Once);
             mockWorkflow.Verify(workflowItem =>
