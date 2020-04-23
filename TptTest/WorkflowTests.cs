@@ -580,7 +580,7 @@ namespace TptTest
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2, It.IsAny<bool>()))
+                workflowItem.DownloadPreviewFile(testPreviewJob2, isArchive))
                 .Returns(testPreviewFile);
 
             // execute
