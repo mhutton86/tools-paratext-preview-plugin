@@ -39,6 +39,11 @@ namespace TptMain.Workflow
         private FileInfo _previewFile;
 
         /// <summary>
+        /// A flag to determine if an archive will be downloaded with a preview.
+        /// </summary>
+        private Boolean _isArchive;
+
+        /// <summary>
         /// Details updated event handler.
         /// </summary>
         public EventHandler<ProjectDetails> DetailsUpdated;
@@ -96,12 +101,14 @@ namespace TptMain.Workflow
                 var setupForm = CreateSetupForm();
                 setupForm.SetProjectDetails(_projectDetails);
                 setupForm.User = host.UserName;
-
+                
                 ShowModalForm(setupForm);
                 if (setupForm.IsCancelled)
                 {
                     return;
                 }
+
+                _isArchive = setupForm.IsArchive;
 
                 // Create, instrument, and show progress form.
                 var progressForm = CreateProgressForm();
@@ -174,27 +181,12 @@ namespace TptMain.Workflow
                 }
 
                 // Retrieve file from server, if we've made it this far
+                // _isArchive if flag is true preview job will download with the typesetting files;
+                // else just the PDF will download.
                 // (download errors will throw from here).
-                _previewFile = DownloadPreviewFile(_previewJob);
+                _previewFile = DownloadPreviewFile(_previewJob, _isArchive);
                 FileDownloaded?.Invoke(this, _previewFile);
-
-                try
-                {
-                    // Create, instrument, and show preview form
-                    var previewForm = CreatePreviewForm();
-                    previewForm.FormClosed += OnPreviewFormFormClosed;
-
-                    previewForm.SetPreviewFile(_previewJob, _previewFile);
-                    ShowModalForm(previewForm);
-                }
-                finally
-                {
-                    // Get rid of temp dir preview file, no matter what
-                    if (_previewFile.Exists)
-                    {
-                        _previewFile.Delete();
-                    }
-                }
+                
             }
             catch (WorkflowException)
             {
@@ -211,11 +203,9 @@ namespace TptMain.Workflow
         }
 
         /// <summary>
-        /// Gives user opportunity to save preview file someplace else.
+        /// Kicks off the dialog for the user to save the typesetting preview file.
         /// </summary>
-        /// <param name="sender">Event source (form).</param>
-        /// <param name="e">Form closed details.</param>
-        public virtual void OnPreviewFormFormClosed(object sender, FormClosedEventArgs e)
+        public virtual void StartPreviewSaveDialog()
         {
             if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated:u}?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -223,13 +213,22 @@ namespace TptMain.Workflow
                 using (var saveFile = new SaveFileDialog())
                 {
                     var dateTimeText = _projectDetails.ProjectUpdated.ToString(MainConsts.DEFAULT_OUTPUT_FILE_NAME_FORMAT);
-
-                    saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
                     saveFile.InitialDirectory = Environment.GetFolderPath(SpecialFolder.MyDocuments);
-                    saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
-                    saveFile.DefaultExt = "pdf";
                     saveFile.AddExtension = true;
                     saveFile.OverwritePrompt = true;
+
+                    if (_isArchive)
+                    {
+                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.zip";
+                        saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
+                        saveFile.DefaultExt = "zip";                        
+                    }
+                    else
+                    {
+                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
+                        saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                        saveFile.DefaultExt = "pdf";
+                    }
 
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
@@ -247,13 +246,23 @@ namespace TptMain.Workflow
 
         /// <summary>
         /// Downloads preview file from service to temp file.
+        /// The temp file can either be a .zip if isArchive is true or a PDF if false.
         /// </summary>
         /// <param name="previewJob">Preview job (required).</param>
         /// <returns>Downloaded temp file.</returns>
-        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob)
+        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob, bool isArchive)
         {
-            var downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
+            FileInfo downloadFile;
+            if (isArchive)
+            {
+              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.zip"));
+            }
+            else
+            {
+              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+            }
+            
+            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
             webRequest.Method = HttpMethod.Get.Method;
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
@@ -443,14 +452,6 @@ namespace TptMain.Workflow
         {
             return new ProgressForm();
         }
-
-        /// <summary>
-        /// Overridable utility method to create preview form.
-        /// </summary>
-        /// <returns>Preview form.</returns>
-        public virtual PreviewForm CreatePreviewForm()
-        {
-            return new PreviewForm();
-        }
+    
     }
 }

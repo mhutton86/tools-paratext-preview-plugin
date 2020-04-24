@@ -10,6 +10,7 @@ using TptMain.Models;
 using TptMain.Util;
 using TptMain.Workflow;
 
+
 namespace TptMain
 {
     /// <summary>
@@ -97,6 +98,7 @@ namespace TptMain
                                 previewWorkflow.FileDownloaded += (currWorkflow, previewFile) =>
                                 {
                                     _previewFile = previewFile;
+                                    previewWorkflow.StartPreviewSaveDialog();
                                 };
 
                                 // Execute workflow. Will not return until complete.
