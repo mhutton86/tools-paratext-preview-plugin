@@ -105,7 +105,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateSetupForm(), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -175,7 +175,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateSetupForm(), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -455,7 +455,7 @@ namespace TptTest
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2))
+                workflowItem.DownloadPreviewFile(testPreviewJob2, It.IsAny<bool>()))
                 .Throws(new IOException());
 
             // execute
@@ -489,16 +489,16 @@ namespace TptTest
             mockProgressForm.Verify(formItem =>
                 formItem.SetStatus(testPreviewJob2), Times.Exactly(2));
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2), Times.Once);
+                workflowItem.DownloadPreviewFile(testPreviewJob2, It.IsAny<bool>()), Times.Once);
 
             mockHost.VerifyNoOtherCalls();
         }
 
         /// <summary>
-        /// Test complete, sucessful workflow.
+        /// Test complete, successful workflow.
         /// </summary>
-        [TestMethod]
-        public void TestCompleteWorkflow()
+        /// <param name="isArchive">True: test workflow when a typesetting archive is requested. False: test workflow when PDF is requested.</param>
+        public void TestCompleteWorkflow(bool isArchive)
         {
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
@@ -537,6 +537,20 @@ namespace TptTest
             mockSetupForm.Setup(
                 formItem => formItem.IsCancelled)
                 .Returns(false);
+            // Setup form mock to address when archive is requested or otherwise.
+            if (isArchive)
+            {
+                mockSetupForm.Setup(
+                    formItem => formItem.IsArchive)
+                    .Returns(true);
+            }
+            else
+            {
+                mockSetupForm.Setup(
+                 formItem => formItem.IsArchive)
+                 .Returns(false);
+            }
+            
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
@@ -566,7 +580,7 @@ namespace TptTest
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2))
+                workflowItem.DownloadPreviewFile(testPreviewJob2, isArchive))
                 .Returns(testPreviewFile);
 
             // execute
@@ -580,7 +594,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateSetupForm(), Times.Once);
             mockWorkflow.Verify(workflowItem =>
@@ -602,7 +616,7 @@ namespace TptTest
             mockProgressForm.Verify(formItem =>
                 formItem.SetStatus(testPreviewJob2), Times.Exactly(2));
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2), Times.Once);
+                workflowItem.DownloadPreviewFile(testPreviewJob2, isArchive), Times.Once);
 
 
             // ensure preview file is cleaned up after process complete
@@ -641,6 +655,24 @@ namespace TptTest
                 PageWidthInPts = 456.7f,
                 PageHeaderInPts = 567.8f
             };
+        }
+
+        /// <summary>
+        /// Unit test for creating a preview with a typesetting archive download requested.
+        /// </summary>
+        [TestMethod]
+        public void TestPreviewJobWhenIsArchiveEqualsTrue()
+        {
+            TestCompleteWorkflow(true);
+        }
+
+        /// <summary>
+        /// Unit test for creating a preview when PDF download is requested.
+        /// </summary>
+        [TestMethod]
+        public void TestPreviewJobWhenIsArchiveEqualsFalse()
+        {
+            TestCompleteWorkflow(false);
         }
     }
 }
