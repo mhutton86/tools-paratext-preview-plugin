@@ -53,7 +53,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <LangVersion>8.0</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -91,12 +91,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form\PreviewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form\PreviewForm.Designer.cs">
-      <DependentUpon>PreviewForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form\ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,9 +118,6 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form\PreviewForm.resx">
-      <DependentUpon>PreviewForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form\ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </EmbeddedResource>

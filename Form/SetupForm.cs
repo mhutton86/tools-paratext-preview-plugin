@@ -32,6 +32,12 @@ namespace TptMain.Form
         public virtual bool IsCancelled { get; protected set; }
 
         /// <summary>
+        /// True if a user wants typesetting files downloaded with a preview, 
+        /// false if just a PDF is wanted.
+        /// </summary>
+        public virtual bool IsArchive { get; protected set; }
+   
+        /// <summary>
         /// User setter/getter.
         /// </summary>
         public string User { get; set; }
@@ -74,6 +80,7 @@ namespace TptMain.Form
         {
             if (PopulatePreviewJob())
             {
+                IsArchive = typesettingMenuItem.Checked;
                 Close();
             }
         }
@@ -343,6 +350,18 @@ namespace TptMain.Form
             lblProjectNameText.Text = _projectDetails.ProjectName;
             lblProjectUpdatedText.Text = _projectDetails.ProjectUpdated.ToShortDateString()
                                          + " " + _projectDetails.ProjectUpdated.ToShortTimeString();
+        }
+
+        /// <summary>
+        /// Typesetting file menu item to determine if typesetting files download with a preview job.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnDownloadTypesettingFileMenuClick(object sender, EventArgs e)
+        {
+            typesettingMenuItem.Checked = !typesettingMenuItem.Checked;
+            typesettingMenuItem.CheckState = typesettingMenuItem.Checked
+                ? CheckState.Checked : CheckState.Unchecked;            
         }
     }
 }

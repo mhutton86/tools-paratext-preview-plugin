@@ -43,7 +43,7 @@ namespace TptMain.Util
         /// This is used to animate preview progress bar, as there's no server-side incremental progress at this time
         /// (generally accurate, as enqueued but not executing jobs are distinguishable and indicated differently).
         /// </summary>
-        public const int TARGET_PREVIEW_JOB_TIME_IN_SEC = (60 * 10);
+        public const int TARGET_PREVIEW_JOB_TIME_IN_SEC = (60 * 60);
 
         /// <summary>
         /// Default preview book format.
