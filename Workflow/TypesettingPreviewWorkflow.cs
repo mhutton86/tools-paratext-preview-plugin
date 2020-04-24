@@ -39,7 +39,7 @@ namespace TptMain.Workflow
         private FileInfo _previewFile;
 
         /// <summary>
-        /// Current typesetting files, downloaded from server.
+        /// A flag to determine if an archive will be downloaded with a preview.
         /// </summary>
         private Boolean _isArchive;
 
@@ -181,7 +181,8 @@ namespace TptMain.Workflow
                 }
 
                 // Retrieve file from server, if we've made it this far
-                // _isArchive flag will downloand the file with the typesetting files.
+                // _isArchive if flag is true preview job will download with the typesetting files;
+                // else just the PDF will download.
                 // (download errors will throw from here).
                 _previewFile = DownloadPreviewFile(_previewJob, _isArchive);
                 FileDownloaded?.Invoke(this, _previewFile);
@@ -245,9 +246,9 @@ namespace TptMain.Workflow
 
         /// <summary>
         /// Downloads preview file from service to temp file.
+        /// The temp file can either be a .zip if isArchive is true or a PDF if false.
         /// </summary>
         /// <param name="previewJob">Preview job (required).</param>
-        /// , bool isArchive
         /// <returns>Downloaded temp file.</returns>
         public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob, bool isArchive)
         {
@@ -258,7 +259,7 @@ namespace TptMain.Workflow
             }
             else
             {
-                downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
             }
             
             var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");

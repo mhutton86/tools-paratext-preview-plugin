@@ -497,7 +497,7 @@ namespace TptTest
         /// <summary>
         /// Test complete, successful workflow.
         /// </summary>
-        /// <param name="isArchive">True: test workflow when archive is requested. False: test workflow when PDF is requested.</param>
+        /// <param name="isArchive">True: test workflow when a typesetting archive is requested. False: test workflow when PDF is requested.</param>
         public void TestCompleteWorkflow(bool isArchive)
         {
             // setup
@@ -616,7 +616,7 @@ namespace TptTest
             mockProgressForm.Verify(formItem =>
                 formItem.SetStatus(testPreviewJob2), Times.Exactly(2));
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2, It.IsAny<bool>()), Times.Once);
+                workflowItem.DownloadPreviewFile(testPreviewJob2, isArchive), Times.Once);
 
 
             // ensure preview file is cleaned up after process complete
@@ -658,7 +658,7 @@ namespace TptTest
         }
 
         /// <summary>
-        /// Unit test for creating a preview with an archive download requested.
+        /// Unit test for creating a preview with a typesetting archive download requested.
         /// </summary>
         [TestMethod]
         public void TestPreviewJobWhenIsArchiveEqualsTrue()

@@ -539,12 +539,10 @@
             // 
             // typesettingMenuItem
             // 
-            this.typesettingMenuItem.Checked = true;
-            this.typesettingMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.typesettingMenuItem.Name = "typesettingMenuItem";
             this.typesettingMenuItem.Size = new System.Drawing.Size(217, 22);
             this.typesettingMenuItem.Text = "Download Typesetting Files";
-            this.typesettingMenuItem.Click += new System.EventHandler(this.OnTypesettingFileMenuClick);
+            this.typesettingMenuItem.Click += new System.EventHandler(this.OnDownloadTypesettingFileMenuClick);
             // 
             // SetupForm
             // 

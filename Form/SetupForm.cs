@@ -32,7 +32,8 @@ namespace TptMain.Form
         public virtual bool IsCancelled { get; protected set; }
 
         /// <summary>
-        /// True if user wants to get an archive with the preview (clicked "Create"), false otherwise.
+        /// True if a user wants typesetting files downloaded with a preview, 
+        /// false if just a PDF is wanted.
         /// </summary>
         public virtual bool IsArchive { get; protected set; }
    
@@ -352,11 +353,11 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Typesetting file menu item handler.
+        /// Typesetting file menu item to determine if typesetting files download with a preview job.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnTypesettingFileMenuClick(object sender, EventArgs e)
+        private void OnDownloadTypesettingFileMenuClick(object sender, EventArgs e)
         {
             typesettingMenuItem.Checked = !typesettingMenuItem.Checked;
             typesettingMenuItem.CheckState = typesettingMenuItem.Checked
