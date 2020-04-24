@@ -60,6 +60,9 @@
             this.lblProjectName = new System.Windows.Forms.Label();
             this.grpProject = new System.Windows.Forms.GroupBox();
             this.lblProjectNameText = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.typesettingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -69,13 +72,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).BeginInit();
             this.grpProject.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpLayout
             // 
             this.grpLayout.Controls.Add(this.rdoLayoutTbotb);
             this.grpLayout.Controls.Add(this.rdoLayoutCav);
-            this.grpLayout.Location = new System.Drawing.Point(12, 105);
+            this.grpLayout.Location = new System.Drawing.Point(12, 113);
             this.grpLayout.Name = "grpLayout";
             this.grpLayout.Size = new System.Drawing.Size(348, 84);
             this.grpLayout.TabIndex = 11;
@@ -138,7 +142,7 @@
             this.grpTextOptions.Controls.Add(this.lblFontSize);
             this.grpTextOptions.Controls.Add(this.rdoTextOptionsCustom);
             this.grpTextOptions.Controls.Add(this.rdoTextOptionsDefaults);
-            this.grpTextOptions.Location = new System.Drawing.Point(12, 195);
+            this.grpTextOptions.Location = new System.Drawing.Point(12, 207);
             this.grpTextOptions.Name = "grpTextOptions";
             this.grpTextOptions.Size = new System.Drawing.Size(348, 124);
             this.grpTextOptions.TabIndex = 12;
@@ -246,7 +250,7 @@
             this.grpPageOptions.Controls.Add(this.lblPageWidth);
             this.grpPageOptions.Controls.Add(this.rdoPageOptionsCustom);
             this.grpPageOptions.Controls.Add(this.rdoPageOptionsDefaults);
-            this.grpPageOptions.Location = new System.Drawing.Point(12, 325);
+            this.grpPageOptions.Location = new System.Drawing.Point(12, 338);
             this.grpPageOptions.Name = "grpPageOptions";
             this.grpPageOptions.Size = new System.Drawing.Size(348, 158);
             this.grpPageOptions.TabIndex = 16;
@@ -441,7 +445,7 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(204, 489);
+            this.btnCreate.Location = new System.Drawing.Point(204, 506);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 17;
@@ -452,7 +456,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(285, 489);
+            this.btnCancel.Location = new System.Drawing.Point(286, 505);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 18;
@@ -495,7 +499,7 @@
             this.grpProject.Controls.Add(this.lblProjectUpdatedText);
             this.grpProject.Controls.Add(this.lblProjectUpdated);
             this.grpProject.Controls.Add(this.lblProjectName);
-            this.grpProject.Location = new System.Drawing.Point(12, 12);
+            this.grpProject.Location = new System.Drawing.Point(12, 22);
             this.grpProject.Name = "grpProject";
             this.grpProject.Size = new System.Drawing.Size(348, 87);
             this.grpProject.TabIndex = 10;
@@ -513,13 +517,40 @@
             this.lblProjectNameText.Text = "None";
             this.lblProjectNameText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.advancedToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(372, 24);
+            this.menuStrip1.TabIndex = 19;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // advancedToolStripMenuItem
+            // 
+            this.advancedToolStripMenuItem.Checked = true;
+            this.advancedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.typesettingMenuItem});
+            this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
+            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.advancedToolStripMenuItem.Text = "Advanced";
+            // 
+            // typesettingMenuItem
+            // 
+            this.typesettingMenuItem.Name = "typesettingMenuItem";
+            this.typesettingMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.typesettingMenuItem.Text = "Download Typesetting Files";
+            this.typesettingMenuItem.Click += new System.EventHandler(this.OnDownloadTypesettingFileMenuClick);
+            // 
             // SetupForm
             // 
             this.AcceptButton = this.btnCreate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(372, 524);
+            this.ClientSize = new System.Drawing.Size(372, 550);
             this.ControlBox = false;
             this.Controls.Add(this.grpProject);
             this.Controls.Add(this.btnCancel);
@@ -527,8 +558,10 @@
             this.Controls.Add(this.grpPageOptions);
             this.Controls.Add(this.grpTextOptions);
             this.Controls.Add(this.grpLayout);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "SetupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create Print Preview...";
@@ -545,7 +578,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).EndInit();
             this.grpProject.ResumeLayout(false);
             this.grpProject.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -581,5 +617,8 @@
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.GroupBox grpProject;
         private System.Windows.Forms.Label lblProjectNameText;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem typesettingMenuItem;
     }
 }
