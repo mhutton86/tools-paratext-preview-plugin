@@ -10,14 +10,16 @@ using TptMain.Models;
 using TptMain.Util;
 using TptMain.Workflow;
 
+
 namespace TptMain
 {
     /// <summary>
     /// Typesetting preview plugin root class.
     /// </summary>
     [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = "1.0", Publisher = "Biblica")]
-    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting Preview")]
+    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting-Preview")]
     [QualificationData(PluginMetaDataKeys.insertAfterMenuName, "Tools|")]
+    [QualificationData(PluginMetaDataKeys.enableWhen, WhenToEnable.anyProjectActive)]
     [QualificationData(PluginMetaDataKeys.multipleInstances, CreateInstanceRule.always)]
     public class TypesettingPreviewPlugin : IParatextAddIn2
     {
@@ -79,70 +81,79 @@ namespace TptMain
                     // Create main thread & delegate
                     Application.EnableVisualStyles();
                     var uiThread = new Thread(() =>
-                    {
-                        try
                         {
-                            // Create and instrument workflow
-                            var previewWorkflow = new TypesettingPreviewWorkflow();
+                            try
+                            {
+                                // Create and instrument workflow
+                                var previewWorkflow = new TypesettingPreviewWorkflow();
 
-                            previewWorkflow.DetailsUpdated += (currWorkflow, projectDetails) =>
-                            {
-                                _projectDetails = projectDetails;
-                            };
-                            previewWorkflow.JobUpdated += (currWorkflow, previewJob) => { _previewJob = previewJob; };
-                            previewWorkflow.FileDownloaded += (currWorkflow, previewFile) =>
-                            {
-                                _previewFile = previewFile;
-                            };
+                                previewWorkflow.DetailsUpdated += (currWorkflow, projectDetails) =>
+                                {
+                                    _projectDetails = projectDetails;
+                                };
+                                previewWorkflow.JobUpdated += (currWorkflow, previewJob) =>
+                                {
+                                    _previewJob = previewJob;
+                                };
+                                previewWorkflow.FileDownloaded += (currWorkflow, previewFile) =>
+                                {
+                                    _previewFile = previewFile;
+                                    previewWorkflow.StartPreviewSaveDialog();
+                                };
 
-                            // Execute workflow. Will not return until complete.
-                            previewWorkflow.Run(host, activeProjectName);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Log with different information, depending on what's been observed.
-                            if (_previewFile != null
-                                && _previewJob != null
-                                && _projectDetails != null)
-                            {
-                                HostUtil.Instance.ReportError(
-                                    $"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
-                                    ex);
+                                // Execute workflow. Will not return until complete.
+                                previewWorkflow.Run(host, activeProjectName);
                             }
-                            else if (_previewJob != null
-                                     && _projectDetails != null)
+                            catch (Exception ex)
                             {
-                                HostUtil.Instance.ReportError(
-                                    $"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
-                                    ex);
+                                // Log with different information, depending on what's been observed.
+                                if (_previewFile != null
+                                    && _previewJob != null
+                                    && _projectDetails != null)
+                                {
+                                    HostUtil.Instance.ReportError(
+                                        $"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                        ex);
+                                }
+                                else if (_previewJob != null
+                                         && _projectDetails != null)
+                                {
+                                    HostUtil.Instance.ReportError(
+                                        $"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                        ex);
+                                }
+                                else if (_projectDetails != null)
+                                {
+                                    HostUtil.Instance.ReportError(
+                                        $"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
+                                        ex);
+                                }
+                                else
+                                {
+                                    HostUtil.Instance.ReportError($"Can't execute workflow.", ex);
+                                }
                             }
-                            else if (_projectDetails != null)
+                            finally
                             {
-                                HostUtil.Instance.ReportError(
-                                    $"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
-                                    ex);
+                                // Exit process (terminate plugin) once complete, no matter what.
+                                Environment.Exit(0);
                             }
-                            else
-                            {
-                                HostUtil.Instance.ReportError($"Can't execute workflow.", ex);
-                            }
-                        }
-                        finally
-                        {
-                            // Exit process (terminate plugin) once complete, no matter what.
-                            Environment.Exit(0);
-                        }
-                    })
+                        })
                     { IsBackground = false };
 
                     // Execute main thread.
                     uiThread.SetApartmentState(ApartmentState.STA);
                     uiThread.Start();
                 }
+                catch (WorkflowException ex)
+                {
+                    // Application exceptions = routine usage problems.
+                    HostUtil.Instance.ReportError(ex.Message, ex.InnerException);
+                }
                 catch (Exception ex)
                 {
                     // Log any errors that make it this far and re-throw to give Paratext a heads-up.
-                    HostUtil.Instance.ReportError(ex);
+                    HostUtil.Instance.ReportError(null, ex);
                     throw;
                 }
             }

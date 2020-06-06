@@ -60,6 +60,9 @@
             this.lblProjectName = new System.Windows.Forms.Label();
             this.grpProject = new System.Windows.Forms.GroupBox();
             this.lblProjectNameText = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.typesettingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -69,13 +72,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).BeginInit();
             this.grpProject.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpLayout
             // 
             this.grpLayout.Controls.Add(this.rdoLayoutTbotb);
             this.grpLayout.Controls.Add(this.rdoLayoutCav);
-            this.grpLayout.Location = new System.Drawing.Point(12, 105);
+            this.grpLayout.Location = new System.Drawing.Point(12, 113);
             this.grpLayout.Name = "grpLayout";
             this.grpLayout.Size = new System.Drawing.Size(348, 84);
             this.grpLayout.TabIndex = 11;
@@ -110,12 +114,12 @@
             this.rdoTextOptionsDefaults.Checked = true;
             this.rdoTextOptionsDefaults.Location = new System.Drawing.Point(19, 28);
             this.rdoTextOptionsDefaults.Name = "rdoTextOptionsDefaults";
-            this.rdoTextOptionsDefaults.Size = new System.Drawing.Size(64, 17);
+            this.rdoTextOptionsDefaults.Size = new System.Drawing.Size(59, 17);
             this.rdoTextOptionsDefaults.TabIndex = 10;
             this.rdoTextOptionsDefaults.TabStop = true;
-            this.rdoTextOptionsDefaults.Text = "Defaults";
+            this.rdoTextOptionsDefaults.Text = "Default";
             this.rdoTextOptionsDefaults.UseVisualStyleBackColor = true;
-            this.rdoTextOptionsDefaults.CheckedChanged += new System.EventHandler(this.rdoTextOptionsDefaults_CheckedChanged);
+            this.rdoTextOptionsDefaults.CheckedChanged += new System.EventHandler(this.RdoTextOptionsDefaults_CheckedChanged);
             // 
             // rdoTextOptionsCustom
             // 
@@ -126,7 +130,7 @@
             this.rdoTextOptionsCustom.TabIndex = 11;
             this.rdoTextOptionsCustom.Text = "Custom";
             this.rdoTextOptionsCustom.UseVisualStyleBackColor = true;
-            this.rdoTextOptionsCustom.CheckedChanged += new System.EventHandler(this.rdoTextOptionsCustom_CheckedChanged);
+            this.rdoTextOptionsCustom.CheckedChanged += new System.EventHandler(this.RdoTextOptionsCustom_CheckedChanged);
             // 
             // grpTextOptions
             // 
@@ -138,7 +142,7 @@
             this.grpTextOptions.Controls.Add(this.lblFontSize);
             this.grpTextOptions.Controls.Add(this.rdoTextOptionsCustom);
             this.grpTextOptions.Controls.Add(this.rdoTextOptionsDefaults);
-            this.grpTextOptions.Location = new System.Drawing.Point(12, 195);
+            this.grpTextOptions.Location = new System.Drawing.Point(12, 207);
             this.grpTextOptions.Name = "grpTextOptions";
             this.grpTextOptions.Size = new System.Drawing.Size(348, 124);
             this.grpTextOptions.TabIndex = 12;
@@ -158,6 +162,7 @@
             this.nudFontLeading.Name = "nudFontLeading";
             this.nudFontLeading.Size = new System.Drawing.Size(102, 20);
             this.nudFontLeading.TabIndex = 25;
+            this.nudFontLeading.ThousandsSeparator = true;
             this.nudFontLeading.Value = new decimal(new int[] {
             9,
             0,
@@ -177,6 +182,7 @@
             this.nudFontSize.Name = "nudFontSize";
             this.nudFontSize.Size = new System.Drawing.Size(102, 20);
             this.nudFontSize.TabIndex = 24;
+            this.nudFontSize.ThousandsSeparator = true;
             this.nudFontSize.Value = new decimal(new int[] {
             8,
             0,
@@ -190,9 +196,9 @@
             this.lblFontLeadingUnits.Enabled = false;
             this.lblFontLeadingUnits.Location = new System.Drawing.Point(310, 81);
             this.lblFontLeadingUnits.Name = "lblFontLeadingUnits";
-            this.lblFontLeadingUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblFontLeadingUnits.Size = new System.Drawing.Size(16, 13);
             this.lblFontLeadingUnits.TabIndex = 17;
-            this.lblFontLeadingUnits.Text = "pts";
+            this.lblFontLeadingUnits.Text = "pt";
             this.lblFontLeadingUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblFontSizeUnits
@@ -202,9 +208,9 @@
             this.lblFontSizeUnits.Enabled = false;
             this.lblFontSizeUnits.Location = new System.Drawing.Point(310, 53);
             this.lblFontSizeUnits.Name = "lblFontSizeUnits";
-            this.lblFontSizeUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblFontSizeUnits.Size = new System.Drawing.Size(16, 13);
             this.lblFontSizeUnits.TabIndex = 16;
-            this.lblFontSizeUnits.Text = "pts";
+            this.lblFontSizeUnits.Text = "pt";
             this.lblFontSizeUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblFontLeading
@@ -244,7 +250,7 @@
             this.grpPageOptions.Controls.Add(this.lblPageWidth);
             this.grpPageOptions.Controls.Add(this.rdoPageOptionsCustom);
             this.grpPageOptions.Controls.Add(this.rdoPageOptionsDefaults);
-            this.grpPageOptions.Location = new System.Drawing.Point(12, 325);
+            this.grpPageOptions.Location = new System.Drawing.Point(12, 338);
             this.grpPageOptions.Name = "grpPageOptions";
             this.grpPageOptions.Size = new System.Drawing.Size(348, 158);
             this.grpPageOptions.TabIndex = 16;
@@ -274,6 +280,7 @@
             this.nudPageHeader.Name = "nudPageHeader";
             this.nudPageHeader.Size = new System.Drawing.Size(102, 20);
             this.nudPageHeader.TabIndex = 23;
+            this.nudPageHeader.ThousandsSeparator = true;
             this.nudPageHeader.Value = new decimal(new int[] {
             18,
             0,
@@ -303,6 +310,7 @@
             this.nudPageHeight.Name = "nudPageHeight";
             this.nudPageHeight.Size = new System.Drawing.Size(102, 20);
             this.nudPageHeight.TabIndex = 22;
+            this.nudPageHeight.ThousandsSeparator = true;
             this.nudPageHeight.Value = new decimal(new int[] {
             612,
             0,
@@ -332,6 +340,7 @@
             this.nudPageWidth.Name = "nudPageWidth";
             this.nudPageWidth.Size = new System.Drawing.Size(102, 20);
             this.nudPageWidth.TabIndex = 21;
+            this.nudPageWidth.ThousandsSeparator = true;
             this.nudPageWidth.Value = new decimal(new int[] {
             396,
             0,
@@ -345,9 +354,9 @@
             this.lblPageHeaderUnits.Enabled = false;
             this.lblPageHeaderUnits.Location = new System.Drawing.Point(310, 114);
             this.lblPageHeaderUnits.Name = "lblPageHeaderUnits";
-            this.lblPageHeaderUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblPageHeaderUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageHeaderUnits.TabIndex = 20;
-            this.lblPageHeaderUnits.Text = "pts";
+            this.lblPageHeaderUnits.Text = "pt";
             this.lblPageHeaderUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageHeightUnits
@@ -357,9 +366,9 @@
             this.lblPageHeightUnits.Enabled = false;
             this.lblPageHeightUnits.Location = new System.Drawing.Point(310, 83);
             this.lblPageHeightUnits.Name = "lblPageHeightUnits";
-            this.lblPageHeightUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblPageHeightUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageHeightUnits.TabIndex = 19;
-            this.lblPageHeightUnits.Text = "pts";
+            this.lblPageHeightUnits.Text = "pt";
             this.lblPageHeightUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageWidthUnits
@@ -369,9 +378,9 @@
             this.lblPageWidthUnits.Enabled = false;
             this.lblPageWidthUnits.Location = new System.Drawing.Point(310, 53);
             this.lblPageWidthUnits.Name = "lblPageWidthUnits";
-            this.lblPageWidthUnits.Size = new System.Drawing.Size(21, 13);
+            this.lblPageWidthUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageWidthUnits.TabIndex = 18;
-            this.lblPageWidthUnits.Text = "pts";
+            this.lblPageWidthUnits.Text = "pt";
             this.lblPageWidthUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPageHeader
@@ -419,7 +428,7 @@
             this.rdoPageOptionsCustom.TabIndex = 11;
             this.rdoPageOptionsCustom.Text = "Custom";
             this.rdoPageOptionsCustom.UseVisualStyleBackColor = true;
-            this.rdoPageOptionsCustom.CheckedChanged += new System.EventHandler(this.rdoPageOptionsCustom_CheckedChanged);
+            this.rdoPageOptionsCustom.CheckedChanged += new System.EventHandler(this.RdoPageOptionsCustom_CheckedChanged);
             // 
             // rdoPageOptionsDefaults
             // 
@@ -427,33 +436,33 @@
             this.rdoPageOptionsDefaults.Checked = true;
             this.rdoPageOptionsDefaults.Location = new System.Drawing.Point(19, 28);
             this.rdoPageOptionsDefaults.Name = "rdoPageOptionsDefaults";
-            this.rdoPageOptionsDefaults.Size = new System.Drawing.Size(64, 17);
+            this.rdoPageOptionsDefaults.Size = new System.Drawing.Size(59, 17);
             this.rdoPageOptionsDefaults.TabIndex = 10;
             this.rdoPageOptionsDefaults.TabStop = true;
-            this.rdoPageOptionsDefaults.Text = "Defaults";
+            this.rdoPageOptionsDefaults.Text = "Default";
             this.rdoPageOptionsDefaults.UseVisualStyleBackColor = true;
-            this.rdoPageOptionsDefaults.CheckedChanged += new System.EventHandler(this.rdoPageOptionsDefaults_CheckedChanged);
+            this.rdoPageOptionsDefaults.CheckedChanged += new System.EventHandler(this.RdoPageOptionsDefaults_CheckedChanged);
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(204, 489);
+            this.btnCreate.Location = new System.Drawing.Point(204, 506);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 17;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
-            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            this.btnCreate.Click += new System.EventHandler(this.BtnCreate_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(285, 489);
+            this.btnCancel.Location = new System.Drawing.Point(286, 505);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 18;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // lblProjectUpdatedText
             // 
@@ -471,9 +480,9 @@
             this.lblProjectUpdated.AutoSize = true;
             this.lblProjectUpdated.Location = new System.Drawing.Point(181, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
-            this.lblProjectUpdated.Size = new System.Drawing.Size(105, 13);
+            this.lblProjectUpdated.Size = new System.Drawing.Size(74, 13);
             this.lblProjectUpdated.TabIndex = 7;
-            this.lblProjectUpdated.Text = "Date/Time Updated:";
+            this.lblProjectUpdated.Text = "Last Updated:";
             // 
             // lblProjectName
             // 
@@ -490,7 +499,7 @@
             this.grpProject.Controls.Add(this.lblProjectUpdatedText);
             this.grpProject.Controls.Add(this.lblProjectUpdated);
             this.grpProject.Controls.Add(this.lblProjectName);
-            this.grpProject.Location = new System.Drawing.Point(12, 12);
+            this.grpProject.Location = new System.Drawing.Point(12, 22);
             this.grpProject.Name = "grpProject";
             this.grpProject.Size = new System.Drawing.Size(348, 87);
             this.grpProject.TabIndex = 10;
@@ -508,13 +517,40 @@
             this.lblProjectNameText.Text = "None";
             this.lblProjectNameText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.advancedToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(372, 24);
+            this.menuStrip1.TabIndex = 19;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // advancedToolStripMenuItem
+            // 
+            this.advancedToolStripMenuItem.Checked = true;
+            this.advancedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.typesettingMenuItem});
+            this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
+            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.advancedToolStripMenuItem.Text = "Advanced";
+            // 
+            // typesettingMenuItem
+            // 
+            this.typesettingMenuItem.Name = "typesettingMenuItem";
+            this.typesettingMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.typesettingMenuItem.Text = "Download Typesetting Files";
+            this.typesettingMenuItem.Click += new System.EventHandler(this.OnDownloadTypesettingFileMenuClick);
+            // 
             // SetupForm
             // 
             this.AcceptButton = this.btnCreate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(372, 524);
+            this.ClientSize = new System.Drawing.Size(372, 550);
             this.ControlBox = false;
             this.Controls.Add(this.grpProject);
             this.Controls.Add(this.btnCancel);
@@ -522,8 +558,10 @@
             this.Controls.Add(this.grpPageOptions);
             this.Controls.Add(this.grpTextOptions);
             this.Controls.Add(this.grpLayout);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "SetupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create Print Preview...";
@@ -540,7 +578,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).EndInit();
             this.grpProject.ResumeLayout(false);
             this.grpProject.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -576,5 +617,8 @@
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.GroupBox grpProject;
         private System.Windows.Forms.Label lblProjectNameText;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem typesettingMenuItem;
     }
 }

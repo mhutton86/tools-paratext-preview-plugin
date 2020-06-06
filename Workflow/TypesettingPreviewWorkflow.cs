@@ -39,6 +39,11 @@ namespace TptMain.Workflow
         private FileInfo _previewFile;
 
         /// <summary>
+        /// A flag to determine if an archive will be downloaded with a preview.
+        /// </summary>
+        private Boolean _isArchive;
+
+        /// <summary>
         /// Details updated event handler.
         /// </summary>
         public EventHandler<ProjectDetails> DetailsUpdated;
@@ -52,6 +57,15 @@ namespace TptMain.Workflow
         /// File downloaded event handler.
         /// </summary>
         public EventHandler<FileInfo> FileDownloaded;
+
+        /// <summary>
+        /// TypesettingPreviewWorkflow ctor.
+        /// </summary>
+        public TypesettingPreviewWorkflow()
+        {
+            // Use the TLS 1.2 protocol for HTTPS requests.
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
 
         /// <summary>
         /// Entry point method.
@@ -75,119 +89,123 @@ namespace TptMain.Workflow
             ShowMessageBox($"Attach debugger now to PID {Process.GetCurrentProcess().Id}, if needed!",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
-            // Ensures the active project is available on the server.
-            _projectDetails = CheckProjectName(activeProjectName);
-            if (_projectDetails == null)
-            {
-                return;
-            }
-            DetailsUpdated?.Invoke(this, _projectDetails);
-
-            // Create & show setup form to user to get preview input.
-            var setupForm = CreateSetupForm();
-            setupForm.SetProjectDetails(_projectDetails);
-
-            ShowModalForm(setupForm);
-            if (setupForm.IsCancelled)
-            {
-                return;
-            }
-
-            // Create, instrument, and show progress form.
-            var progressForm = CreateProgressForm();
-            progressForm.Cancelled += OnProgressFormCancelled;
-
-            ShowModelessForm(progressForm);
 
             try
             {
-                // Create preview job on server and start monitoring.
-                _previewJob = CreatePreviewJob(setupForm.PreviewJob);
-                JobUpdated?.Invoke(this, _previewJob);
 
-                // Update preview form with initial status.
-                progressForm.SetStatus(_previewJob);
-                var lastCheckTime = DateTime.Now;
-                var threadSleepInMs = (int)(1000f / (float)MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
+                // Ensures the active project is available on the server.
+                _projectDetails = CheckProjectName(activeProjectName);
+                DetailsUpdated?.Invoke(this, _projectDetails);
 
-                // Update preview form at fast interval (e.g., 20x/sec) to keep UI lively, but
-                // update job status at slow interval (e.g., every 5sec) to keep network traffic sane.
-                while (!_previewJob.IsError
-                    && !_previewJob.IsCancelled
-                    && !_previewJob.IsCompleted)
-                {
-                    // Recalcs progress bar, even if using previous job status
-                    progressForm.SetStatus(_previewJob);
-
-                    Application.DoEvents();
-                    Thread.Sleep(threadSleepInMs);
-
-                    lock (this)
-                    {
-                        // double-check locking to prevent
-                        // crossover with manual cancel
-                        if (!_previewJob.IsError
-                            && !_previewJob.IsCancelled
-                            && !_previewJob.IsCompleted)
-                        {
-                            // Check if it's time to update status and do so, as needed.
-                            var nowTime = DateTime.Now;
-                            if (nowTime.Subtract(lastCheckTime).TotalSeconds > MainConsts.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC)
-                            {
-                                _previewJob = UpdatePreviewJob(_previewJob.Id);
-                                JobUpdated?.Invoke(this, _previewJob);
-
-                                lastCheckTime = nowTime;
-                            }
-                        }
-                    }
-                }
-
-                // Deal with error or cancel
-                if (_previewJob.IsError)
-                {
-                    throw new ApplicationException("Server error");
-                }
-                else if (_previewJob.IsCancelled)
+                // Create & show setup form to user to get preview input.
+                var setupForm = CreateSetupForm();
+                setupForm.SetProjectDetails(_projectDetails);
+                setupForm.User = host.UserName;
+                
+                ShowModalForm(setupForm);
+                if (setupForm.IsCancelled)
                 {
                     return;
                 }
-            }
-            finally
-            {
-                HideModelessForm(progressForm);
-            }
 
-            // Retrieve file from server, if we've made it this far
-            // (download errors will throw from here).
-            _previewFile = DownloadPreviewFile(_previewJob);
-            FileDownloaded?.Invoke(this, _previewFile);
+                _isArchive = setupForm.IsArchive;
 
-            try
-            {
-                // Create, instrument, and show preview form
-                var previewForm = CreatePreviewForm();
-                previewForm.FormClosed += OnPreviewFormFormClosed;
+                // Create, instrument, and show progress form.
+                var progressForm = CreateProgressForm();
+                progressForm.Cancelled += OnProgressFormCancelled;
 
-                previewForm.SetPreviewFile(_previewJob, _previewFile);
-                ShowModalForm(previewForm);
-            }
-            finally
-            {
-                // Get rid of temp dir preview file, no matter what
-                if (_previewFile.Exists)
+                ShowModelessForm(progressForm);
+
+                try
                 {
-                    _previewFile.Delete();
+                    // Create preview job on server and start monitoring.
+                    _previewJob = CreatePreviewJob(setupForm.PreviewJob);
+                    JobUpdated?.Invoke(this, _previewJob);
+
+                    // Update preview form with initial status.
+                    progressForm.SetStatus(_previewJob);
+                    var lastCheckTime = DateTime.Now;
+                    const int threadSleepInMs = (int)(1000f / MainConsts.PROGRESS_FORM_UPDATE_RATE_IN_FPS);
+
+                    // Update preview form at fast interval (e.g., 20x/sec) to keep UI lively, but
+                    // update job status at slow interval (e.g., every 5sec) to keep network traffic sane.
+                    while (!_previewJob.IsError
+                           && !_previewJob.IsCancelled
+                           && !_previewJob.IsCompleted)
+                    {
+                        // Recalcs progress bar, even if using previous job status
+                        progressForm.SetStatus(_previewJob);
+
+                        Application.DoEvents();
+                        Thread.Sleep(threadSleepInMs);
+
+                        lock (this)
+                        {
+                            // double-check locking to prevent
+                            // crossover with manual cancel
+                            if (_previewJob.IsError
+                                || _previewJob.IsCancelled
+                                || _previewJob.IsCompleted)
+                            {
+                                continue;
+                            }
+
+                            // Check if it's time to update status and do so, as needed.
+                            var nowTime = DateTime.Now;
+                            if (!(nowTime.Subtract(lastCheckTime).TotalSeconds >
+                                  MainConsts.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC))
+                            {
+                                continue;
+                            }
+
+                            _previewJob = UpdatePreviewJob(_previewJob.Id);
+                            JobUpdated?.Invoke(this, _previewJob);
+
+                            lastCheckTime = nowTime;
+                        }
+                    }
+
+                    // Deal with error or cancel
+                    if (_previewJob.IsCancelled)
+                    {
+                        return;
+                    }
+                    else if (_previewJob.IsError)
+                    {
+                        throw new ApplicationException("Server error");
+                    }
                 }
+                finally
+                {
+                    HideModelessForm(progressForm);
+                }
+
+                // Retrieve file from server, if we've made it this far
+                // _isArchive if flag is true preview job will download with the typesetting files;
+                // else just the PDF will download.
+                // (download errors will throw from here).
+                _previewFile = DownloadPreviewFile(_previewJob, _isArchive);
+                FileDownloaded?.Invoke(this, _previewFile);
+                
+            }
+            catch (WorkflowException)
+            {
+                throw;
+            }
+            catch (IOException ex)
+            {
+                throw new WorkflowException("Error: Can't read or write data. Please contact support.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new WorkflowException("Error: Can't generate preview. Please contact support.", ex);
             }
         }
 
         /// <summary>
-        /// Gives user opportunity to save preview file someplace else.
+        /// Kicks off the dialog for the user to save the typesetting preview file.
         /// </summary>
-        /// <param name="sender">Event source (form).</param>
-        /// <param name="e">Form closed details.</param>
-        public virtual void OnPreviewFormFormClosed(object sender, FormClosedEventArgs e)
+        public virtual void StartPreviewSaveDialog()
         {
             if (ShowMessageBox($"Save preview file for project \"{_projectDetails.ProjectName}\", updated {_projectDetails.ProjectUpdated:u}?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -195,13 +213,22 @@ namespace TptMain.Workflow
                 using (var saveFile = new SaveFileDialog())
                 {
                     var dateTimeText = _projectDetails.ProjectUpdated.ToString(MainConsts.DEFAULT_OUTPUT_FILE_NAME_FORMAT);
-
-                    saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
                     saveFile.InitialDirectory = Environment.GetFolderPath(SpecialFolder.MyDocuments);
-                    saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
-                    saveFile.DefaultExt = "pdf";
                     saveFile.AddExtension = true;
                     saveFile.OverwritePrompt = true;
+
+                    if (_isArchive)
+                    {
+                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.zip";
+                        saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
+                        saveFile.DefaultExt = "zip";                        
+                    }
+                    else
+                    {
+                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
+                        saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
+                        saveFile.DefaultExt = "pdf";
+                    }
 
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
@@ -219,13 +246,23 @@ namespace TptMain.Workflow
 
         /// <summary>
         /// Downloads preview file from service to temp file.
+        /// The temp file can either be a .zip if isArchive is true or a PDF if false.
         /// </summary>
         /// <param name="previewJob">Preview job (required).</param>
         /// <returns>Downloaded temp file.</returns>
-        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob)
+        public virtual FileInfo DownloadPreviewFile(PreviewJob previewJob, bool isArchive)
         {
-            var downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}");
+            FileInfo downloadFile;
+            if (isArchive)
+            {
+              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.zip"));
+            }
+            else
+            {
+              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+            }
+            
+            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
             webRequest.Method = HttpMethod.Get.Method;
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
@@ -260,8 +297,9 @@ namespace TptMain.Workflow
                 webRequest.Method = HttpMethod.Delete.Method;
                 webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-                using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
-                                                                    ?? throw new InvalidOperationException("Can't open response stream")))
+                using (var streamReader = new StreamReader(webRequest.GetResponse()
+                                                               .GetResponseStream()
+                    ?? throw new InvalidOperationException("Can't open response stream")))
                 {
                     _previewJob = JsonConvert.DeserializeObject<PreviewJob>(streamReader.ReadToEnd());
                 }
@@ -285,7 +323,7 @@ namespace TptMain.Workflow
                 streamWriter.Write(JsonConvert.SerializeObject(previewJob));
             }
             using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
-                                                                ?? throw new InvalidOperationException("Can't open response stream")))
+                ?? throw new InvalidOperationException("Can't open response stream")))
             {
                 return JsonConvert.DeserializeObject<PreviewJob>(streamReader.ReadToEnd());
             }
@@ -303,7 +341,7 @@ namespace TptMain.Workflow
             webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
-                                                                ?? throw new InvalidOperationException("Can't open response stream")))
+                        ?? throw new InvalidOperationException("Can't open response stream")))
             {
                 return JsonConvert.DeserializeObject<PreviewJob>(streamReader.ReadToEnd());
             }
@@ -322,18 +360,17 @@ namespace TptMain.Workflow
                 webRequest.Method = HttpMethod.Get.Method;
                 webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
-                using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
-                                                                    ?? throw new InvalidOperationException("Can't open response stream")))
+                using (var streamReader = new StreamReader(webRequest
+                                              .GetResponse()
+                                              .GetResponseStream())
+                    ?? throw new InvalidOperationException("Can't open response stream"))
                 {
                     var allProjectDetails = JsonConvert.DeserializeObject<List<ProjectDetails>>(streamReader.ReadToEnd());
 
                     // It's possible there aren't any.
                     if (allProjectDetails.Count < 1)
                     {
-                        ShowMessageBox($"Can't preview project: \"{projectName}\" (none present on server).\n\nPlease try again later or contact support.",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                        return null;
+                        throw new WorkflowException($"Can't preview project: \"{projectName}\" (none present on server).\n\nPlease try again later or contact support.");
                     }
 
                     // Find the one that matters to us.
@@ -347,8 +384,7 @@ namespace TptMain.Workflow
                         allProjectDetails.Sort((l, r) => string.Compare(l.ProjectName, r.ProjectName, StringComparison.Ordinal));
                         var availableProjects = string.Join(", ", allProjectDetails.Select(detailItem => $"\"{detailItem.ProjectName}\""));
 
-                        ShowMessageBox($"Can't preview project: \"{projectName}\" (not present on server).\n\nPlease try again later or contact support (available projects: {availableProjects}).",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        throw new WorkflowException($"Can't preview project: \"{projectName}\" (not present on server).\n\nPlease try again later or contact support (available projects: {availableProjects}).");
                     }
 
                     return result;
@@ -356,9 +392,7 @@ namespace TptMain.Workflow
             }
             catch (Exception ex)
             {
-                ShowMessageBox($"Can't contact typesetting preview server.\n\nPlease check Internet connection and try again, or contact support (Details: {ex.Message}).",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return null;
+                throw new WorkflowException($"Can't contact typesetting preview server.\n\nPlease check Internet connection and try again, or contact support (Details: {ex.Message}).", ex);
             }
         }
 
@@ -418,14 +452,6 @@ namespace TptMain.Workflow
         {
             return new ProgressForm();
         }
-
-        /// <summary>
-        /// Overridable utility method to create preview form.
-        /// </summary>
-        /// <returns>Preview form.</returns>
-        public virtual PreviewForm CreatePreviewForm()
-        {
-            return new PreviewForm();
-        }
+    
     }
 }
