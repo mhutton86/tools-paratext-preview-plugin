@@ -172,7 +172,7 @@ namespace TptMain.Workflow
                     }
                     else if (_previewJob.IsError)
                     {
-                        throw new ApplicationException("Server error");
+                        throw new WorkflowException($"A server error occurred: {_previewJob.ErrorMessage}");
                     }
                 }
                 finally
@@ -389,6 +389,10 @@ namespace TptMain.Workflow
 
                     return result;
                 }
+            }
+            catch (WorkflowException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
