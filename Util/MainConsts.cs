@@ -15,7 +15,9 @@ namespace TptMain.Util
         /// <summary>
         /// Default server URI. Needs to be configurable, in future.
         /// </summary>
-        public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
+        // TODO Remove before final commit
+        //public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
+        public const string DEFAULT_SERVER_URI = "http://172.31.10.12:9875/api";
 
         /// <summary>
         /// Default web request timeout in milliseconds.
