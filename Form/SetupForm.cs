@@ -382,5 +382,14 @@ namespace TptMain.Form
             addCustomFootnotesToolStripMenuItem.CheckState = addCustomFootnotesToolStripMenuItem.Checked
                 ? CheckState.Checked : CheckState.Unchecked;
         }
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        /// <param name="enabled"></param>
+        public void SetCustomFootnotesEnabled(bool enabled)
+        {
+            addCustomFootnotesToolStripMenuItem.Enabled = enabled;
+        }
     }
 }
