@@ -269,17 +269,18 @@
       <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\BookFormat.cs" />
+    <Compile Include="Models\ParatextProjectModels.cs" />
     <Compile Include="Models\PreviewJob.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="TypesettingPreviewPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\HostUtil.cs" />
     <Compile Include="Util\MainConsts.cs" />
+    <Compile Include="Util\ParatextProjectHelper.cs" />
     <Compile Include="Workflow\TypesettingPreviewWorkflow.cs" />
     <Compile Include="Workflow\WorkflowException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
@@ -292,7 +293,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="icu4c.readme.txt" />
     <Content Include="Resources\biblica-16x16.ico" />
     <Content Include="Resources\biblica-32x32.ico" />
     <Content Include="Resources\biblica-96x96.ico" />

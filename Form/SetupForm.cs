@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using TptMain.Models;
 using TptMain.Util;
+using Paratext.Data.ProjectSettingsAccess;
 
 namespace TptMain.Form
 {
@@ -173,7 +174,7 @@ namespace TptMain.Form
             {
                 return false;
             }
-
+         
             _previewJob.ProjectName = ProjectName;
             _previewJob.User = User;
             _previewJob.BookFormat = BookFormat;

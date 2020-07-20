@@ -3,10 +3,9 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using TptMain.ParatextProjects.Models;
-using TptMain.Util;
+using TptMain.Models;
 
-namespace TptMain.ParatextProjects
+namespace TptMain.Util
 {
     /// <summary>
     /// Helper functions related to working with Paratext projects.
@@ -27,7 +26,7 @@ namespace TptMain.ParatextProjects
             }
 
             // check for the existence of a known PT project file
-            return File.Exists(Path.Combine(projectDir, MainConsts.PARATEXT_PROJECT_KNOWN_FILE_PATH));
+            return File.Exists(Path.Combine(projectDir, MainConsts.SETTINGS_FILE_PATH));
         }
 
         /// <summary>
@@ -98,7 +97,7 @@ namespace TptMain.ParatextProjects
                 var footnoteRawList = exemplarCharacters.Value;
 
                 // remove surrounding '[',']' characters, and split. EG: The strring "[a b c]" turns into an array with elements "a", "b", "c"
-                var cleanedAndSplitFootnoteList = footnoteRawList.Replace("[", "").Replace("]", "").Split(" ");
+                var cleanedAndSplitFootnoteList = footnoteRawList.Replace("[", "").Replace("]", "").Split(' ');
 
                 // find all non-empty values. This helps most when a language has an empty footnote list, like usNIV11
                 var footnoteMarkers = Array.FindAll(cleanedAndSplitFootnoteList, (val => val.Length != 0));
@@ -111,6 +110,26 @@ namespace TptMain.ParatextProjects
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Return a Paratext project's footnote caller sequence.
+        /// </summary>
+        /// <param name="projectShortName">The Paratext project's shortname.</param>
+        /// <returns>The paratext project's footnote caller sequence, if found; Otherwise, <c>null</c>.</returns>
+        public static string[] GetFootnoteCallerSequence(DirectoryInfo projectDirectory)
+        {
+            // validate input
+            _ = projectDirectory ?? throw new ArgumentNullException(nameof(projectDirectory));
+
+            // Grab the Paratext project settings (for the LDML path).
+            var projectSettings = ParatextProjectHelper.GetProjectSettings(projectDirectory.FullName);
+
+            // Get the project's footnote markers, given the LDML path
+            var ldmlPath = Path.Combine(projectDirectory.FullName, projectSettings.LdmlFileName);
+            var footnoteMarkers = ParatextProjectHelper.ExtractFootnoteMarkers(ldmlPath);
+
+            return footnoteMarkers;
         }
     }
 }

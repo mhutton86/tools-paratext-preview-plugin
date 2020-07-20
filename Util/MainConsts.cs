@@ -16,8 +16,12 @@ namespace TptMain.Util
         /// Default server URI. Needs to be configurable, in future.
         /// </summary>
         // TODO Remove before final commit
-        //public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
-        public const string DEFAULT_SERVER_URI = "http://172.31.10.12:9875/api";
+        public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
+
+        /// <summary>
+        /// Paratext project settings filename.
+        /// </summary>
+        public const string SETTINGS_FILE_PATH = "Settings.xml";
 
         /// <summary>
         /// Default web request timeout in milliseconds.

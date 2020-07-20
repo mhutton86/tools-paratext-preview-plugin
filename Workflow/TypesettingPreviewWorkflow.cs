@@ -1,4 +1,5 @@
 ﻿using AddInSideViews;
+using Paratext.Data.ProjectSettingsAccess;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,9 @@ namespace TptMain.Workflow
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
+        // Get footnote caller sequence
+        //public ParatextProjectSettings() = Paratext.Data.ProjectSettingsAccess.ProjectSettings;
+
         /// <summary>
         /// Entry point method.
         /// </summary>
@@ -92,7 +96,6 @@ namespace TptMain.Workflow
 
             try
             {
-
                 // Ensures the active project is available on the server.
                 _projectDetails = CheckProjectName(activeProjectName);
                 DetailsUpdated?.Invoke(this, _projectDetails);
@@ -456,6 +459,12 @@ namespace TptMain.Workflow
         {
             return new ProgressForm();
         }
-    
+
+        public virtual bool IsFootnoteCallerSequenceDefined(string projectName)
+        {
+            ParatextProjectHelper.GetFootnoteCallerSequence()
+        }
+
+
     }
 }
