@@ -18,6 +18,11 @@ namespace TptMain.Util
         public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
 
         /// <summary>
+        /// Paratext project settings filename.
+        /// </summary>
+        public const string SETTINGS_FILE_PATH = "Settings.xml";
+
+        /// <summary>
         /// Default web request timeout in milliseconds.
         /// </summary>
         public const int DEFAULT_REQUEST_TIMEOUT_IN_MS = 30000;

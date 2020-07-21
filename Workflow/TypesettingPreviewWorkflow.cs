@@ -1,4 +1,5 @@
 ﻿using AddInSideViews;
+using Paratext.Data.ProjectSettingsAccess;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,9 @@ namespace TptMain.Workflow
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
+        // Get footnote caller sequence
+        //public ParatextProjectSettings() = Paratext.Data.ProjectSettingsAccess.ProjectSettings;
+
         /// <summary>
         /// Entry point method.
         /// </summary>
@@ -74,14 +78,8 @@ namespace TptMain.Workflow
         /// <param name="activeProjectName">Active Paratext project name (required).</param>
         public virtual void Run(IHost host, string activeProjectName)
         {
-            if (host == null)
-            {
-                throw new ArgumentNullException(nameof(host));
-            }
-            if (activeProjectName == null)
-            {
-                throw new ArgumentNullException(nameof(activeProjectName));
-            }
+            _ = host ?? throw new ArgumentNullException(nameof(host));
+            _ = activeProjectName ?? throw new ArgumentNullException(nameof(activeProjectName));
 
 #if DEBUG
             // Provided because plugins are separate processes that may only be attached to,
@@ -92,7 +90,6 @@ namespace TptMain.Workflow
 
             try
             {
-
                 // Ensures the active project is available on the server.
                 _projectDetails = CheckProjectName(activeProjectName);
                 DetailsUpdated?.Invoke(this, _projectDetails);
@@ -101,7 +98,11 @@ namespace TptMain.Workflow
                 var setupForm = CreateSetupForm();
                 setupForm.SetProjectDetails(_projectDetails);
                 setupForm.User = host.UserName;
-                
+
+                // Enable the setup form's custom footnote option based on the availability of footnotes.
+                var footnotesDefined = IsFootnoteCallerSequenceDefined(activeProjectName);
+                setupForm.SetCustomFootnotesEnabled(footnotesDefined);
+
                 ShowModalForm(setupForm);
                 if (setupForm.IsCancelled)
                 {
@@ -456,6 +457,21 @@ namespace TptMain.Workflow
         {
             return new ProgressForm();
         }
-    
+
+        /// <summary>
+        /// Checks the paratext project directory for a footnote caller sequence.
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <returns></returns>
+        public virtual bool IsFootnoteCallerSequenceDefined(string projectName)
+        {
+            // get the project's directory
+            var projectDirectory = HostUtil.Instance.GetParatextProjectDirectory(projectName);
+
+            // get the project's footnote caller sequence, knowing the project directory
+            var footnotes = ParatextProjectHelper.GetFootnoteCallerSequence(projectDirectory);
+
+            return footnotes != null && footnotes.Length > 0;
+        }
     }
 }

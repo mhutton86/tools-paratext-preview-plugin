@@ -108,6 +108,11 @@ namespace TptMain.Models
         public BookFormat? BookFormat { get; set; }
 
         /// <summary>
+        /// Generate preview with custom footnote markers; defaults to false.
+        /// </summary>
+        public bool? UseCustomFootnotes { get; set; } = false;
+
+        /// <summary>
         /// Function used for indicating an error occurred and provide a message for the reason.
         /// </summary>
         /// <param name="errorMessage">User-friendly error message. (Required)</param>
