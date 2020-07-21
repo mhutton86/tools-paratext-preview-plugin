@@ -75,7 +75,7 @@ namespace TptMain.Util
         }
 
         /// <summary>
-        /// TODO: doc me
+        /// Finds the path for the project to pass to GetFootnoteCallerSequence.
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>

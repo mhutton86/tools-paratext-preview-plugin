@@ -384,7 +384,7 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Informs the UI whether or not the "Localized Footnotes" menu item is enable or disabled.
         /// </summary>
         /// <param name="enabled"></param>
         public void SetCustomFootnotesEnabled(bool enabled)

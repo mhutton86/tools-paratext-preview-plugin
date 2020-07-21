@@ -459,7 +459,7 @@ namespace TptMain.Workflow
         }
 
         /// <summary>
-        /// TODO documenting me.
+        /// Checks the paratext project directory for a footnote caller sequence.
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
