@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using TptMain.Models;
 using TptMain.Util;
+using Paratext.Data.ProjectSettingsAccess;
 
 namespace TptMain.Form
 {
@@ -80,7 +81,7 @@ namespace TptMain.Form
         {
             if (PopulatePreviewJob())
             {
-                IsArchive = typesettingMenuItem.Checked;
+                IsArchive = onDownloadTypesettingMenuItem.Checked;
                 Close();
             }
         }
@@ -173,7 +174,7 @@ namespace TptMain.Form
             {
                 return false;
             }
-
+         
             _previewJob.ProjectName = ProjectName;
             _previewJob.User = User;
             _previewJob.BookFormat = BookFormat;
@@ -182,6 +183,7 @@ namespace TptMain.Form
             _previewJob.PageHeightInPts = PageHeightInPts;
             _previewJob.PageWidthInPts = PageWidthInPts;
             _previewJob.PageHeaderInPts = PageHeaderInPts;
+            _previewJob.UseCustomFootnotes = UseCustomFootnotes;
 
             return true;
         }
@@ -335,6 +337,11 @@ namespace TptMain.Form
         public BookFormat BookFormat => rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb;
 
         /// <summary>
+        /// Use custom footnote accessor.
+        /// </summary>
+        public bool UseCustomFootnotes => addCustomFootnotesToolStripMenuItem.Checked;
+
+        /// <summary>
         /// Project name accessor.
         /// </summary>
         public string ProjectName => lblProjectNameText.Text;
@@ -359,9 +366,30 @@ namespace TptMain.Form
         /// <param name="e"></param>
         private void OnDownloadTypesettingFileMenuClick(object sender, EventArgs e)
         {
-            typesettingMenuItem.Checked = !typesettingMenuItem.Checked;
-            typesettingMenuItem.CheckState = typesettingMenuItem.Checked
+            onDownloadTypesettingMenuItem.Checked = !onDownloadTypesettingMenuItem.Checked;
+            onDownloadTypesettingMenuItem.CheckState = onDownloadTypesettingMenuItem.Checked
                 ? CheckState.Checked : CheckState.Unchecked;            
+        }
+
+        /// <summary>
+        /// Typesetting file menu item to determine if custom footnotes are used in preview generation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddCustomFootnotesOnTypesttingFileMenuClick(object sender, EventArgs e)
+        {
+            addCustomFootnotesToolStripMenuItem.Checked = !addCustomFootnotesToolStripMenuItem.Checked;
+            addCustomFootnotesToolStripMenuItem.CheckState = addCustomFootnotesToolStripMenuItem.Checked
+                ? CheckState.Checked : CheckState.Unchecked;
+        }
+
+        /// <summary>
+        /// Informs the UI whether or not the "Localized Footnotes" menu item is enable or disabled.
+        /// </summary>
+        /// <param name="enabled"></param>
+        public void SetCustomFootnotesEnabled(bool enabled)
+        {
+            addCustomFootnotesToolStripMenuItem.Enabled = enabled;
         }
     }
 }

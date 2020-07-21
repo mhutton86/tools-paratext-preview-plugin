@@ -59,7 +59,9 @@ namespace TptMain.Form
                 {
                     lblStatusText.Text = "Rendering preview...";
                     pbrStatus.Style = ProgressBarStyle.Continuous;
-                    pbrStatus.Value = (int)((runTimeInSec / (float)MainConsts.TARGET_PREVIEW_JOB_TIME_IN_SEC) * 100f);
+                    pbrStatus.Value = Math.Min(
+                        Math.Abs((int)((runTimeInSec / (float)MainConsts.TARGET_PREVIEW_JOB_TIME_IN_SEC) * 100f)),
+                        (int) pbrStatus.Maximum);
                 }
             }
             else

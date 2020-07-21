@@ -84,6 +84,9 @@ namespace TptTest
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
+                workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
+                .Returns(true);
+            mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
@@ -528,6 +531,9 @@ namespace TptTest
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
+                workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
+                .Returns(true);
+            mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateSetupForm())
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
@@ -537,6 +543,7 @@ namespace TptTest
             mockSetupForm.Setup(
                 formItem => formItem.IsCancelled)
                 .Returns(false);
+
             // Setup form mock to address when archive is requested or otherwise.
             if (isArchive)
             {
@@ -550,7 +557,7 @@ namespace TptTest
                  formItem => formItem.IsArchive)
                  .Returns(false);
             }
-            
+
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
@@ -605,6 +612,9 @@ namespace TptTest
                 formItem.IsCancelled, Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateProgressForm(), Times.Once);
+            mockWorkflow.Setup(workflowItem =>
+                workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
+                .Returns(true);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModelessForm(mockProgressForm.Object), Times.Once);
             mockSetupForm.VerifyGet(formItem =>
@@ -649,6 +659,7 @@ namespace TptTest
                 ProjectName = TestProjectName,
                 User = TestUser,
                 BookFormat = BookFormat.cav,
+                UseCustomFootnotes = true,
                 FontSizeInPts = 123.4f,
                 FontLeadingInPts = 234.5f,
                 PageHeightInPts = 345.6f,
@@ -667,7 +678,7 @@ namespace TptTest
         }
 
         /// <summary>
-        /// Unit test for creating a preview when PDF download is requested.
+        // Unit test for creating a preview when PDF download is requested.
         /// </summary>
         [TestMethod]
         public void TestPreviewJobWhenIsArchiveEqualsFalse()
