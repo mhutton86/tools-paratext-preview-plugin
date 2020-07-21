@@ -685,23 +685,5 @@ namespace TptTest
         {
             TestCompleteWorkflow(false);
         }
-
-        /// <summary>
-        // Unit test for creating a preview with localized footnotes.
-        /// </summary>
-        //[TestMethod]
-        //public void TestPreviewJobWhenLocalizedFootnotesIsTrue()
-        //{
-        //    TypesettingPreviewWorkflow.IsFootnoteCallerSequenceDefined(TestProjectName);
-        //}
-
-        /// <summary>
-        // Unit test for creating a preview with localized footnotes.
-        /// </summary>
-        //[TestMethod]
-        //public void TestPreviewJobWhenLocalizedFootnotesIsTrue()
-        //{
-        //    TypesettingPreviewWorkflow.IsFootnoteCallerSequenceDefined(TestProjectName);
-        //}
     }
 }
