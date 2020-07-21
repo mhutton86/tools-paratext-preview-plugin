@@ -4,6 +4,7 @@ using System.AddIn;
 using System.AddIn.Pipeline;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using TptMain.Models;
@@ -106,32 +107,34 @@ namespace TptMain
                             }
                             catch (Exception ex)
                             {
+                                // Variables for tracking error information.
+                                IDictionary<string, string> errorDetails = new Dictionary<string, string>();
+                                string message = ex.Message;
+
                                 // Log with different information, depending on what's been observed.
-                                if (_previewFile != null
-                                    && _previewJob != null
-                                    && _projectDetails != null)
+                                if (_previewJob != null)
                                 {
-                                    HostUtil.Instance.ReportError(
-                                        $"Can't display preview file (file: {_previewFile.FullName}, job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
-                                        ex);
+                                    errorDetails.Add("Job ID", _previewJob.Id);
+                                    errorDetails.Add("Project", _previewJob.ProjectName);
+
+                                    if (_previewJob.IsError)
+                                    {
+                                        errorDetails.Add("Detail", _previewJob.ErrorDetail);
+                                    }
                                 }
-                                else if (_previewJob != null
-                                         && _projectDetails != null)
+
+                                if (_projectDetails != null)
                                 {
-                                    HostUtil.Instance.ReportError(
-                                        $"Can't generate preview file (job id: \"{_previewJob.Id}\", project: \"{_previewJob.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
-                                        ex);
+                                    errorDetails.Add("Updated", $"{_projectDetails.ProjectUpdated:u}");
                                 }
-                                else if (_projectDetails != null)
+
+                                if (_previewFile != null)
                                 {
-                                    HostUtil.Instance.ReportError(
-                                        $"Can't get preview options (project: \"{_projectDetails.ProjectName}\", updated: {_projectDetails.ProjectUpdated:u}).",
-                                        ex);
+                                    errorDetails.Add("File", _previewFile.FullName);
                                 }
-                                else
-                                {
-                                    HostUtil.Instance.ReportError($"Can't execute workflow.", ex);
-                                }
+
+                                // Report the error
+                                ReportErrorWithDetails(message, errorDetails);
                             }
                             finally
                             {
@@ -148,7 +151,7 @@ namespace TptMain
                 catch (WorkflowException ex)
                 {
                     // Application exceptions = routine usage problems.
-                    HostUtil.Instance.ReportError(ex.Message, ex.InnerException);
+                    ReportErrorWithDetails(ex.Message, null, true, ex.InnerException);
                 }
                 catch (Exception ex)
                 {
@@ -156,6 +159,50 @@ namespace TptMain
                     HostUtil.Instance.ReportError(null, ex);
                     throw;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Function for normalizing how we print errors.
+        /// </summary>
+        /// <param name="message">The error message. (required)</param>
+        /// <param name="details">The error details. (optional)</param>
+        /// <param name="printException">Whether to print the exception or not. True: print the exception; False: don't print the exception. Default: false</param>
+        /// <param name="ex">The error's associated exception. (required if <c>printException</c> is <c>true</c>)</param>
+        public static void ReportErrorWithDetails(
+            string message,
+            IDictionary<string, string> details = null,
+            bool printException = false,
+            Exception ex = null
+            )
+        {
+            // validate required inputs
+            _ = message ?? throw new ArgumentNullException(nameof(message));
+            if (printException)
+            {
+                _ = ex ?? throw new ArgumentNullException(nameof(ex));
+            }
+
+            // initialize string builder with error message
+            StringBuilder msgSb = new StringBuilder($"{message}\r\n");
+
+            // add the details of the error the message string builder
+            if (details != null)
+            {
+                foreach (KeyValuePair<string, string> item in details)
+                {
+                    msgSb.AppendLine($"    {item.Key}: {item.Value}");
+                }
+            }
+
+            // report the prettified error
+            if (printException)
+            {
+                HostUtil.Instance.ReportError(msgSb.ToString(), ex);
+            }
+            else
+            {
+                HostUtil.Instance.ReportError(msgSb.ToString(), null);
             }
         }
     }

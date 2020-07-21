@@ -1,5 +1,6 @@
 ﻿using AddInSideViews;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace TptMain.Util
@@ -71,6 +72,38 @@ namespace TptMain.Util
         {
             (isError ? Console.Error : Console.Out).WriteLine(inputText);
             _host?.WriteLineToLog(_typesettingPreviewPlugin, inputText);
+        }
+
+        /// <summary>
+        /// Finds the path for the project to pass to GetFootnoteCallerSequence.
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <returns></returns>
+        public DirectoryInfo GetParatextProjectDirectory(string projectName)
+        {
+            // validate inputs
+            _ = projectName ?? throw new ArgumentNullException(nameof(projectName));
+
+            // We're using the host's figure path to determine project directory, 
+            // as the Paratext AddinViews doesn't appear to provide a function to do this
+            var figurePath = _host.GetFigurePath(projectName, false);
+
+            // If the non-local figure path is unavailable, get the local figure path
+            if (figurePath == null)
+            {
+                figurePath = _host.GetFigurePath(projectName, true);
+
+                if (figurePath == null)
+                {
+                    throw new Exception("We couldn't find the project path for " + projectName);
+                }
+
+                // return the project directory from the local figure directory. EG: usNIV11/local/figure/ -> usNIV11
+                return Directory.GetParent(Directory.GetParent(figurePath).FullName);
+            }
+
+            // return the project directory from the non-local figure directory. EG: usNIV11/figure/ -> usNIV11
+            return Directory.GetParent(figurePath);
         }
     }
 }
