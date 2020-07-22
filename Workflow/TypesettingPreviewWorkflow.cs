@@ -1,5 +1,4 @@
 ﻿using AddInSideViews;
-using Paratext.Data.ProjectSettingsAccess;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -67,9 +66,6 @@ namespace TptMain.Workflow
             // Use the TLS 1.2 protocol for HTTPS requests.
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
-
-        // Get footnote caller sequence
-        //public ParatextProjectSettings() = Paratext.Data.ProjectSettingsAccess.ProjectSettings;
 
         /// <summary>
         /// Entry point method.
@@ -461,8 +457,8 @@ namespace TptMain.Workflow
         /// <summary>
         /// Checks the paratext project directory for a footnote caller sequence.
         /// </summary>
-        /// <param name="projectName"></param>
-        /// <returns></returns>
+        /// <param name="projectName">A Paratext project's shortname, we want the directory of EG: "usNIVv3"</param>
+        /// <returns>A given Paratext project's footnote caller sequence.</returns>
         public virtual bool IsFootnoteCallerSequenceDefined(string projectName)
         {
             // get the project's directory
