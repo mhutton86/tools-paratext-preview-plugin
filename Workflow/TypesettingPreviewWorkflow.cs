@@ -457,8 +457,7 @@ namespace TptMain.Workflow
         /// <summary>
         /// Checks the paratext project directory for a footnote caller sequence.
         /// </summary>
-        /// A Paratext project's shortname, we want the directory of EG: "usNIVv3"
-        /// <param name="projectName"></param>
+        /// <param name="projectName">A Paratext project's shortname, we want the directory of EG: "usNIVv3"</param>
         /// <returns>A given Paratext project's footnote caller sequence.</returns>
         public virtual bool IsFootnoteCallerSequenceDefined(string projectName)
         {
