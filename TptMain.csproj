@@ -309,14 +309,41 @@
 
     <Message Text="Assembly Version: %(MyAssemblyIdentities.Version)"/>
   </Target>
-  <Target Name="AfterBuild" Condition="$(Configuration) == 'Release'">
+  <UsingTask
+TaskName="GetFileVersion"
+TaskFactory="CodeTaskFactory"
+AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+
+    <ParameterGroup>
+      <AssemblyPath ParameterType="System.String" Required="true" />
+      <Version ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Diagnostics" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+      Log.LogMessage("Getting version details of assembly at: " + this.AssemblyPath, MessageImportance.High);
+
+      this.Version = FileVersionInfo.GetVersionInfo(this.AssemblyPath).FileVersion;  
+    ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <Target Name="GetFileVersion" AfterTargets="Build">
+
+    <GetFileVersion AssemblyPath="$(TargetPath)">
+      <Output TaskParameter="Version" PropertyName="MyAssemblyFileVersion" />
+    </GetFileVersion>
+    <Message Text="File version is $(MyAssemblyFileVersion)" />
+  </Target>
+  <Target Name="ArchiveBuild" AfterTargets="GetFileVersion" Condition="$(Configuration) == 'Release'">
     <ItemGroup>
       <ZipFiles Include="$(OutputPath)*.dll" />
       <ZipFiles Include="$(OutputPath)*.pdb" />
       <ZipFiles Include="$(OutputPath)*.config" />
       <ZipFiles Include="$(OutputPath)*.xml" />
     </ItemGroup>
-    <Zip OutputFilename="$(OutputPath)$(TargetName)-$(AssemblyFileVersion).zip" Files="@(ZipFiles)" />
+    <Zip OutputFilename="$(OutputPath)$(TargetName)-$(MyAssemblyFileVersion).zip" Files="@(ZipFiles)" />
   </Target>
   <Import Project="packages\Icu4c.Win.Min.59.1.7\build\Icu4c.Win.Min.targets" Condition="Exists('packages\Icu4c.Win.Min.59.1.7\build\Icu4c.Win.Min.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
