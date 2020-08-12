@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,7 +49,17 @@ namespace PpmMain.Models
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            // Return the JSON interpretation of this object.
+            return JsonConvert.SerializeObject(this, new JsonSerializerSettings()
+            {
+                // ensure that the fields are saved as camel case (instead of pascal case).
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                },
+                // Pretty print the JSON.
+                Formatting = Formatting.Indented
+            });
         }
 
         /// <summary>
