@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using TptMain.Models;
 using TptMain.Util;
 using Paratext.Data.ProjectSettingsAccess;
+using TptMain.Properties;
 
 namespace TptMain.Form
 {
@@ -390,6 +391,19 @@ namespace TptMain.Form
         public void SetCustomFootnotesEnabled(bool enabled)
         {
             addCustomFootnotesToolStripMenuItem.Enabled = enabled;
+        }
+
+        private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string pluginName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            string formTitle = $"{pluginName} - End User License Agreement";
+
+            LicenseForm eulaForm = new LicenseForm();
+            eulaForm.FormType = LicenseForm.FormTypes.Info;
+            eulaForm.FormTitle = formTitle;
+            eulaForm.LicenseText = Resources.TPT_EULA;
+            eulaForm.OnDismiss = () => eulaForm.Close();
+            eulaForm.Show();
         }
     }
 }
