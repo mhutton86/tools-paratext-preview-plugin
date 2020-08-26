@@ -32,10 +32,14 @@
             this.DismissLicenseButton = new System.Windows.Forms.Button();
             this.AcceptLicenseButton = new System.Windows.Forms.Button();
             this.LicensePrompt = new System.Windows.Forms.Label();
+            this.Copyright = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // LicenseTextBox
             // 
+            this.LicenseTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LicenseTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.LicenseTextBox.Location = new System.Drawing.Point(12, 47);
             this.LicenseTextBox.Name = "LicenseTextBox";
@@ -46,6 +50,7 @@
             // 
             // DismissLicenseButton
             // 
+            this.DismissLicenseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DismissLicenseButton.Location = new System.Drawing.Point(511, 580);
             this.DismissLicenseButton.Name = "DismissLicenseButton";
             this.DismissLicenseButton.Size = new System.Drawing.Size(75, 23);
@@ -56,6 +61,7 @@
             // 
             // AcceptLicenseButton
             // 
+            this.AcceptLicenseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AcceptLicenseButton.Location = new System.Drawing.Point(430, 580);
             this.AcceptLicenseButton.Name = "AcceptLicenseButton";
             this.AcceptLicenseButton.Size = new System.Drawing.Size(75, 23);
@@ -74,17 +80,31 @@
             this.LicensePrompt.TabIndex = 4;
             this.LicensePrompt.Text = "Press Page Down to read the rest of the agreement.";
             // 
+            // Copyright
+            // 
+            this.Copyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Copyright.AutoSize = true;
+            this.Copyright.Location = new System.Drawing.Point(12, 580);
+            this.Copyright.Name = "Copyright";
+            this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.Copyright.Size = new System.Drawing.Size(101, 23);
+            this.Copyright.TabIndex = 5;
+            this.Copyright.Text = "© 2020 Biblica, Inc.";
+            // 
             // LicenseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(598, 615);
+            this.Controls.Add(this.Copyright);
             this.Controls.Add(this.LicensePrompt);
             this.Controls.Add(this.AcceptLicenseButton);
             this.Controls.Add(this.DismissLicenseButton);
             this.Controls.Add(this.LicenseTextBox);
             this.Name = "LicenseForm";
             this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "End User License Agreement";
             this.Load += new System.EventHandler(this.LicenseForm_Load);
@@ -99,5 +119,6 @@
         private System.Windows.Forms.Button DismissLicenseButton;
         private System.Windows.Forms.Button AcceptLicenseButton;
         private System.Windows.Forms.Label LicensePrompt;
+        private System.Windows.Forms.Label Copyright;
     }
 }

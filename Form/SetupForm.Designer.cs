@@ -66,6 +66,7 @@
             this.addCustomFootnotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Copyright = new System.Windows.Forms.Label();
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -448,7 +449,7 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(204, 506);
+            this.btnCreate.Location = new System.Drawing.Point(204, 505);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 17;
@@ -567,9 +568,20 @@
             // licenseToolStripMenuItem
             // 
             this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
-            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.licenseToolStripMenuItem.Text = "License";
             this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
+            // 
+            // Copyright
+            // 
+            this.Copyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Copyright.AutoSize = true;
+            this.Copyright.Location = new System.Drawing.Point(12, 505);
+            this.Copyright.Name = "Copyright";
+            this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.Copyright.Size = new System.Drawing.Size(101, 23);
+            this.Copyright.TabIndex = 20;
+            this.Copyright.Text = "© 2020 Biblica, Inc.";
             // 
             // SetupForm
             // 
@@ -577,8 +589,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(372, 550);
+            this.ClientSize = new System.Drawing.Size(372, 537);
             this.ControlBox = false;
+            this.Controls.Add(this.Copyright);
             this.Controls.Add(this.grpProject);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCreate);
@@ -650,5 +663,6 @@
         private System.Windows.Forms.ToolStripMenuItem addCustomFootnotesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
+        private System.Windows.Forms.Label Copyright;
     }
 }

@@ -50,6 +50,7 @@ namespace TptMain.Form
         public SetupForm()
         {
             InitializeComponent();
+            Copyright.Text = MainConsts.COPYRIGHT;
             _previewJob = new PreviewJob();
 
             SetupFieldControl(nudFontSize, MainConsts.FontSizeSettings);
