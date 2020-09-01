@@ -118,5 +118,10 @@ namespace TptMain.Util
                 DefaultValue = defaultValue;
             }
         }
+
+        /// <summary>
+        /// The copyright for this plugin.
+        /// </summary>
+        public const string COPYRIGHT = "© 2020 Biblica, Inc.";
     }
 }
