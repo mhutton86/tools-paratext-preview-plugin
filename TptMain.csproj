@@ -285,6 +285,7 @@
     <Compile Include="Models\BookFormat.cs" />
     <Compile Include="Models\ParatextProjectModels.cs" />
     <Compile Include="Models\PreviewJob.cs" />
+    <Compile Include="Models\ServerStatus.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

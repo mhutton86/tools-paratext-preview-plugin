@@ -29,6 +29,11 @@ namespace TptMain.Workflow
         private ProjectDetails _projectDetails;
 
         /// <summary>
+        /// Current, observed status from server.
+        /// </summary>
+        private ServerStatus _serverStatus;
+
+        /// <summary>
         /// Current, observed preview job from server.
         /// </summary>
         private PreviewJob _previewJob;
@@ -86,6 +91,9 @@ namespace TptMain.Workflow
 
             try
             {
+                // Retrieve the server's status (which includes the version)
+                _serverStatus = CheckServerStatus();
+
                 // Ensures the active project is available on the server.
                 _projectDetails = CheckProjectName(activeProjectName);
                 DetailsUpdated?.Invoke(this, _projectDetails);
@@ -93,6 +101,7 @@ namespace TptMain.Workflow
                 // Create & show setup form to user to get preview input.
                 var setupForm = CreateSetupForm();
                 setupForm.SetProjectDetails(_projectDetails);
+                setupForm.SetServerStatus(_serverStatus);
                 setupForm.User = host.UserName;
 
                 // Enable the setup form's custom footnote option based on the availability of footnotes.
@@ -395,6 +404,44 @@ namespace TptMain.Workflow
             {
                 throw new WorkflowException($"Can't contact typesetting preview server.\n\nPlease check Internet connection and try again, or contact support (Details: {ex.Message}).", ex);
             }
+        }
+
+        /// <summary>
+        /// This function requests the server's status.
+        /// </summary>
+        /// <returns>The server's status.</returns>
+        public virtual ServerStatus CheckServerStatus()
+        {
+            try
+            {
+                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/Status");
+                webRequest.Method = HttpMethod.Get.Method;
+                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+
+                using (var streamReader = new StreamReader(webRequest
+                                              .GetResponse()
+                                              .GetResponseStream())
+                    ?? throw new InvalidOperationException("Can't open response stream"))
+                {
+                    var serverStatus = JsonConvert.DeserializeObject<ServerStatus>(streamReader.ReadToEnd());
+
+                    return serverStatus;
+                }
+            }
+            catch (WorkflowException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                HostUtil.Instance.LogLine("The server failed or doesn't support the server status request. Please notify an administrator. Exception message: " + ex.Message, false);
+            }
+
+            // We don't have a server status, return one that represents that.
+            return new ServerStatus
+            {
+                Version = null
+            };
         }
 
         /// <summary>
