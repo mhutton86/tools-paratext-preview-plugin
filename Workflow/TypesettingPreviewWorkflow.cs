@@ -414,7 +414,7 @@ namespace TptMain.Workflow
         {
             try
             {
-                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/Status");
+                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ServerStatus");
                 webRequest.Method = HttpMethod.Get.Method;
                 webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
@@ -440,7 +440,7 @@ namespace TptMain.Workflow
             // We don't have a server status, return one that represents that.
             return new ServerStatus
             {
-                Version = null
+                Version = "N/A"
             };
         }
 
