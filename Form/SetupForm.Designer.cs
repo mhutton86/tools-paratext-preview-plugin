@@ -67,6 +67,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Copyright = new System.Windows.Forms.Label();
+            this.lblVersions = new System.Windows.Forms.Label();
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -484,9 +485,9 @@
             this.lblProjectUpdated.AutoSize = true;
             this.lblProjectUpdated.Location = new System.Drawing.Point(181, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
-            this.lblProjectUpdated.Size = new System.Drawing.Size(74, 13);
+            this.lblProjectUpdated.Size = new System.Drawing.Size(123, 13);
             this.lblProjectUpdated.TabIndex = 7;
-            this.lblProjectUpdated.Text = "Last Updated:";
+            this.lblProjectUpdated.Text = "Last Updated on Server:";
             // 
             // lblProjectName
             // 
@@ -576,12 +577,24 @@
             // 
             this.Copyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Copyright.AutoSize = true;
-            this.Copyright.Location = new System.Drawing.Point(12, 505);
+            this.Copyright.Location = new System.Drawing.Point(9, 505);
             this.Copyright.Name = "Copyright";
             this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.Copyright.Size = new System.Drawing.Size(101, 23);
             this.Copyright.TabIndex = 20;
             this.Copyright.Text = "© 2020 Biblica, Inc.";
+            // 
+            // lblVersions
+            // 
+            this.lblVersions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersions.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lblVersions.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblVersions.Location = new System.Drawing.Point(9, 528);
+            this.lblVersions.Name = "lblVersions";
+            this.lblVersions.Size = new System.Drawing.Size(363, 23);
+            this.lblVersions.TabIndex = 21;
+            this.lblVersions.Text = "UI version: X, Server version: Y";
+            this.lblVersions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SetupForm
             // 
@@ -589,8 +602,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(372, 537);
+            this.ClientSize = new System.Drawing.Size(372, 554);
             this.ControlBox = false;
+            this.Controls.Add(this.lblVersions);
             this.Controls.Add(this.Copyright);
             this.Controls.Add(this.grpProject);
             this.Controls.Add(this.btnCancel);
@@ -664,5 +678,6 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
         private System.Windows.Forms.Label Copyright;
+        private System.Windows.Forms.Label lblVersions;
     }
 }

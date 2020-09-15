@@ -25,6 +25,7 @@ namespace TptTest
         /// Test user.
         /// </summary>
         private const string TestUser = "testUser";
+        private const string TestVersion = "1.2.3";
 
         /// <summary>
         /// Test where project is missing from server.
@@ -71,6 +72,7 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
+            var testServerStatus = CreateTestServerStatus();
 
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
@@ -80,6 +82,9 @@ namespace TptTest
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
+            mockWorkflow.Setup(workflowItem =>
+                workflowItem.CheckServerStatus())
+                .Returns(testServerStatus);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
@@ -508,6 +513,7 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
             var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
+            var testServerStatus = CreateTestServerStatus();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
@@ -527,6 +533,9 @@ namespace TptTest
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
+            mockWorkflow.Setup(workflowItem =>
+                workflowItem.CheckServerStatus())
+                .Returns(testServerStatus);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
@@ -645,6 +654,18 @@ namespace TptTest
             {
                 ProjectName = TestProjectName,
                 ProjectUpdated = DateTime.UtcNow
+            };
+        }
+
+        /// <summary>
+        /// Util method for creating <c>ServerStatus</c> for testing.
+        /// </summary>
+        /// <returns><c>ServerStatus</c> object.</returns>
+        private static ServerStatus CreateTestServerStatus()
+        {
+            return new ServerStatus
+            {
+                Version = TestVersion
             };
         }
 

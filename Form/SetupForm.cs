@@ -5,6 +5,7 @@ using TptMain.Models;
 using TptMain.Util;
 using Paratext.Data.ProjectSettingsAccess;
 using TptMain.Properties;
+using System.Reflection;
 
 namespace TptMain.Form
 {
@@ -17,6 +18,11 @@ namespace TptMain.Form
         /// Project details, from server.
         /// </summary>
         private ProjectDetails _projectDetails;
+
+        /// <summary>
+        /// Server's status.
+        /// </summary>
+        private ServerStatus _serverStatus;
 
         /// <summary>
         /// Preview job, created here.
@@ -359,6 +365,23 @@ namespace TptMain.Form
             lblProjectNameText.Text = _projectDetails.ProjectName;
             lblProjectUpdatedText.Text = _projectDetails.ProjectUpdated.ToShortDateString()
                                          + " " + _projectDetails.ProjectUpdated.ToShortTimeString();
+        }
+
+        /// <summary>
+        /// This function sets the server status and populates the appropriate labels.
+        /// </summary>
+        /// <param name="serverStatus">Server's status (required).</param>
+        public virtual void SetServerStatus(ServerStatus serverStatus)
+        {
+            // validate input
+            _ = serverStatus ?? throw new ArgumentNullException(nameof(serverStatus));
+
+            _serverStatus = serverStatus;
+
+            // get the UI version
+            var uiVersion = Assembly.GetExecutingAssembly()?.GetName()?.Version;
+
+            lblVersions.Text = $"UI version: {uiVersion}, Server version: {serverStatus.Version}";
         }
 
         /// <summary>
