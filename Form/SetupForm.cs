@@ -59,6 +59,10 @@ namespace TptMain.Form
             Copyright.Text = MainConsts.COPYRIGHT;
             _previewJob = new PreviewJob();
 
+            // Default to using the project font in the preview.
+            useProjectFontToolStripMenuItem.Checked = true;
+            useProjectFontToolStripMenuItem.CheckState = CheckState.Checked;
+
             SetupFieldControl(nudFontSize, MainConsts.FontSizeSettings);
             SetupFieldControl(nudFontLeading, MainConsts.FontLeadingSettings);
             SetupFieldControl(nudPageHeight, MainConsts.PageHeightSettings);
@@ -192,6 +196,7 @@ namespace TptMain.Form
             _previewJob.PageWidthInPts = PageWidthInPts;
             _previewJob.PageHeaderInPts = PageHeaderInPts;
             _previewJob.UseCustomFootnotes = UseCustomFootnotes;
+            _previewJob.UseProjectFont = UseProjectFont;
 
             return true;
         }
@@ -350,6 +355,11 @@ namespace TptMain.Form
         public bool UseCustomFootnotes => addCustomFootnotesToolStripMenuItem.Checked;
 
         /// <summary>
+        /// Determines whether the project font will be used when generating the preview.
+        /// </summary>
+        public bool UseProjectFont => useProjectFontToolStripMenuItem.Checked;
+
+        /// <summary>
         /// Project name accessor.
         /// </summary>
         public string ProjectName => lblProjectNameText.Text;
@@ -385,27 +395,19 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Typesetting file menu item to determine if typesetting files download with a preview job.
+        /// This method controls what happens when an item in the "Advanced" menu is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnDownloadTypesettingFileMenuClick(object sender, EventArgs e)
+        private void OnAdvancedMenuItemClick(object sender, EventArgs e)
         {
-            onDownloadTypesettingMenuItem.Checked = !onDownloadTypesettingMenuItem.Checked;
-            onDownloadTypesettingMenuItem.CheckState = onDownloadTypesettingMenuItem.Checked
-                ? CheckState.Checked : CheckState.Unchecked;            
-        }
-
-        /// <summary>
-        /// Typesetting file menu item to determine if custom footnotes are used in preview generation.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AddCustomFootnotesOnTypesttingFileMenuClick(object sender, EventArgs e)
-        {
-            addCustomFootnotesToolStripMenuItem.Checked = !addCustomFootnotesToolStripMenuItem.Checked;
-            addCustomFootnotesToolStripMenuItem.CheckState = addCustomFootnotesToolStripMenuItem.Checked
-                ? CheckState.Checked : CheckState.Unchecked;
+            // When invoked by a ToolStripMenuItem, flip the state of that menu item
+            if (sender is ToolStripMenuItem menuItem)
+            {
+                menuItem.Checked = !menuItem.Checked;
+                menuItem.CheckState = menuItem.Checked
+                    ? CheckState.Checked : CheckState.Unchecked;
+            }
         }
 
         /// <summary>

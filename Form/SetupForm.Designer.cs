@@ -64,6 +64,7 @@
             this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onDownloadTypesettingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addCustomFootnotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useProjectFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Copyright = new System.Windows.Forms.Label();
@@ -90,7 +91,7 @@
             this.grpLayout.TabIndex = 11;
             this.grpLayout.TabStop = false;
             this.grpLayout.Text = "Layout";
-            // 
+            //  
             // rdoLayoutTbotb
             // 
             this.rdoLayoutTbotb.AutoSize = true;
@@ -539,7 +540,8 @@
             this.advancedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.onDownloadTypesettingMenuItem,
-            this.addCustomFootnotesToolStripMenuItem});
+            this.addCustomFootnotesToolStripMenuItem,
+            this.useProjectFontToolStripMenuItem});
             this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             this.advancedToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.advancedToolStripMenuItem.Text = "Advanced";
@@ -549,14 +551,21 @@
             this.onDownloadTypesettingMenuItem.Name = "onDownloadTypesettingMenuItem";
             this.onDownloadTypesettingMenuItem.Size = new System.Drawing.Size(217, 22);
             this.onDownloadTypesettingMenuItem.Text = "Download Typesetting Files";
-            this.onDownloadTypesettingMenuItem.Click += new System.EventHandler(this.OnDownloadTypesettingFileMenuClick);
+            this.onDownloadTypesettingMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
             // 
             // addCustomFootnotesToolStripMenuItem
             // 
             this.addCustomFootnotesToolStripMenuItem.Name = "addCustomFootnotesToolStripMenuItem";
             this.addCustomFootnotesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.addCustomFootnotesToolStripMenuItem.Text = "Localized Footnotes";
-            this.addCustomFootnotesToolStripMenuItem.Click += new System.EventHandler(this.AddCustomFootnotesOnTypesttingFileMenuClick);
+            this.addCustomFootnotesToolStripMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
+            // 
+            // useProjectFontToolStripMenuItem
+            // 
+            this.useProjectFontToolStripMenuItem.Name = "useProjectFontToolStripMenuItem";
+            this.useProjectFontToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.useProjectFontToolStripMenuItem.Text = "Use Project Font";
+            this.useProjectFontToolStripMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
             // 
             // helpToolStripMenuItem
             // 
@@ -679,5 +688,6 @@
         private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
         private System.Windows.Forms.Label Copyright;
         private System.Windows.Forms.Label lblVersions;
+        private System.Windows.Forms.ToolStripMenuItem useProjectFontToolStripMenuItem;
     }
 }

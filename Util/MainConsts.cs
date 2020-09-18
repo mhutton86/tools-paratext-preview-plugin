@@ -15,7 +15,11 @@ namespace TptMain.Util
         /// <summary>
         /// Default server URI. Needs to be configurable, in future.
         /// </summary>
+#if DEBUG
+        public const string DEFAULT_SERVER_URI = "http://172.31.10.12:9875/api";
+#else
         public const string DEFAULT_SERVER_URI = "https://tpt-server.biblica.com/api";
+#endif
 
         /// <summary>
         /// Paratext project settings filename.
