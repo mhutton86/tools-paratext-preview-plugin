@@ -159,7 +159,7 @@ namespace TptMain.Workflow
                             // Check if it's time to update status and do so, as needed.
                             var nowTime = DateTime.Now;
                             if (!(nowTime.Subtract(lastCheckTime).TotalSeconds >
-                                  MainConsts.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC))
+                                  Properties.Settings.Default.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC))
                             {
                                 continue;
                             }
@@ -268,9 +268,9 @@ namespace TptMain.Workflow
               downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
             }
             
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
+            var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
             webRequest.Method = HttpMethod.Get.Method;
-            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+            webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (var inputStream = webRequest.GetResponse().GetResponseStream())
             {
@@ -299,9 +299,9 @@ namespace TptMain.Workflow
 
             lock (this)
             {
-                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
+                var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
                 webRequest.Method = HttpMethod.Delete.Method;
-                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+                webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (var streamReader = new StreamReader(webRequest.GetResponse()
                                                                .GetResponseStream()
@@ -319,9 +319,9 @@ namespace TptMain.Workflow
         /// <returns>Created preview job, with user settings, server-side status, and ID.</returns>
         public virtual PreviewJob CreatePreviewJob(PreviewJob previewJob)
         {
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs");
+            var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewJobs");
             webRequest.Method = HttpMethod.Post.Method;
-            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+            webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
             webRequest.ContentType = MainConsts.APPLICATION_JSON_MIME_TYPE;
 
             using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
@@ -342,9 +342,9 @@ namespace TptMain.Workflow
         /// <returns>Updated preview job, with user settings, server-side status, and ID.</returns>
         public virtual PreviewJob UpdatePreviewJob(string jobId)
         {
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
+            var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
             webRequest.Method = HttpMethod.Get.Method;
-            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+            webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
                         ?? throw new InvalidOperationException("Can't open response stream")))
@@ -362,9 +362,9 @@ namespace TptMain.Workflow
         {
             try
             {
-                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ProjectDetails");
+                var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/ProjectDetails");
                 webRequest.Method = HttpMethod.Get.Method;
-                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+                webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (var streamReader = new StreamReader(webRequest
                                               .GetResponse()
@@ -414,9 +414,9 @@ namespace TptMain.Workflow
         {
             try
             {
-                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ServerStatus");
+                var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/ServerStatus");
                 webRequest.Method = HttpMethod.Get.Method;
-                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+                webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (var streamReader = new StreamReader(webRequest
                                               .GetResponse()

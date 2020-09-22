@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TypesettingPreviewPlugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Biblica")]
 [assembly: AssemblyProduct("TypesettingPreviewPlugin")]
 [assembly: AssemblyCopyright("© 2020 Biblica, Inc.")]
 [assembly: AssemblyTrademark("")]
