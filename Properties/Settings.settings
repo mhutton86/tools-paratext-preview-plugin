@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TptMain.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DEFAULT_SERVER_URI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://tpt-server.biblica.com/api</Value>
+    </Setting>
+    <Setting Name="DEFAULT_REQUEST_TIMEOUT_IN_MS" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30000</Value>
+    </Setting>
+    <Setting Name="PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
