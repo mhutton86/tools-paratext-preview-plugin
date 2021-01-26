@@ -75,10 +75,10 @@ namespace TptMain.Util
         }
 
         /// <summary>
-        /// Finds the path for the project to pass to GetFootnoteCallerSequence.
+        /// This function will get the absolute path for a given paratext project.
         /// </summary>
-        /// <param name="projectName"></param>
-        /// <returns></returns>
+        /// <param name="projectName">A Paratext project's shortname, we want the directory of EG: "usNIVv3"</param>
+        /// <returns>An absolute path to a given Paratext project.</returns>
         public DirectoryInfo GetParatextProjectDirectory(string projectName)
         {
             // validate inputs
