@@ -64,6 +64,11 @@
             this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onDownloadTypesettingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addCustomFootnotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useProjectFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Copyright = new System.Windows.Forms.Label();
+            this.lblVersions = new System.Windows.Forms.Label();
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -86,7 +91,7 @@
             this.grpLayout.TabIndex = 11;
             this.grpLayout.TabStop = false;
             this.grpLayout.Text = "Layout";
-            // 
+            //  
             // rdoLayoutTbotb
             // 
             this.rdoLayoutTbotb.AutoSize = true;
@@ -446,7 +451,7 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(204, 506);
+            this.btnCreate.Location = new System.Drawing.Point(204, 505);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 17;
@@ -481,9 +486,9 @@
             this.lblProjectUpdated.AutoSize = true;
             this.lblProjectUpdated.Location = new System.Drawing.Point(181, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
-            this.lblProjectUpdated.Size = new System.Drawing.Size(74, 13);
+            this.lblProjectUpdated.Size = new System.Drawing.Size(123, 13);
             this.lblProjectUpdated.TabIndex = 7;
-            this.lblProjectUpdated.Text = "Last Updated:";
+            this.lblProjectUpdated.Text = "Last Updated on Server:";
             // 
             // lblProjectName
             // 
@@ -521,7 +526,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.advancedToolStripMenuItem});
+            this.advancedToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(372, 24);
@@ -534,7 +540,8 @@
             this.advancedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.onDownloadTypesettingMenuItem,
-            this.addCustomFootnotesToolStripMenuItem});
+            this.addCustomFootnotesToolStripMenuItem,
+            this.useProjectFontToolStripMenuItem});
             this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             this.advancedToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.advancedToolStripMenuItem.Text = "Advanced";
@@ -544,14 +551,59 @@
             this.onDownloadTypesettingMenuItem.Name = "onDownloadTypesettingMenuItem";
             this.onDownloadTypesettingMenuItem.Size = new System.Drawing.Size(217, 22);
             this.onDownloadTypesettingMenuItem.Text = "Download Typesetting Files";
-            this.onDownloadTypesettingMenuItem.Click += new System.EventHandler(this.OnDownloadTypesettingFileMenuClick);
+            this.onDownloadTypesettingMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
             // 
             // addCustomFootnotesToolStripMenuItem
             // 
             this.addCustomFootnotesToolStripMenuItem.Name = "addCustomFootnotesToolStripMenuItem";
             this.addCustomFootnotesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.addCustomFootnotesToolStripMenuItem.Text = "Localized Footnotes";
-            this.addCustomFootnotesToolStripMenuItem.Click += new System.EventHandler(this.AddCustomFootnotesOnTypesttingFileMenuClick);
+            this.addCustomFootnotesToolStripMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
+            // 
+            // useProjectFontToolStripMenuItem
+            // 
+            this.useProjectFontToolStripMenuItem.Name = "useProjectFontToolStripMenuItem";
+            this.useProjectFontToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.useProjectFontToolStripMenuItem.Text = "Use Project Font";
+            this.useProjectFontToolStripMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.licenseToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // licenseToolStripMenuItem
+            // 
+            this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.licenseToolStripMenuItem.Text = "License";
+            this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
+            // 
+            // Copyright
+            // 
+            this.Copyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Copyright.AutoSize = true;
+            this.Copyright.Location = new System.Drawing.Point(9, 505);
+            this.Copyright.Name = "Copyright";
+            this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.Copyright.Size = new System.Drawing.Size(101, 23);
+            this.Copyright.TabIndex = 20;
+            this.Copyright.Text = "© 2020 Biblica, Inc.";
+            // 
+            // lblVersions
+            // 
+            this.lblVersions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersions.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lblVersions.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblVersions.Location = new System.Drawing.Point(9, 528);
+            this.lblVersions.Name = "lblVersions";
+            this.lblVersions.Size = new System.Drawing.Size(363, 23);
+            this.lblVersions.TabIndex = 21;
+            this.lblVersions.Text = "UI version: X, Server version: Y";
+            this.lblVersions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SetupForm
             // 
@@ -559,8 +611,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(372, 550);
+            this.ClientSize = new System.Drawing.Size(372, 554);
             this.ControlBox = false;
+            this.Controls.Add(this.lblVersions);
+            this.Controls.Add(this.Copyright);
             this.Controls.Add(this.grpProject);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCreate);
@@ -630,5 +684,10 @@
         private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onDownloadTypesettingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addCustomFootnotesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
+        private System.Windows.Forms.Label Copyright;
+        private System.Windows.Forms.Label lblVersions;
+        private System.Windows.Forms.ToolStripMenuItem useProjectFontToolStripMenuItem;
     }
 }

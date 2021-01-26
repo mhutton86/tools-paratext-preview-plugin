@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using TptMain.Models;
 using TptMain.Util;
 using Paratext.Data.ProjectSettingsAccess;
+using TptMain.Properties;
+using System.Reflection;
 
 namespace TptMain.Form
 {
@@ -16,6 +18,11 @@ namespace TptMain.Form
         /// Project details, from server.
         /// </summary>
         private ProjectDetails _projectDetails;
+
+        /// <summary>
+        /// Server's status.
+        /// </summary>
+        private ServerStatus _serverStatus;
 
         /// <summary>
         /// Preview job, created here.
@@ -49,7 +56,12 @@ namespace TptMain.Form
         public SetupForm()
         {
             InitializeComponent();
+            Copyright.Text = MainConsts.COPYRIGHT;
             _previewJob = new PreviewJob();
+
+            // Default to using the project font in the preview.
+            useProjectFontToolStripMenuItem.Checked = true;
+            useProjectFontToolStripMenuItem.CheckState = CheckState.Checked;
 
             SetupFieldControl(nudFontSize, MainConsts.FontSizeSettings);
             SetupFieldControl(nudFontLeading, MainConsts.FontLeadingSettings);
@@ -184,6 +196,7 @@ namespace TptMain.Form
             _previewJob.PageWidthInPts = PageWidthInPts;
             _previewJob.PageHeaderInPts = PageHeaderInPts;
             _previewJob.UseCustomFootnotes = UseCustomFootnotes;
+            _previewJob.UseProjectFont = UseProjectFont;
 
             return true;
         }
@@ -342,6 +355,11 @@ namespace TptMain.Form
         public bool UseCustomFootnotes => addCustomFootnotesToolStripMenuItem.Checked;
 
         /// <summary>
+        /// Determines whether the project font will be used when generating the preview.
+        /// </summary>
+        public bool UseProjectFont => useProjectFontToolStripMenuItem.Checked;
+
+        /// <summary>
         /// Project name accessor.
         /// </summary>
         public string ProjectName => lblProjectNameText.Text;
@@ -360,27 +378,36 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Typesetting file menu item to determine if typesetting files download with a preview job.
+        /// This function sets the server status and populates the appropriate labels.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnDownloadTypesettingFileMenuClick(object sender, EventArgs e)
+        /// <param name="serverStatus">Server's status (required).</param>
+        public virtual void SetServerStatus(ServerStatus serverStatus)
         {
-            onDownloadTypesettingMenuItem.Checked = !onDownloadTypesettingMenuItem.Checked;
-            onDownloadTypesettingMenuItem.CheckState = onDownloadTypesettingMenuItem.Checked
-                ? CheckState.Checked : CheckState.Unchecked;            
+            // validate input
+            _ = serverStatus ?? throw new ArgumentNullException(nameof(serverStatus));
+
+            _serverStatus = serverStatus;
+
+            // get the UI version
+            var uiVersion = Assembly.GetExecutingAssembly()?.GetName()?.Version;
+
+            lblVersions.Text = $"UI version: {uiVersion}, Server version: {serverStatus.Version}";
         }
 
         /// <summary>
-        /// Typesetting file menu item to determine if custom footnotes are used in preview generation.
+        /// This method controls what happens when an item in the "Advanced" menu is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddCustomFootnotesOnTypesttingFileMenuClick(object sender, EventArgs e)
+        private void OnAdvancedMenuItemClick(object sender, EventArgs e)
         {
-            addCustomFootnotesToolStripMenuItem.Checked = !addCustomFootnotesToolStripMenuItem.Checked;
-            addCustomFootnotesToolStripMenuItem.CheckState = addCustomFootnotesToolStripMenuItem.Checked
-                ? CheckState.Checked : CheckState.Unchecked;
+            // When invoked by a ToolStripMenuItem, flip the state of that menu item
+            if (sender is ToolStripMenuItem menuItem)
+            {
+                menuItem.Checked = !menuItem.Checked;
+                menuItem.CheckState = menuItem.Checked
+                    ? CheckState.Checked : CheckState.Unchecked;
+            }
         }
 
         /// <summary>
@@ -390,6 +417,19 @@ namespace TptMain.Form
         public void SetCustomFootnotesEnabled(bool enabled)
         {
             addCustomFootnotesToolStripMenuItem.Enabled = enabled;
+        }
+
+        private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string pluginName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            string formTitle = $"{pluginName} - End User License Agreement";
+
+            LicenseForm eulaForm = new LicenseForm();
+            eulaForm.FormType = LicenseForm.FormTypes.Info;
+            eulaForm.FormTitle = formTitle;
+            eulaForm.LicenseText = Resources.TPT_EULA;
+            eulaForm.OnDismiss = () => eulaForm.Close();
+            eulaForm.Show();
         }
     }
 }

@@ -108,9 +108,16 @@ namespace TptMain.Models
         public BookFormat? BookFormat { get; set; }
 
         /// <summary>
-        /// Generate preview with custom footnote markers; defaults to false.
+        /// (Optional) Whether or not to use custom footnotes. Defaults to false.
+        /// 
+        /// Note: The footnotes would be pulled from the project's respective Paratext footnote caller sequence.
         /// </summary>
         public bool? UseCustomFootnotes { get; set; } = false;
+
+        /// <summary>
+        /// (Optional) Whether or not to use the project's defined font. Defaults to true.
+        /// </summary>
+        public bool UseProjectFont { get; set; } = true;
 
         /// <summary>
         /// Function used for indicating an error occurred and provide a message for the reason.
