@@ -59,15 +59,49 @@ namespace TptMain.Form
             Copyright.Text = MainConsts.COPYRIGHT;
             _previewJob = new PreviewJob();
 
-            // Default to using the project font in the preview.
-            useProjectFontToolStripMenuItem.Checked = true;
-            useProjectFontToolStripMenuItem.CheckState = CheckState.Checked;
-
             SetupFieldControl(nudFontSize, MainConsts.FontSizeSettings);
             SetupFieldControl(nudFontLeading, MainConsts.FontLeadingSettings);
             SetupFieldControl(nudPageHeight, MainConsts.PageHeightSettings);
             SetupFieldControl(nudPageWidth, MainConsts.PageWidthSettings);
             SetupFieldControl(nudPageHeader, MainConsts.PageHeaderSettings);
+
+            // set up all tool-tips
+
+            toolTip.SetToolTip(grpLayout, MainConsts.LAYOUT_TOOLTIP);
+            toolTip.SetToolTip(rdoLayoutCav, MainConsts.LAYOUT_CAV_TOOLTIP);
+            toolTip.SetToolTip(rdoLayoutTbotb, MainConsts.LAYOUT_BTOTB_TOOLTIP);
+
+            toolTip.SetToolTip(grpBookRange, MainConsts.BOOK_RANGE);
+            toolTip.SetToolTip(rbFullBible, MainConsts.BOOK_RANGE_FULL);
+            toolTip.SetToolTip(rbNewTestament, MainConsts.BOOK_RANGE_NT);
+            toolTip.SetToolTip(rbCustom, MainConsts.BOOK_RANGE_CUSTOM);
+            toolTip.SetToolTip(tbCustomBookSet, MainConsts.BOOK_RANGE_CUSTOM);
+            toolTip.SetToolTip(cbIncludeAncillary, MainConsts.BOOK_RANGE_ANCILLARY);
+
+            toolTip.SetToolTip(grpTextOptions, MainConsts.TEXT_OPTS);
+            toolTip.SetToolTip(nudFontSize, MainConsts.TEXT_FONT);
+            toolTip.SetToolTip(nudFontLeading, MainConsts.TEXT_LEAD);
+
+            toolTip.SetToolTip(grpPageOptions, MainConsts.PAGE_OPTS);
+            toolTip.SetToolTip(nudPageWidth, MainConsts.PAGE_WIDTH);
+            toolTip.SetToolTip(nudPageHeight, MainConsts.PAGE_HEIGHT);
+            toolTip.SetToolTip(nudPageHeader, MainConsts.PAGE_HEADER);
+
+            toolTip.SetToolTip(cbHyphenate, MainConsts.HYPHENATE);
+            toolTip.SetToolTip(cbLocalizeFootnotes, MainConsts.LOCALIZE_FOOTNOTES);
+
+            toolTip.SetToolTip(gbInclusions, MainConsts.INCLUSIONS);
+            toolTip.SetToolTip(cbIntros, MainConsts.INCLUDE_INTRO);
+            toolTip.SetToolTip(cbHeadings, MainConsts.INCLUDE_HEADINGS);
+            toolTip.SetToolTip(cbFootnotes, MainConsts.INCLUDE_FOOTNOTES);
+            toolTip.SetToolTip(cbChapterNumbers, MainConsts.INCLUDE_CHAPTER_NUMS);
+            toolTip.SetToolTip(cbVerseNumbers, MainConsts.INCLUDE_VERSE_NUMS);
+            toolTip.SetToolTip(cbParallelPassages, MainConsts.INCLUDE_PARALLEL);
+            toolTip.SetToolTip(cbAcrostic, MainConsts.INCLUDE_ACROSTIC);
+
+            toolTip.SetToolTip(cbDownloadTypsettingFiles, MainConsts.DOWNLOAD_TYPESETTING);
+            toolTip.SetToolTip(cbUseProjectFonts, MainConsts.USE_PROJECT_FONTS);
+
         }
 
         /// <summary>
@@ -93,7 +127,7 @@ namespace TptMain.Form
         {
             if (PopulatePreviewJob())
             {
-                IsArchive = onDownloadTypesettingMenuItem.Checked;
+                //IsArchive = onDownloadTypesettingMenuItem.Checked;
                 Close();
             }
         }
@@ -109,42 +143,9 @@ namespace TptMain.Form
             Close();
         }
 
-        /// <summary>
-        /// Default text options handler. Disables text options fields, when checked.
-        /// </summary>
-        /// <param name="sender">Event source (radio button).</param>
-        /// <param name="e">Event args.</param>
-        private void RdoTextOptionsDefaults_CheckedChanged(object sender, EventArgs e)
+        internal void SetCustomFootnotesEnabled(bool footnotesDefined)
         {
-            if (rdoTextOptionsDefaults.Checked)
-            {
-                ControlTextOptions(false);
-            }
-        }
-
-        /// <summary>
-        /// Custom text options handler. Enables text options fields, when checked.
-        /// </summary>
-        /// <param name="sender">Event source (radio button).</param>
-        /// <param name="e">Event args.</param>
-        private void RdoTextOptionsCustom_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoTextOptionsCustom.Checked)
-            {
-                ControlTextOptions(true);
-            }
-        }
-
-        /// <summary>
-        /// Enables/disabled text options.
-        /// </summary>
-        /// <param name="isEnabled">True to enable text options, false otherwise.</param>
-        private void ControlTextOptions(bool isEnabled)
-        {
-            ToggleFieldControl(nudFontSize, lblFontSize, lblFontSizeUnits,
-                MainConsts.FontSizeSettings, isEnabled);
-            ToggleFieldControl(nudFontLeading, lblFontLeading, lblFontLeadingUnits,
-                MainConsts.FontLeadingSettings, isEnabled);
+            cbFootnotes.Enabled = footnotesDefined;
         }
 
         /// <summary>
@@ -229,32 +230,6 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Default page options handler. Disables page options fields, when checked.
-        /// </summary>
-        /// <param name="sender">Event source (radio button).</param>
-        /// <param name="e">Event args.</param>
-        private void RdoPageOptionsDefaults_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoPageOptionsDefaults.Checked)
-            {
-                ControlPageOptions(false);
-            }
-        }
-
-        /// <summary>
-        /// Custom page options handler. Enables page options fields, when checked.
-        /// </summary>
-        /// <param name="sender">Event source (radio button).</param>
-        /// <param name="e">Event args.</param>
-        private void RdoPageOptionsCustom_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoPageOptionsCustom.Checked)
-            {
-                ControlPageOptions(true);
-            }
-        }
-
-        /// <summary>
         /// Enables/disabled page options.
         /// </summary>
         /// <param name="isEnabled">True to enable page options, false otherwise.</param>
@@ -302,45 +277,35 @@ namespace TptMain.Form
         /// <summary>
         /// Font size in points if custom text options enabled, null otherwise.
         /// </summary>
-        public float? FontSizeInPts => rdoTextOptionsDefaults.Checked
-            ? (float?)null
-            : string.IsNullOrWhiteSpace(nudFontSize.Text)
+        public float? FontSizeInPts => string.IsNullOrWhiteSpace(nudFontSize.Text)
                 ? (float?)null
                 : Convert.ToSingle(nudFontSize.Value);
 
         /// <summary>
         /// Font leading in points if custom text options enabled, null otherwise.
         /// </summary>
-        public float? FontLeadingInPts => rdoTextOptionsDefaults.Checked
-            ? (float?)null
-            : string.IsNullOrWhiteSpace(nudFontLeading.Text)
+        public float? FontLeadingInPts => string.IsNullOrWhiteSpace(nudFontLeading.Text)
                 ? (float?)null
                 : Convert.ToSingle(nudFontLeading.Value);
 
         /// <summary>
         /// Page height in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageHeightInPts => rdoPageOptionsDefaults.Checked
-            ? (float?)null
-            : string.IsNullOrWhiteSpace(nudPageHeight.Text)
+        public float? PageHeightInPts => string.IsNullOrWhiteSpace(nudPageHeight.Text)
                 ? (float?)null
                 : Convert.ToSingle(nudPageHeight.Value);
 
         /// <summary>
         /// Page width in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageWidthInPts => rdoPageOptionsDefaults.Checked
-            ? (float?)null
-            : string.IsNullOrWhiteSpace(nudPageWidth.Text)
+        public float? PageWidthInPts => string.IsNullOrWhiteSpace(nudPageWidth.Text)
                 ? (float?)null
                 : Convert.ToSingle(nudPageWidth.Value);
 
         /// <summary>
         /// Page header in points if custom page options enabled, null otherwise.
         /// </summary>
-        public float? PageHeaderInPts => rdoPageOptionsDefaults.Checked
-            ? (float?)null
-            : string.IsNullOrWhiteSpace(nudPageHeader.Text)
+        public float? PageHeaderInPts => string.IsNullOrWhiteSpace(nudPageHeader.Text)
                 ? (float?)null
                 : Convert.ToSingle(nudPageHeader.Value);
 
@@ -352,12 +317,12 @@ namespace TptMain.Form
         /// <summary>
         /// Use custom footnote accessor.
         /// </summary>
-        public bool UseCustomFootnotes => addCustomFootnotesToolStripMenuItem.Checked;
+        public bool UseCustomFootnotes => cbFootnotes.Checked;
 
         /// <summary>
         /// Determines whether the project font will be used when generating the preview.
         /// </summary>
-        public bool UseProjectFont => useProjectFontToolStripMenuItem.Checked;
+        public bool UseProjectFont => cbUseProjectFonts.Checked;
 
         /// <summary>
         /// Project name accessor.
@@ -410,15 +375,6 @@ namespace TptMain.Form
             }
         }
 
-        /// <summary>
-        /// Informs the UI whether or not the "Localized Footnotes" menu item is enable or disabled.
-        /// </summary>
-        /// <param name="enabled"></param>
-        public void SetCustomFootnotesEnabled(bool enabled)
-        {
-            addCustomFootnotesToolStripMenuItem.Enabled = enabled;
-        }
-
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string pluginName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
@@ -430,6 +386,35 @@ namespace TptMain.Form
             eulaForm.LicenseText = Resources.TPT_EULA;
             eulaForm.OnDismiss = () => eulaForm.Close();
             eulaForm.Show();
+        }
+
+        private void rbCustom_CheckedChanged(object sender, EventArgs e)
+        {
+            tbCustomBookSet.Enabled = rbCustom.Checked;
+        }
+
+        private void rdoLayoutTbotb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoLayoutTbotb.Checked) {
+                cbHeadings.Checked = false;
+                cbFootnotes.Checked = false;
+                cbChapterNumbers.Checked = false;
+                cbVerseNumbers.Checked = false;
+                cbParallelPassages.Checked = false;
+            }
+        }
+
+        private void rdoLayoutCav_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoLayoutCav.Checked)
+            {
+                cbHeadings.Checked = true;
+                cbFootnotes.Checked = true;
+                cbChapterNumbers.Checked = true;
+                cbVerseNumbers.Checked = true;
+                cbParallelPassages.Checked = true;
+            }
+
         }
     }
 }

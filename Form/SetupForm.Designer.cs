@@ -28,12 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupForm));
             this.grpLayout = new System.Windows.Forms.GroupBox();
             this.rdoLayoutTbotb = new System.Windows.Forms.RadioButton();
             this.rdoLayoutCav = new System.Windows.Forms.RadioButton();
-            this.rdoTextOptionsDefaults = new System.Windows.Forms.RadioButton();
-            this.rdoTextOptionsCustom = new System.Windows.Forms.RadioButton();
             this.grpTextOptions = new System.Windows.Forms.GroupBox();
             this.nudFontLeading = new System.Windows.Forms.NumericUpDown();
             this.nudFontSize = new System.Windows.Forms.NumericUpDown();
@@ -51,8 +50,6 @@
             this.lblPageHeader = new System.Windows.Forms.Label();
             this.lblPageHeight = new System.Windows.Forms.Label();
             this.lblPageWidth = new System.Windows.Forms.Label();
-            this.rdoPageOptionsCustom = new System.Windows.Forms.RadioButton();
-            this.rdoPageOptionsDefaults = new System.Windows.Forms.RadioButton();
             this.btnCreate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblProjectUpdatedText = new System.Windows.Forms.Label();
@@ -60,15 +57,31 @@
             this.lblProjectName = new System.Windows.Forms.Label();
             this.grpProject = new System.Windows.Forms.GroupBox();
             this.lblProjectNameText = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.onDownloadTypesettingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addCustomFootnotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.useProjectFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Copyright = new System.Windows.Forms.Label();
             this.lblVersions = new System.Windows.Forms.Label();
+            this.grpBookRange = new System.Windows.Forms.GroupBox();
+            this.cbIncludeAncillary = new System.Windows.Forms.CheckBox();
+            this.tbCustomBookSet = new System.Windows.Forms.TextBox();
+            this.rbCustom = new System.Windows.Forms.RadioButton();
+            this.rbNewTestament = new System.Windows.Forms.RadioButton();
+            this.rbFullBible = new System.Windows.Forms.RadioButton();
+            this.gbAdvanced = new System.Windows.Forms.GroupBox();
+            this.gbInclusions = new System.Windows.Forms.GroupBox();
+            this.cbAcrostic = new System.Windows.Forms.CheckBox();
+            this.cbParallelPassages = new System.Windows.Forms.CheckBox();
+            this.cbVerseNumbers = new System.Windows.Forms.CheckBox();
+            this.cbChapterNumbers = new System.Windows.Forms.CheckBox();
+            this.cbHeadings = new System.Windows.Forms.CheckBox();
+            this.cbFootnotes = new System.Windows.Forms.CheckBox();
+            this.cbIntros = new System.Windows.Forms.CheckBox();
+            this.cbDownloadTypsettingFiles = new System.Windows.Forms.CheckBox();
+            this.cbUseProjectFonts = new System.Windows.Forms.CheckBox();
+            this.cbLocalizeFootnotes = new System.Windows.Forms.CheckBox();
+            this.cbHyphenate = new System.Windows.Forms.CheckBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -78,90 +91,76 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).BeginInit();
             this.grpProject.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
+            this.grpBookRange.SuspendLayout();
+            this.gbAdvanced.SuspendLayout();
+            this.gbInclusions.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpLayout
             // 
+            this.grpLayout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpLayout.Controls.Add(this.rdoLayoutTbotb);
             this.grpLayout.Controls.Add(this.rdoLayoutCav);
             this.grpLayout.Location = new System.Drawing.Point(12, 113);
             this.grpLayout.Name = "grpLayout";
-            this.grpLayout.Size = new System.Drawing.Size(348, 84);
+            this.grpLayout.Size = new System.Drawing.Size(366, 84);
             this.grpLayout.TabIndex = 11;
             this.grpLayout.TabStop = false;
             this.grpLayout.Text = "Layout";
-            //  
+            // 
             // rdoLayoutTbotb
             // 
             this.rdoLayoutTbotb.AutoSize = true;
-            this.rdoLayoutTbotb.Location = new System.Drawing.Point(19, 51);
+            this.rdoLayoutTbotb.Location = new System.Drawing.Point(19, 42);
             this.rdoLayoutTbotb.Name = "rdoLayoutTbotb";
             this.rdoLayoutTbotb.Size = new System.Drawing.Size(181, 17);
             this.rdoLayoutTbotb.TabIndex = 10;
             this.rdoLayoutTbotb.Text = " The Books of the Bible (TBOTB)";
             this.rdoLayoutTbotb.UseVisualStyleBackColor = true;
+            this.rdoLayoutTbotb.CheckedChanged += new System.EventHandler(this.rdoLayoutTbotb_CheckedChanged);
             // 
             // rdoLayoutCav
             // 
             this.rdoLayoutCav.AutoSize = true;
             this.rdoLayoutCav.Checked = true;
-            this.rdoLayoutCav.Location = new System.Drawing.Point(19, 28);
+            this.rdoLayoutCav.Location = new System.Drawing.Point(19, 19);
             this.rdoLayoutCav.Name = "rdoLayoutCav";
             this.rdoLayoutCav.Size = new System.Drawing.Size(146, 17);
             this.rdoLayoutCav.TabIndex = 9;
             this.rdoLayoutCav.TabStop = true;
             this.rdoLayoutCav.Text = " Chapter and Verse (CAV)";
             this.rdoLayoutCav.UseVisualStyleBackColor = true;
-            // 
-            // rdoTextOptionsDefaults
-            // 
-            this.rdoTextOptionsDefaults.AutoSize = true;
-            this.rdoTextOptionsDefaults.Checked = true;
-            this.rdoTextOptionsDefaults.Location = new System.Drawing.Point(19, 28);
-            this.rdoTextOptionsDefaults.Name = "rdoTextOptionsDefaults";
-            this.rdoTextOptionsDefaults.Size = new System.Drawing.Size(59, 17);
-            this.rdoTextOptionsDefaults.TabIndex = 10;
-            this.rdoTextOptionsDefaults.TabStop = true;
-            this.rdoTextOptionsDefaults.Text = "Default";
-            this.rdoTextOptionsDefaults.UseVisualStyleBackColor = true;
-            this.rdoTextOptionsDefaults.CheckedChanged += new System.EventHandler(this.RdoTextOptionsDefaults_CheckedChanged);
-            // 
-            // rdoTextOptionsCustom
-            // 
-            this.rdoTextOptionsCustom.AutoSize = true;
-            this.rdoTextOptionsCustom.Location = new System.Drawing.Point(19, 51);
-            this.rdoTextOptionsCustom.Name = "rdoTextOptionsCustom";
-            this.rdoTextOptionsCustom.Size = new System.Drawing.Size(60, 17);
-            this.rdoTextOptionsCustom.TabIndex = 11;
-            this.rdoTextOptionsCustom.Text = "Custom";
-            this.rdoTextOptionsCustom.UseVisualStyleBackColor = true;
-            this.rdoTextOptionsCustom.CheckedChanged += new System.EventHandler(this.RdoTextOptionsCustom_CheckedChanged);
+            this.rdoLayoutCav.CheckedChanged += new System.EventHandler(this.rdoLayoutCav_CheckedChanged);
             // 
             // grpTextOptions
             // 
+            this.grpTextOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.grpTextOptions.Controls.Add(this.nudFontLeading);
             this.grpTextOptions.Controls.Add(this.nudFontSize);
             this.grpTextOptions.Controls.Add(this.lblFontLeadingUnits);
             this.grpTextOptions.Controls.Add(this.lblFontSizeUnits);
             this.grpTextOptions.Controls.Add(this.lblFontLeading);
             this.grpTextOptions.Controls.Add(this.lblFontSize);
-            this.grpTextOptions.Controls.Add(this.rdoTextOptionsCustom);
-            this.grpTextOptions.Controls.Add(this.rdoTextOptionsDefaults);
-            this.grpTextOptions.Location = new System.Drawing.Point(12, 207);
+            this.grpTextOptions.Location = new System.Drawing.Point(391, 115);
             this.grpTextOptions.Name = "grpTextOptions";
-            this.grpTextOptions.Size = new System.Drawing.Size(348, 124);
+            this.grpTextOptions.Size = new System.Drawing.Size(208, 82);
             this.grpTextOptions.TabIndex = 12;
             this.grpTextOptions.TabStop = false;
-            this.grpTextOptions.Text = "Text Options";
+            this.grpTextOptions.Text = "Text";
             // 
             // nudFontLeading
             // 
             this.nudFontLeading.DecimalPlaces = 1;
-            this.nudFontLeading.Enabled = false;
-            this.nudFontLeading.Location = new System.Drawing.Point(202, 79);
+            this.nudFontLeading.Location = new System.Drawing.Point(64, 40);
+            this.nudFontLeading.Maximum = new decimal(new int[] {
+            28,
+            0,
+            0,
+            0});
             this.nudFontLeading.Minimum = new decimal(new int[] {
-            1,
+            6,
             0,
             0,
             0});
@@ -178,10 +177,14 @@
             // nudFontSize
             // 
             this.nudFontSize.DecimalPlaces = 1;
-            this.nudFontSize.Enabled = false;
-            this.nudFontSize.Location = new System.Drawing.Point(202, 50);
+            this.nudFontSize.Location = new System.Drawing.Point(64, 14);
+            this.nudFontSize.Maximum = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
             this.nudFontSize.Minimum = new decimal(new int[] {
-            1,
+            6,
             0,
             0,
             0});
@@ -200,7 +203,7 @@
             this.lblFontLeadingUnits.AutoSize = true;
             this.lblFontLeadingUnits.BackColor = System.Drawing.Color.Transparent;
             this.lblFontLeadingUnits.Enabled = false;
-            this.lblFontLeadingUnits.Location = new System.Drawing.Point(310, 81);
+            this.lblFontLeadingUnits.Location = new System.Drawing.Point(172, 47);
             this.lblFontLeadingUnits.Name = "lblFontLeadingUnits";
             this.lblFontLeadingUnits.Size = new System.Drawing.Size(16, 13);
             this.lblFontLeadingUnits.TabIndex = 17;
@@ -212,7 +215,7 @@
             this.lblFontSizeUnits.AutoSize = true;
             this.lblFontSizeUnits.BackColor = System.Drawing.Color.Transparent;
             this.lblFontSizeUnits.Enabled = false;
-            this.lblFontSizeUnits.Location = new System.Drawing.Point(310, 53);
+            this.lblFontSizeUnits.Location = new System.Drawing.Point(172, 21);
             this.lblFontSizeUnits.Name = "lblFontSizeUnits";
             this.lblFontSizeUnits.Size = new System.Drawing.Size(16, 13);
             this.lblFontSizeUnits.TabIndex = 16;
@@ -223,8 +226,7 @@
             // 
             this.lblFontLeading.AutoSize = true;
             this.lblFontLeading.BackColor = System.Drawing.Color.Transparent;
-            this.lblFontLeading.Enabled = false;
-            this.lblFontLeading.Location = new System.Drawing.Point(148, 81);
+            this.lblFontLeading.Location = new System.Drawing.Point(10, 42);
             this.lblFontLeading.Name = "lblFontLeading";
             this.lblFontLeading.Size = new System.Drawing.Size(48, 13);
             this.lblFontLeading.TabIndex = 15;
@@ -235,8 +237,7 @@
             // 
             this.lblFontSize.AutoSize = true;
             this.lblFontSize.BackColor = System.Drawing.Color.Transparent;
-            this.lblFontSize.Enabled = false;
-            this.lblFontSize.Location = new System.Drawing.Point(144, 53);
+            this.lblFontSize.Location = new System.Drawing.Point(6, 16);
             this.lblFontSize.Name = "lblFontSize";
             this.lblFontSize.Size = new System.Drawing.Size(52, 13);
             this.lblFontSize.TabIndex = 14;
@@ -245,6 +246,8 @@
             // 
             // grpPageOptions
             // 
+            this.grpPageOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPageOptions.Controls.Add(this.nudPageHeader);
             this.grpPageOptions.Controls.Add(this.nudPageHeight);
             this.grpPageOptions.Controls.Add(this.nudPageWidth);
@@ -254,25 +257,22 @@
             this.grpPageOptions.Controls.Add(this.lblPageHeader);
             this.grpPageOptions.Controls.Add(this.lblPageHeight);
             this.grpPageOptions.Controls.Add(this.lblPageWidth);
-            this.grpPageOptions.Controls.Add(this.rdoPageOptionsCustom);
-            this.grpPageOptions.Controls.Add(this.rdoPageOptionsDefaults);
-            this.grpPageOptions.Location = new System.Drawing.Point(12, 338);
+            this.grpPageOptions.Location = new System.Drawing.Point(391, 203);
             this.grpPageOptions.Name = "grpPageOptions";
-            this.grpPageOptions.Size = new System.Drawing.Size(348, 158);
+            this.grpPageOptions.Size = new System.Drawing.Size(208, 139);
             this.grpPageOptions.TabIndex = 16;
             this.grpPageOptions.TabStop = false;
-            this.grpPageOptions.Text = "Page Options";
+            this.grpPageOptions.Text = "Page";
             // 
             // nudPageHeader
             // 
             this.nudPageHeader.DecimalPlaces = 1;
-            this.nudPageHeader.Enabled = false;
             this.nudPageHeader.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.nudPageHeader.Location = new System.Drawing.Point(202, 112);
+            this.nudPageHeader.Location = new System.Drawing.Point(64, 71);
             this.nudPageHeader.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -296,13 +296,12 @@
             // nudPageHeight
             // 
             this.nudPageHeight.DecimalPlaces = 1;
-            this.nudPageHeight.Enabled = false;
             this.nudPageHeight.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.nudPageHeight.Location = new System.Drawing.Point(202, 81);
+            this.nudPageHeight.Location = new System.Drawing.Point(64, 45);
             this.nudPageHeight.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -326,13 +325,12 @@
             // nudPageWidth
             // 
             this.nudPageWidth.DecimalPlaces = 1;
-            this.nudPageWidth.Enabled = false;
             this.nudPageWidth.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.nudPageWidth.Location = new System.Drawing.Point(202, 51);
+            this.nudPageWidth.Location = new System.Drawing.Point(64, 19);
             this.nudPageWidth.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -358,7 +356,7 @@
             this.lblPageHeaderUnits.AutoSize = true;
             this.lblPageHeaderUnits.BackColor = System.Drawing.Color.Transparent;
             this.lblPageHeaderUnits.Enabled = false;
-            this.lblPageHeaderUnits.Location = new System.Drawing.Point(310, 114);
+            this.lblPageHeaderUnits.Location = new System.Drawing.Point(172, 73);
             this.lblPageHeaderUnits.Name = "lblPageHeaderUnits";
             this.lblPageHeaderUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageHeaderUnits.TabIndex = 20;
@@ -370,7 +368,7 @@
             this.lblPageHeightUnits.AutoSize = true;
             this.lblPageHeightUnits.BackColor = System.Drawing.Color.Transparent;
             this.lblPageHeightUnits.Enabled = false;
-            this.lblPageHeightUnits.Location = new System.Drawing.Point(310, 83);
+            this.lblPageHeightUnits.Location = new System.Drawing.Point(172, 47);
             this.lblPageHeightUnits.Name = "lblPageHeightUnits";
             this.lblPageHeightUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageHeightUnits.TabIndex = 19;
@@ -382,7 +380,7 @@
             this.lblPageWidthUnits.AutoSize = true;
             this.lblPageWidthUnits.BackColor = System.Drawing.Color.Transparent;
             this.lblPageWidthUnits.Enabled = false;
-            this.lblPageWidthUnits.Location = new System.Drawing.Point(310, 53);
+            this.lblPageWidthUnits.Location = new System.Drawing.Point(172, 21);
             this.lblPageWidthUnits.Name = "lblPageWidthUnits";
             this.lblPageWidthUnits.Size = new System.Drawing.Size(16, 13);
             this.lblPageWidthUnits.TabIndex = 18;
@@ -393,8 +391,7 @@
             // 
             this.lblPageHeader.AutoSize = true;
             this.lblPageHeader.BackColor = System.Drawing.Color.Transparent;
-            this.lblPageHeader.Enabled = false;
-            this.lblPageHeader.Location = new System.Drawing.Point(151, 114);
+            this.lblPageHeader.Location = new System.Drawing.Point(6, 73);
             this.lblPageHeader.Name = "lblPageHeader";
             this.lblPageHeader.Size = new System.Drawing.Size(45, 13);
             this.lblPageHeader.TabIndex = 17;
@@ -405,8 +402,7 @@
             // 
             this.lblPageHeight.AutoSize = true;
             this.lblPageHeight.BackColor = System.Drawing.Color.Transparent;
-            this.lblPageHeight.Enabled = false;
-            this.lblPageHeight.Location = new System.Drawing.Point(155, 83);
+            this.lblPageHeight.Location = new System.Drawing.Point(10, 47);
             this.lblPageHeight.Name = "lblPageHeight";
             this.lblPageHeight.Size = new System.Drawing.Size(41, 13);
             this.lblPageHeight.TabIndex = 15;
@@ -417,41 +413,17 @@
             // 
             this.lblPageWidth.AutoSize = true;
             this.lblPageWidth.BackColor = System.Drawing.Color.Transparent;
-            this.lblPageWidth.Enabled = false;
-            this.lblPageWidth.Location = new System.Drawing.Point(158, 53);
+            this.lblPageWidth.Location = new System.Drawing.Point(10, 21);
             this.lblPageWidth.Name = "lblPageWidth";
             this.lblPageWidth.Size = new System.Drawing.Size(38, 13);
             this.lblPageWidth.TabIndex = 14;
             this.lblPageWidth.Text = "Width:";
             this.lblPageWidth.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // rdoPageOptionsCustom
-            // 
-            this.rdoPageOptionsCustom.AutoSize = true;
-            this.rdoPageOptionsCustom.Location = new System.Drawing.Point(19, 51);
-            this.rdoPageOptionsCustom.Name = "rdoPageOptionsCustom";
-            this.rdoPageOptionsCustom.Size = new System.Drawing.Size(60, 17);
-            this.rdoPageOptionsCustom.TabIndex = 11;
-            this.rdoPageOptionsCustom.Text = "Custom";
-            this.rdoPageOptionsCustom.UseVisualStyleBackColor = true;
-            this.rdoPageOptionsCustom.CheckedChanged += new System.EventHandler(this.RdoPageOptionsCustom_CheckedChanged);
-            // 
-            // rdoPageOptionsDefaults
-            // 
-            this.rdoPageOptionsDefaults.AutoSize = true;
-            this.rdoPageOptionsDefaults.Checked = true;
-            this.rdoPageOptionsDefaults.Location = new System.Drawing.Point(19, 28);
-            this.rdoPageOptionsDefaults.Name = "rdoPageOptionsDefaults";
-            this.rdoPageOptionsDefaults.Size = new System.Drawing.Size(59, 17);
-            this.rdoPageOptionsDefaults.TabIndex = 10;
-            this.rdoPageOptionsDefaults.TabStop = true;
-            this.rdoPageOptionsDefaults.Text = "Default";
-            this.rdoPageOptionsDefaults.UseVisualStyleBackColor = true;
-            this.rdoPageOptionsDefaults.CheckedChanged += new System.EventHandler(this.RdoPageOptionsDefaults_CheckedChanged);
-            // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(204, 505);
+            this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreate.Location = new System.Drawing.Point(438, 587);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 17;
@@ -461,8 +433,9 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(286, 505);
+            this.btnCancel.Location = new System.Drawing.Point(519, 587);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 18;
@@ -472,19 +445,21 @@
             // 
             // lblProjectUpdatedText
             // 
+            this.lblProjectUpdatedText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProjectUpdatedText.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblProjectUpdatedText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProjectUpdatedText.Location = new System.Drawing.Point(184, 47);
+            this.lblProjectUpdatedText.Location = new System.Drawing.Point(379, 47);
             this.lblProjectUpdatedText.Name = "lblProjectUpdatedText";
-            this.lblProjectUpdatedText.Size = new System.Drawing.Size(145, 22);
+            this.lblProjectUpdatedText.Size = new System.Drawing.Size(188, 22);
             this.lblProjectUpdatedText.TabIndex = 8;
             this.lblProjectUpdatedText.Text = "None";
             this.lblProjectUpdatedText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblProjectUpdated
             // 
+            this.lblProjectUpdated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProjectUpdated.AutoSize = true;
-            this.lblProjectUpdated.Location = new System.Drawing.Point(181, 27);
+            this.lblProjectUpdated.Location = new System.Drawing.Point(381, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
             this.lblProjectUpdated.Size = new System.Drawing.Size(123, 13);
             this.lblProjectUpdated.TabIndex = 7;
@@ -501,71 +476,41 @@
             // 
             // grpProject
             // 
+            this.grpProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpProject.Controls.Add(this.lblProjectNameText);
             this.grpProject.Controls.Add(this.lblProjectUpdatedText);
             this.grpProject.Controls.Add(this.lblProjectUpdated);
             this.grpProject.Controls.Add(this.lblProjectName);
             this.grpProject.Location = new System.Drawing.Point(12, 22);
             this.grpProject.Name = "grpProject";
-            this.grpProject.Size = new System.Drawing.Size(348, 87);
+            this.grpProject.Size = new System.Drawing.Size(587, 87);
             this.grpProject.TabIndex = 10;
             this.grpProject.TabStop = false;
             this.grpProject.Text = "Project";
             // 
             // lblProjectNameText
             // 
+            this.lblProjectNameText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProjectNameText.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblProjectNameText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProjectNameText.Location = new System.Drawing.Point(19, 47);
             this.lblProjectNameText.Name = "lblProjectNameText";
-            this.lblProjectNameText.Size = new System.Drawing.Size(145, 22);
+            this.lblProjectNameText.Size = new System.Drawing.Size(347, 22);
             this.lblProjectNameText.TabIndex = 9;
             this.lblProjectNameText.Text = "None";
             this.lblProjectNameText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.advancedToolStripMenuItem,
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(372, 24);
-            this.menuStrip1.TabIndex = 19;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // advancedToolStripMenuItem
-            // 
-            this.advancedToolStripMenuItem.Checked = true;
-            this.advancedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.onDownloadTypesettingMenuItem,
-            this.addCustomFootnotesToolStripMenuItem,
-            this.useProjectFontToolStripMenuItem});
-            this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
-            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.advancedToolStripMenuItem.Text = "Advanced";
-            // 
-            // onDownloadTypesettingMenuItem
-            // 
-            this.onDownloadTypesettingMenuItem.Name = "onDownloadTypesettingMenuItem";
-            this.onDownloadTypesettingMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.onDownloadTypesettingMenuItem.Text = "Download Typesetting Files";
-            this.onDownloadTypesettingMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
-            // 
-            // addCustomFootnotesToolStripMenuItem
-            // 
-            this.addCustomFootnotesToolStripMenuItem.Name = "addCustomFootnotesToolStripMenuItem";
-            this.addCustomFootnotesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.addCustomFootnotesToolStripMenuItem.Text = "Localized Footnotes";
-            this.addCustomFootnotesToolStripMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
-            // 
-            // useProjectFontToolStripMenuItem
-            // 
-            this.useProjectFontToolStripMenuItem.Name = "useProjectFontToolStripMenuItem";
-            this.useProjectFontToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.useProjectFontToolStripMenuItem.Text = "Use Project Font";
-            this.useProjectFontToolStripMenuItem.Click += new System.EventHandler(this.OnAdvancedMenuItemClick);
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(606, 24);
+            this.menuStrip.TabIndex = 19;
+            this.menuStrip.Text = "menuStrip1";
             // 
             // helpToolStripMenuItem
             // 
@@ -578,7 +523,7 @@
             // licenseToolStripMenuItem
             // 
             this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
-            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.licenseToolStripMenuItem.Text = "License";
             this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
             // 
@@ -586,7 +531,7 @@
             // 
             this.Copyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Copyright.AutoSize = true;
-            this.Copyright.Location = new System.Drawing.Point(9, 505);
+            this.Copyright.Location = new System.Drawing.Point(12, 587);
             this.Copyright.Name = "Copyright";
             this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.Copyright.Size = new System.Drawing.Size(101, 23);
@@ -595,15 +540,246 @@
             // 
             // lblVersions
             // 
+            this.lblVersions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblVersions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersions.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.lblVersions.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblVersions.Location = new System.Drawing.Point(9, 528);
+            this.lblVersions.Location = new System.Drawing.Point(148, 587);
             this.lblVersions.Name = "lblVersions";
-            this.lblVersions.Size = new System.Drawing.Size(363, 23);
+            this.lblVersions.Size = new System.Drawing.Size(224, 23);
             this.lblVersions.TabIndex = 21;
             this.lblVersions.Text = "UI version: X, Server version: Y";
             this.lblVersions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // grpBookRange
+            // 
+            this.grpBookRange.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpBookRange.Controls.Add(this.cbIncludeAncillary);
+            this.grpBookRange.Controls.Add(this.tbCustomBookSet);
+            this.grpBookRange.Controls.Add(this.rbCustom);
+            this.grpBookRange.Controls.Add(this.rbNewTestament);
+            this.grpBookRange.Controls.Add(this.rbFullBible);
+            this.grpBookRange.Location = new System.Drawing.Point(13, 203);
+            this.grpBookRange.Name = "grpBookRange";
+            this.grpBookRange.Size = new System.Drawing.Size(365, 139);
+            this.grpBookRange.TabIndex = 22;
+            this.grpBookRange.TabStop = false;
+            this.grpBookRange.Text = "Book Range";
+            // 
+            // cbIncludeAncillary
+            // 
+            this.cbIncludeAncillary.AutoSize = true;
+            this.cbIncludeAncillary.Location = new System.Drawing.Point(18, 114);
+            this.cbIncludeAncillary.Name = "cbIncludeAncillary";
+            this.cbIncludeAncillary.Size = new System.Drawing.Size(143, 17);
+            this.cbIncludeAncillary.TabIndex = 4;
+            this.cbIncludeAncillary.Text = "Include Ancillary Material";
+            this.cbIncludeAncillary.UseVisualStyleBackColor = true;
+            // 
+            // tbCustomBookSet
+            // 
+            this.tbCustomBookSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbCustomBookSet.Enabled = false;
+            this.tbCustomBookSet.Location = new System.Drawing.Point(39, 88);
+            this.tbCustomBookSet.Name = "tbCustomBookSet";
+            this.tbCustomBookSet.Size = new System.Drawing.Size(320, 20);
+            this.tbCustomBookSet.TabIndex = 3;
+            // 
+            // rbCustom
+            // 
+            this.rbCustom.AutoSize = true;
+            this.rbCustom.Location = new System.Drawing.Point(18, 65);
+            this.rbCustom.Name = "rbCustom";
+            this.rbCustom.Size = new System.Drawing.Size(60, 17);
+            this.rbCustom.TabIndex = 2;
+            this.rbCustom.Text = "Custom";
+            this.rbCustom.UseVisualStyleBackColor = true;
+            this.rbCustom.CheckedChanged += new System.EventHandler(this.rbCustom_CheckedChanged);
+            // 
+            // rbNewTestament
+            // 
+            this.rbNewTestament.AutoSize = true;
+            this.rbNewTestament.Location = new System.Drawing.Point(18, 42);
+            this.rbNewTestament.Name = "rbNewTestament";
+            this.rbNewTestament.Size = new System.Drawing.Size(100, 17);
+            this.rbNewTestament.TabIndex = 1;
+            this.rbNewTestament.Text = "New Testament";
+            this.rbNewTestament.UseVisualStyleBackColor = true;
+            // 
+            // rbFullBible
+            // 
+            this.rbFullBible.AutoSize = true;
+            this.rbFullBible.Checked = true;
+            this.rbFullBible.Location = new System.Drawing.Point(18, 19);
+            this.rbFullBible.Name = "rbFullBible";
+            this.rbFullBible.Size = new System.Drawing.Size(67, 17);
+            this.rbFullBible.TabIndex = 0;
+            this.rbFullBible.TabStop = true;
+            this.rbFullBible.Text = "Full Bible";
+            this.rbFullBible.UseVisualStyleBackColor = true;
+            // 
+            // gbAdvanced
+            // 
+            this.gbAdvanced.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbAdvanced.Controls.Add(this.gbInclusions);
+            this.gbAdvanced.Controls.Add(this.cbDownloadTypsettingFiles);
+            this.gbAdvanced.Controls.Add(this.cbUseProjectFonts);
+            this.gbAdvanced.Controls.Add(this.cbLocalizeFootnotes);
+            this.gbAdvanced.Controls.Add(this.cbHyphenate);
+            this.gbAdvanced.Location = new System.Drawing.Point(13, 348);
+            this.gbAdvanced.Name = "gbAdvanced";
+            this.gbAdvanced.Size = new System.Drawing.Size(586, 211);
+            this.gbAdvanced.TabIndex = 23;
+            this.gbAdvanced.TabStop = false;
+            this.gbAdvanced.Text = "Advanced";
+            // 
+            // gbInclusions
+            // 
+            this.gbInclusions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInclusions.Controls.Add(this.cbAcrostic);
+            this.gbInclusions.Controls.Add(this.cbParallelPassages);
+            this.gbInclusions.Controls.Add(this.cbVerseNumbers);
+            this.gbInclusions.Controls.Add(this.cbChapterNumbers);
+            this.gbInclusions.Controls.Add(this.cbHeadings);
+            this.gbInclusions.Controls.Add(this.cbFootnotes);
+            this.gbInclusions.Controls.Add(this.cbIntros);
+            this.gbInclusions.Location = new System.Drawing.Point(18, 68);
+            this.gbInclusions.Name = "gbInclusions";
+            this.gbInclusions.Size = new System.Drawing.Size(562, 112);
+            this.gbInclusions.TabIndex = 8;
+            this.gbInclusions.TabStop = false;
+            this.gbInclusions.Text = "Inclusions";
+            // 
+            // cbAcrostic
+            // 
+            this.cbAcrostic.AutoSize = true;
+            this.cbAcrostic.Location = new System.Drawing.Point(230, 65);
+            this.cbAcrostic.Name = "cbAcrostic";
+            this.cbAcrostic.Size = new System.Drawing.Size(97, 17);
+            this.cbAcrostic.TabIndex = 11;
+            this.cbAcrostic.Text = "Acrostic Poetry";
+            this.cbAcrostic.UseVisualStyleBackColor = true;
+            // 
+            // cbParallelPassages
+            // 
+            this.cbParallelPassages.AutoSize = true;
+            this.cbParallelPassages.Checked = true;
+            this.cbParallelPassages.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbParallelPassages.Location = new System.Drawing.Point(230, 42);
+            this.cbParallelPassages.Name = "cbParallelPassages";
+            this.cbParallelPassages.Size = new System.Drawing.Size(109, 17);
+            this.cbParallelPassages.TabIndex = 10;
+            this.cbParallelPassages.Text = "Parallel Passages";
+            this.cbParallelPassages.UseVisualStyleBackColor = true;
+            // 
+            // cbVerseNumbers
+            // 
+            this.cbVerseNumbers.AutoSize = true;
+            this.cbVerseNumbers.Checked = true;
+            this.cbVerseNumbers.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbVerseNumbers.Location = new System.Drawing.Point(230, 19);
+            this.cbVerseNumbers.Name = "cbVerseNumbers";
+            this.cbVerseNumbers.Size = new System.Drawing.Size(98, 17);
+            this.cbVerseNumbers.TabIndex = 9;
+            this.cbVerseNumbers.Text = "Verse Numbers";
+            this.cbVerseNumbers.UseVisualStyleBackColor = true;
+            // 
+            // cbChapterNumbers
+            // 
+            this.cbChapterNumbers.AutoSize = true;
+            this.cbChapterNumbers.Checked = true;
+            this.cbChapterNumbers.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbChapterNumbers.Location = new System.Drawing.Point(21, 89);
+            this.cbChapterNumbers.Name = "cbChapterNumbers";
+            this.cbChapterNumbers.Size = new System.Drawing.Size(108, 17);
+            this.cbChapterNumbers.TabIndex = 8;
+            this.cbChapterNumbers.Text = "Chapter Numbers";
+            this.cbChapterNumbers.UseVisualStyleBackColor = true;
+            // 
+            // cbHeadings
+            // 
+            this.cbHeadings.AutoSize = true;
+            this.cbHeadings.Checked = true;
+            this.cbHeadings.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbHeadings.Location = new System.Drawing.Point(21, 42);
+            this.cbHeadings.Name = "cbHeadings";
+            this.cbHeadings.Size = new System.Drawing.Size(71, 17);
+            this.cbHeadings.TabIndex = 5;
+            this.cbHeadings.Text = "Headings";
+            this.cbHeadings.UseVisualStyleBackColor = true;
+            // 
+            // cbFootnotes
+            // 
+            this.cbFootnotes.AutoSize = true;
+            this.cbFootnotes.Checked = true;
+            this.cbFootnotes.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbFootnotes.Location = new System.Drawing.Point(21, 65);
+            this.cbFootnotes.Name = "cbFootnotes";
+            this.cbFootnotes.Size = new System.Drawing.Size(73, 17);
+            this.cbFootnotes.TabIndex = 7;
+            this.cbFootnotes.Text = "Footnotes";
+            this.cbFootnotes.UseVisualStyleBackColor = true;
+            // 
+            // cbIntros
+            // 
+            this.cbIntros.AutoSize = true;
+            this.cbIntros.Checked = true;
+            this.cbIntros.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbIntros.Location = new System.Drawing.Point(21, 19);
+            this.cbIntros.Name = "cbIntros";
+            this.cbIntros.Size = new System.Drawing.Size(52, 17);
+            this.cbIntros.TabIndex = 4;
+            this.cbIntros.Text = "Intros";
+            this.cbIntros.UseVisualStyleBackColor = true;
+            // 
+            // cbDownloadTypsettingFiles
+            // 
+            this.cbDownloadTypsettingFiles.AutoSize = true;
+            this.cbDownloadTypsettingFiles.Location = new System.Drawing.Point(248, 187);
+            this.cbDownloadTypsettingFiles.Name = "cbDownloadTypsettingFiles";
+            this.cbDownloadTypsettingFiles.Size = new System.Drawing.Size(150, 17);
+            this.cbDownloadTypsettingFiles.TabIndex = 3;
+            this.cbDownloadTypsettingFiles.Text = "Download Typsetting Files";
+            this.cbDownloadTypsettingFiles.UseVisualStyleBackColor = true;
+            // 
+            // cbUseProjectFonts
+            // 
+            this.cbUseProjectFonts.AutoSize = true;
+            this.cbUseProjectFonts.Checked = true;
+            this.cbUseProjectFonts.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUseProjectFonts.Location = new System.Drawing.Point(249, 20);
+            this.cbUseProjectFonts.Name = "cbUseProjectFonts";
+            this.cbUseProjectFonts.Size = new System.Drawing.Size(110, 17);
+            this.cbUseProjectFonts.TabIndex = 2;
+            this.cbUseProjectFonts.Text = "Use Project Fonts";
+            this.cbUseProjectFonts.UseVisualStyleBackColor = true;
+            // 
+            // cbLocalizeFootnotes
+            // 
+            this.cbLocalizeFootnotes.AutoSize = true;
+            this.cbLocalizeFootnotes.Location = new System.Drawing.Point(18, 44);
+            this.cbLocalizeFootnotes.Name = "cbLocalizeFootnotes";
+            this.cbLocalizeFootnotes.Size = new System.Drawing.Size(115, 17);
+            this.cbLocalizeFootnotes.TabIndex = 1;
+            this.cbLocalizeFootnotes.Text = "Localize Footnotes";
+            this.cbLocalizeFootnotes.UseVisualStyleBackColor = true;
+            // 
+            // cbHyphenate
+            // 
+            this.cbHyphenate.AutoSize = true;
+            this.cbHyphenate.Location = new System.Drawing.Point(18, 20);
+            this.cbHyphenate.Name = "cbHyphenate";
+            this.cbHyphenate.Size = new System.Drawing.Size(78, 17);
+            this.cbHyphenate.TabIndex = 0;
+            this.cbHyphenate.Text = "Hyphenate";
+            this.cbHyphenate.UseVisualStyleBackColor = true;
             // 
             // SetupForm
             // 
@@ -611,8 +787,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(372, 554);
+            this.ClientSize = new System.Drawing.Size(606, 619);
             this.ControlBox = false;
+            this.Controls.Add(this.gbAdvanced);
+            this.Controls.Add(this.grpBookRange);
             this.Controls.Add(this.lblVersions);
             this.Controls.Add(this.Copyright);
             this.Controls.Add(this.grpProject);
@@ -621,11 +799,12 @@
             this.Controls.Add(this.grpPageOptions);
             this.Controls.Add(this.grpTextOptions);
             this.Controls.Add(this.grpLayout);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "SetupForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create Print Preview...";
             this.grpLayout.ResumeLayout(false);
@@ -641,8 +820,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPageWidth)).EndInit();
             this.grpProject.ResumeLayout(false);
             this.grpProject.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            this.grpBookRange.ResumeLayout(false);
+            this.grpBookRange.PerformLayout();
+            this.gbAdvanced.ResumeLayout(false);
+            this.gbAdvanced.PerformLayout();
+            this.gbInclusions.ResumeLayout(false);
+            this.gbInclusions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -652,8 +837,6 @@
         private System.Windows.Forms.GroupBox grpLayout;
         private System.Windows.Forms.RadioButton rdoLayoutTbotb;
         private System.Windows.Forms.RadioButton rdoLayoutCav;
-        private System.Windows.Forms.RadioButton rdoTextOptionsDefaults;
-        private System.Windows.Forms.RadioButton rdoTextOptionsCustom;
         private System.Windows.Forms.GroupBox grpTextOptions;
         private System.Windows.Forms.Label lblFontLeading;
         private System.Windows.Forms.Label lblFontSize;
@@ -661,8 +844,6 @@
         private System.Windows.Forms.Label lblPageHeader;
         private System.Windows.Forms.Label lblPageHeight;
         private System.Windows.Forms.Label lblPageWidth;
-        private System.Windows.Forms.RadioButton rdoPageOptionsCustom;
-        private System.Windows.Forms.RadioButton rdoPageOptionsDefaults;
         private System.Windows.Forms.NumericUpDown nudFontLeading;
         private System.Windows.Forms.NumericUpDown nudFontSize;
         private System.Windows.Forms.Label lblFontLeadingUnits;
@@ -680,14 +861,30 @@
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.GroupBox grpProject;
         private System.Windows.Forms.Label lblProjectNameText;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem onDownloadTypesettingMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addCustomFootnotesToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
         private System.Windows.Forms.Label Copyright;
         private System.Windows.Forms.Label lblVersions;
-        private System.Windows.Forms.ToolStripMenuItem useProjectFontToolStripMenuItem;
+        private System.Windows.Forms.GroupBox grpBookRange;
+        private System.Windows.Forms.TextBox tbCustomBookSet;
+        private System.Windows.Forms.RadioButton rbCustom;
+        private System.Windows.Forms.RadioButton rbNewTestament;
+        private System.Windows.Forms.RadioButton rbFullBible;
+        private System.Windows.Forms.GroupBox gbAdvanced;
+        private System.Windows.Forms.CheckBox cbIncludeAncillary;
+        private System.Windows.Forms.CheckBox cbHeadings;
+        private System.Windows.Forms.CheckBox cbIntros;
+        private System.Windows.Forms.CheckBox cbDownloadTypsettingFiles;
+        private System.Windows.Forms.CheckBox cbUseProjectFonts;
+        private System.Windows.Forms.CheckBox cbLocalizeFootnotes;
+        private System.Windows.Forms.CheckBox cbHyphenate;
+        private System.Windows.Forms.GroupBox gbInclusions;
+        private System.Windows.Forms.CheckBox cbAcrostic;
+        private System.Windows.Forms.CheckBox cbParallelPassages;
+        private System.Windows.Forms.CheckBox cbVerseNumbers;
+        private System.Windows.Forms.CheckBox cbChapterNumbers;
+        private System.Windows.Forms.CheckBox cbFootnotes;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

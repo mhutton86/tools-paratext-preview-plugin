@@ -41,18 +41,19 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TptMain</RootNamespace>
     <AssemblyName>TypesettingPreviewPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>D:\Program Files\Paratext 9\plugins\TPT\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>0</WarningLevel>
@@ -287,6 +288,8 @@
     <Compile Include="Models\PreviewJob.cs" />
     <Compile Include="Models\ServerStatus.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
+    <Compile Include="Project\FileManager.cs" />
+    <Compile Include="Project\ProjectUserAccess.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

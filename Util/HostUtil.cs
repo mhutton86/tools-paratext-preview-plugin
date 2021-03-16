@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using TvpMain.Project;
 
 namespace TptMain.Util
 {
@@ -14,6 +15,8 @@ namespace TptMain.Util
         /// Private singleton instance.
         /// </summary>
         private static readonly HostUtil _instance = new HostUtil();
+
+        private const string ADMIN_ROLE = "Administrator";
 
         /// <summary>
         /// Thread-safe singleton instance.
@@ -104,6 +107,39 @@ namespace TptMain.Util
 
             // return the project directory from the non-local figure directory. EG: usNIV11/figure/ -> usNIV11
             return Directory.GetParent(figurePath);
+        }
+
+        /// <summary>
+        /// Method to determine if the current user is an administrator or not. This loads the ProjectUserAccess.xml file from 
+        /// the project and compares the users there against the current user name from IHost.
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <returns>True, if the current user is an Admin for the given project</returns>
+        public bool isCurrentUserAdmin(string projectName)
+        {
+            // using this method requires including ImportManager
+            //string rolename = Paratext.Data.ScrText.Permissions.GetRole();
+
+
+            if (projectName == null || projectName.Length < 1)
+            {
+                throw new ArgumentNullException(nameof(projectName));
+            }
+
+            FileManager fileManager = new FileManager(_host, projectName);
+
+            using Stream reader = new FileStream(Path.Combine(fileManager.ProjectDir.FullName, "ProjectUserAccess.xml"), FileMode.Open);
+            ProjectUserAccess projectUserAccess = ProjectUserAccess.LoadFromXML(reader);
+
+            foreach (User user in projectUserAccess.Users)
+            {
+                if (user.UserName.Equals(_host.UserName) && user.Role.Equals(ADMIN_ROLE))
+                {
+                    // Bail as soon as we find a match
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
