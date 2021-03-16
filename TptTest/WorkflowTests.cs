@@ -92,7 +92,7 @@ namespace TptTest
                 workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
                 .Returns(true);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
@@ -115,7 +115,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -151,7 +151,7 @@ namespace TptTest
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
@@ -185,7 +185,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -233,7 +233,7 @@ namespace TptTest
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
@@ -270,7 +270,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -323,7 +323,7 @@ namespace TptTest
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
@@ -372,7 +372,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -425,7 +425,7 @@ namespace TptTest
                 workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
@@ -477,7 +477,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -543,7 +543,7 @@ namespace TptTest
                 workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
                 .Returns(true);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
@@ -612,7 +612,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>

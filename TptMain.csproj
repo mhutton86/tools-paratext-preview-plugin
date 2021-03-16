@@ -53,7 +53,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>D:\Program Files\Paratext 9\plugins\TPT\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>0</WarningLevel>
@@ -283,6 +283,7 @@
     <Compile Include="Form\SetupForm.Designer.cs">
       <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Import\ImportManager.cs" />
     <Compile Include="Models\BookFormat.cs" />
     <Compile Include="Models\ParatextProjectModels.cs" />
     <Compile Include="Models\PreviewJob.cs" />

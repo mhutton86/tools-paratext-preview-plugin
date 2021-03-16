@@ -6,6 +6,7 @@ using TptMain.Util;
 using Paratext.Data.ProjectSettingsAccess;
 using TptMain.Properties;
 using System.Reflection;
+using System.Drawing;
 
 namespace TptMain.Form
 {
@@ -53,9 +54,12 @@ namespace TptMain.Form
         /// <summary>
         /// Basic ctor.
         /// </summary>
-        public SetupForm()
+        public SetupForm(ProjectDetails projectDetails)
         {
             InitializeComponent();
+
+            SetProjectDetails(projectDetails);
+
             Copyright.Text = MainConsts.COPYRIGHT;
             _previewJob = new PreviewJob();
 
@@ -101,6 +105,18 @@ namespace TptMain.Form
 
             toolTip.SetToolTip(cbDownloadTypsettingFiles, MainConsts.DOWNLOAD_TYPESETTING);
             toolTip.SetToolTip(cbUseProjectFonts, MainConsts.USE_PROJECT_FONTS);
+
+            // resize, hiding advanced panel if we aren't an admin
+            if(HostUtil.Instance.isCurrentUserAdmin(ProjectName))
+            {
+                gbAdvanced.Visible = true;
+            } else
+            {
+                gbAdvanced.Visible = false;
+                this.MinimumSize = new Size(this.Width, (this.Height - gbAdvanced.Height) + 10);
+                this.Height = (this.Height - gbAdvanced.Height) + 10;
+                gbAdvanced.SendToBack();
+            }
 
         }
 

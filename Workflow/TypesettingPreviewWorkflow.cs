@@ -99,8 +99,7 @@ namespace TptMain.Workflow
                 DetailsUpdated?.Invoke(this, _projectDetails);
 
                 // Create & show setup form to user to get preview input.
-                var setupForm = CreateSetupForm();
-                setupForm.SetProjectDetails(_projectDetails);
+                var setupForm = CreateSetupForm(_projectDetails);
                 setupForm.SetServerStatus(_serverStatus);
                 setupForm.User = host.UserName;
 
@@ -487,9 +486,9 @@ namespace TptMain.Workflow
         /// Overridable utility method to create setup form.
         /// </summary>
         /// <returns>Setup form.</returns>
-        public virtual SetupForm CreateSetupForm()
+        public virtual SetupForm CreateSetupForm(ProjectDetails projectDetails)
         {
-            return new SetupForm();
+            return new SetupForm(projectDetails);
         }
 
         /// <summary>
