@@ -391,6 +391,11 @@ namespace TptMain.Form
             }
         }
 
+        /// <summary>
+        /// Show EULA dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string pluginName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
@@ -404,11 +409,22 @@ namespace TptMain.Form
             eulaForm.Show();
         }
 
+        /// <summary>
+        /// Show text box when allowing custom book ranges to be entered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void rbCustom_CheckedChanged(object sender, EventArgs e)
         {
             tbCustomBookSet.Enabled = rbCustom.Checked;
         }
 
+        /// <summary>
+        /// Uncheck some items when selecting TBOTB based on
+        /// https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void rdoLayoutTbotb_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoLayoutTbotb.Checked) {
@@ -420,6 +436,12 @@ namespace TptMain.Form
             }
         }
 
+        /// <summary>
+        /// Check some items when selecting CAV based on
+        /// https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void rdoLayoutCav_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoLayoutCav.Checked)

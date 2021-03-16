@@ -21,6 +21,9 @@ namespace TptMain.Util
         /// </summary>
         private static readonly HostUtil _instance = new HostUtil();
 
+        /// <summary>
+        /// Administrator role name
+        /// </summary>
         private const string ADMIN_ROLE = "Administrator";
 
         /// <summary>
@@ -127,8 +130,7 @@ namespace TptMain.Util
         }
 
         /// <summary>
-        /// Method to determine if the current user is an administrator or not. This loads the ProjectUserAccess.xml file from 
-        /// the project and compares the users there against the current user name from IHost.
+        /// Method to determine if the current user is an administrator or not.
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns>True, if the current user is an Admin for the given project</returns>
