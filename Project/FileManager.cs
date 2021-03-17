@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace TvpMain.Project
+namespace TptMain.Project
 {
     /// <summary>
     /// Provides access to the PT project files directory. Project files are where PT is set up to store translation projects. 

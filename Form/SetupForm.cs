@@ -16,6 +16,11 @@ namespace TptMain.Form
     public partial class SetupForm : System.Windows.Forms.Form
     {
         /// <summary>
+        /// Used to give extra margin if advanced section isn't shown
+        /// </summary>
+        public static int HEIGHT_MARGIN = 10;
+
+        /// <summary>
         /// Project details, from server.
         /// </summary>
         private ProjectDetails _projectDetails;
@@ -106,18 +111,30 @@ namespace TptMain.Form
             toolTip.SetToolTip(cbDownloadTypsettingFiles, MainConsts.DOWNLOAD_TYPESETTING);
             toolTip.SetToolTip(cbUseProjectFonts, MainConsts.USE_PROJECT_FONTS);
 
+            SetAdminView(ProjectName);
+
+        }
+
+        /// <summary>
+        /// Change the form view, showing or hiding advanced view, based on administrator role.
+        /// This was separated out to allow for testing to moq this functionality out so that
+        /// ParatextData is not used for testing.
+        /// </summary>
+        /// <param name="projectName"></param>
+        public virtual void SetAdminView(string projectName)
+        {
             // resize, hiding advanced panel if we aren't an admin
-            if(HostUtil.Instance.isCurrentUserAdmin(ProjectName))
+            if (HostUtil.Instance.isCurrentUserAdmin(ProjectName))
             {
                 gbAdvanced.Visible = true;
-            } else
+            }
+            else
             {
                 gbAdvanced.Visible = false;
-                this.MinimumSize = new Size(this.Width, (this.Height - gbAdvanced.Height) + 10);
-                this.Height = (this.Height - gbAdvanced.Height) + 10;
+                this.MinimumSize = new Size(this.Width, (this.Height - gbAdvanced.Height) + HEIGHT_MARGIN);
+                this.Height = (this.Height - gbAdvanced.Height) + HEIGHT_MARGIN;
                 gbAdvanced.SendToBack();
             }
-
         }
 
         /// <summary>
@@ -159,6 +176,10 @@ namespace TptMain.Form
             Close();
         }
 
+        /// <summary>
+        /// Enable or disable custom footnotes option
+        /// </summary>
+        /// <param name="footnotesDefined"></param>
         internal void SetCustomFootnotesEnabled(bool footnotesDefined)
         {
             cbFootnotes.Enabled = footnotesDefined;

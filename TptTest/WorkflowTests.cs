@@ -5,7 +5,9 @@ using AddInSideViews;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TptMain.Form;
+using TptMain.Import;
 using TptMain.Models;
+using TptMain.Util;
 using TptMain.Workflow;
 
 namespace TptTest
@@ -70,12 +72,17 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
-            var testServerStatus = CreateTestServerStatus();
 
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
+                // do nothing
+            });
+            var testServerStatus = CreateTestServerStatus();
+
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
@@ -134,10 +141,14 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
+                // do nothing
+            });
 
             mockHost.Setup(hostItem => hostItem.UserName)
                .Returns(TestUser);
@@ -214,12 +225,16 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
+                // do nothing
+            });
 
             mockHost.Setup(hostItem => hostItem.UserName)
                .Returns(TestUser);
@@ -303,12 +318,16 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
+                // do nothing
+            });
 
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
@@ -405,12 +424,16 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
+                // do nothing
+            });
 
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
@@ -511,7 +534,6 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testServerStatus = CreateTestServerStatus();
             var testProjectDetails = CreateTestProjectDetails();
@@ -519,6 +541,11 @@ namespace TptTest
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
             var testPreviewFile = new FileInfo(Path.GetTempFileName());
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
+                // do nothing
+            });
 
             // ensure temp file (preview file) exists before we get started
             testPreviewFile.Refresh();

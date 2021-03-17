@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 
-namespace TvpMain.Project
+namespace TptMain.Project
 {
     /// <summary>
     /// Used for getting information out of the ProjectUserAccess.xml of the project directory. The intent is

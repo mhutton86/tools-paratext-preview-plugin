@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using TptMain.Util;
 
-namespace TvpMain.Import
+namespace TptMain.Import
 {
     /// <summary>
     /// Manages importing (reading) verse text from a project.

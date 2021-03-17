@@ -6,8 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using TvpMain.Import;
-using TvpMain.Project;
+using TptMain.Import;
 
 namespace TptMain.Util
 {
@@ -132,9 +131,9 @@ namespace TptMain.Util
         /// <summary>
         /// Method to determine if the current user is an administrator or not.
         /// </summary>
-        /// <param name="projectName"></param>
+        /// <param name="projectName">The name of the current project</param>
         /// <returns>True, if the current user is an Admin for the given project</returns>
-        public bool isCurrentUserAdmin(string projectName)
+        public virtual bool isCurrentUserAdmin(string projectName)
         {
             ImportManager importManager = new ImportManager(Instance._host, projectName);
 
@@ -155,6 +154,7 @@ namespace TptMain.Util
         /// <param name="isToBlock">True to block until initialization complete, false otherwise.</param>
         public void InitParatextData(bool isToBlock)
         {
+            // wait until initialization is complete, comparing results
             if (Interlocked.CompareExchange(ref _isParatextDataInit, 1, 0) == 0)
             {
                 System.Threading.Tasks.Task.Run(() =>
