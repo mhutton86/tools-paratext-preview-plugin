@@ -458,7 +458,7 @@
             // 
             this.lblProjectUpdated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProjectUpdated.AutoSize = true;
-            this.lblProjectUpdated.Location = new System.Drawing.Point(381, 27);
+            this.lblProjectUpdated.Location = new System.Drawing.Point(376, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
             this.lblProjectUpdated.Size = new System.Drawing.Size(123, 13);
             this.lblProjectUpdated.TabIndex = 7;
@@ -741,7 +741,7 @@
             // cbDownloadTypesettingFiles
             // 
             this.cbDownloadTypesettingFiles.AutoSize = true;
-            this.cbDownloadTypesettingFiles.Location = new System.Drawing.Point(248, 187);
+            this.cbDownloadTypesettingFiles.Location = new System.Drawing.Point(248, 186);
             this.cbDownloadTypesettingFiles.Name = "cbDownloadTypesettingFiles";
             this.cbDownloadTypesettingFiles.Size = new System.Drawing.Size(150, 17);
             this.cbDownloadTypesettingFiles.TabIndex = 3;
