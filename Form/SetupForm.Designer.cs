@@ -143,9 +143,9 @@
             this.grpTextOptions.Controls.Add(this.lblFontSizeUnits);
             this.grpTextOptions.Controls.Add(this.lblFontLeading);
             this.grpTextOptions.Controls.Add(this.lblFontSize);
-            this.grpTextOptions.Location = new System.Drawing.Point(391, 115);
+            this.grpTextOptions.Location = new System.Drawing.Point(391, 113);
             this.grpTextOptions.Name = "grpTextOptions";
-            this.grpTextOptions.Size = new System.Drawing.Size(208, 82);
+            this.grpTextOptions.Size = new System.Drawing.Size(208, 84);
             this.grpTextOptions.TabIndex = 12;
             this.grpTextOptions.TabStop = false;
             this.grpTextOptions.Text = "Text";
@@ -153,7 +153,7 @@
             // nudFontLeading
             // 
             this.nudFontLeading.DecimalPlaces = 1;
-            this.nudFontLeading.Location = new System.Drawing.Point(64, 40);
+            this.nudFontLeading.Location = new System.Drawing.Point(64, 45);
             this.nudFontLeading.Maximum = new decimal(new int[] {
             28,
             0,
@@ -177,7 +177,7 @@
             // nudFontSize
             // 
             this.nudFontSize.DecimalPlaces = 1;
-            this.nudFontSize.Location = new System.Drawing.Point(64, 14);
+            this.nudFontSize.Location = new System.Drawing.Point(64, 19);
             this.nudFontSize.Maximum = new decimal(new int[] {
             24,
             0,
@@ -226,7 +226,7 @@
             // 
             this.lblFontLeading.AutoSize = true;
             this.lblFontLeading.BackColor = System.Drawing.Color.Transparent;
-            this.lblFontLeading.Location = new System.Drawing.Point(10, 42);
+            this.lblFontLeading.Location = new System.Drawing.Point(10, 47);
             this.lblFontLeading.Name = "lblFontLeading";
             this.lblFontLeading.Size = new System.Drawing.Size(48, 13);
             this.lblFontLeading.TabIndex = 15;
@@ -237,7 +237,7 @@
             // 
             this.lblFontSize.AutoSize = true;
             this.lblFontSize.BackColor = System.Drawing.Color.Transparent;
-            this.lblFontSize.Location = new System.Drawing.Point(6, 16);
+            this.lblFontSize.Location = new System.Drawing.Point(6, 21);
             this.lblFontSize.Name = "lblFontSize";
             this.lblFontSize.Size = new System.Drawing.Size(52, 13);
             this.lblFontSize.TabIndex = 14;
@@ -390,7 +390,7 @@
             // 
             this.lblPageHeader.AutoSize = true;
             this.lblPageHeader.BackColor = System.Drawing.Color.Transparent;
-            this.lblPageHeader.Location = new System.Drawing.Point(6, 73);
+            this.lblPageHeader.Location = new System.Drawing.Point(13, 73);
             this.lblPageHeader.Name = "lblPageHeader";
             this.lblPageHeader.Size = new System.Drawing.Size(45, 13);
             this.lblPageHeader.TabIndex = 17;
@@ -401,7 +401,7 @@
             // 
             this.lblPageHeight.AutoSize = true;
             this.lblPageHeight.BackColor = System.Drawing.Color.Transparent;
-            this.lblPageHeight.Location = new System.Drawing.Point(10, 47);
+            this.lblPageHeight.Location = new System.Drawing.Point(17, 47);
             this.lblPageHeight.Name = "lblPageHeight";
             this.lblPageHeight.Size = new System.Drawing.Size(41, 13);
             this.lblPageHeight.TabIndex = 15;
@@ -412,7 +412,7 @@
             // 
             this.lblPageWidth.AutoSize = true;
             this.lblPageWidth.BackColor = System.Drawing.Color.Transparent;
-            this.lblPageWidth.Location = new System.Drawing.Point(10, 21);
+            this.lblPageWidth.Location = new System.Drawing.Point(20, 21);
             this.lblPageWidth.Name = "lblPageWidth";
             this.lblPageWidth.Size = new System.Drawing.Size(38, 13);
             this.lblPageWidth.TabIndex = 14;
