@@ -117,8 +117,7 @@ namespace TptMain.Form
 
         /// <summary>
         /// Change the form view, showing or hiding advanced view, based on administrator role.
-        /// This was separated out to allow for testing to moq this functionality out so that
-        /// ParatextData is not used for testing.
+        /// This was separated out to allow for testing this functionality without initializing ParatextData
         /// </summary>
         /// <param name="projectName"></param>
         public virtual void SetAdminView(string projectName)

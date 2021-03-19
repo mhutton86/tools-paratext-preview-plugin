@@ -146,6 +146,7 @@ namespace TptTest
             var testPreviewJob = CreateTestPreviewJob();
 
             var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
                 // do nothing
             });
@@ -232,6 +233,7 @@ namespace TptTest
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
             var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
                 // do nothing
             });
@@ -325,6 +327,7 @@ namespace TptTest
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
             var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
                 // do nothing
             });
@@ -431,6 +434,7 @@ namespace TptTest
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
             var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
                 // do nothing
             });
@@ -543,6 +547,7 @@ namespace TptTest
             var testPreviewFile = new FileInfo(Path.GetTempFileName());
 
             var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
+            // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback((string projectName) => {
                 // do nothing
             });
