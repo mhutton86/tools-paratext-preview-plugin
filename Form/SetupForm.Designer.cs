@@ -77,7 +77,7 @@
             this.cbHeadings = new System.Windows.Forms.CheckBox();
             this.cbFootnotes = new System.Windows.Forms.CheckBox();
             this.cbIntros = new System.Windows.Forms.CheckBox();
-            this.cbDownloadTypsettingFiles = new System.Windows.Forms.CheckBox();
+            this.cbDownloadTypesettingFiles = new System.Windows.Forms.CheckBox();
             this.cbUseProjectFonts = new System.Windows.Forms.CheckBox();
             this.cbLocalizeFootnotes = new System.Windows.Forms.CheckBox();
             this.cbHyphenate = new System.Windows.Forms.CheckBox();
@@ -626,7 +626,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbAdvanced.Controls.Add(this.gbInclusions);
-            this.gbAdvanced.Controls.Add(this.cbDownloadTypsettingFiles);
+            this.gbAdvanced.Controls.Add(this.cbDownloadTypesettingFiles);
             this.gbAdvanced.Controls.Add(this.cbUseProjectFonts);
             this.gbAdvanced.Controls.Add(this.cbLocalizeFootnotes);
             this.gbAdvanced.Controls.Add(this.cbHyphenate);
@@ -738,15 +738,15 @@
             this.cbIntros.Text = "Intros";
             this.cbIntros.UseVisualStyleBackColor = true;
             // 
-            // cbDownloadTypsettingFiles
+            // cbDownloadTypesettingFiles
             // 
-            this.cbDownloadTypsettingFiles.AutoSize = true;
-            this.cbDownloadTypsettingFiles.Location = new System.Drawing.Point(248, 187);
-            this.cbDownloadTypsettingFiles.Name = "cbDownloadTypsettingFiles";
-            this.cbDownloadTypsettingFiles.Size = new System.Drawing.Size(150, 17);
-            this.cbDownloadTypsettingFiles.TabIndex = 3;
-            this.cbDownloadTypsettingFiles.Text = "Download Typsetting Files";
-            this.cbDownloadTypsettingFiles.UseVisualStyleBackColor = true;
+            this.cbDownloadTypesettingFiles.AutoSize = true;
+            this.cbDownloadTypesettingFiles.Location = new System.Drawing.Point(248, 187);
+            this.cbDownloadTypesettingFiles.Name = "cbDownloadTypesettingFiles";
+            this.cbDownloadTypesettingFiles.Size = new System.Drawing.Size(150, 17);
+            this.cbDownloadTypesettingFiles.TabIndex = 3;
+            this.cbDownloadTypesettingFiles.Text = "Download Typsetting Files";
+            this.cbDownloadTypesettingFiles.UseVisualStyleBackColor = true;
             // 
             // cbUseProjectFonts
             // 
@@ -874,7 +874,7 @@
         private System.Windows.Forms.CheckBox cbIncludeAncillary;
         private System.Windows.Forms.CheckBox cbHeadings;
         private System.Windows.Forms.CheckBox cbIntros;
-        private System.Windows.Forms.CheckBox cbDownloadTypsettingFiles;
+        private System.Windows.Forms.CheckBox cbDownloadTypesettingFiles;
         private System.Windows.Forms.CheckBox cbUseProjectFonts;
         private System.Windows.Forms.CheckBox cbLocalizeFootnotes;
         private System.Windows.Forms.CheckBox cbHyphenate;

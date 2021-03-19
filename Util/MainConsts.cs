@@ -133,7 +133,7 @@ namespace TptMain.Util
         public const string PAGE_HEIGHT = "Height: Min 216; Max 1008";
         public const string PAGE_HEADER = "Header Size: Min 0; Max 50";
 
-        public const string HYPHENATE = "Changes whether the previewed text uses hyphenation; Bbeak and hyphenate long words. Must have hyphenation data in project.";
+        public const string HYPHENATE = "Changes whether the previewed text uses hyphenation; Break and hyphenate long words. Must have hyphenation data in project.";
         public const string LOCALIZE_FOOTNOTES = "Footnotes should be localized. Must specify footnote caller sequence.";
 
         public const string INCLUSIONS = "Changes whether to include specific elements in the preview.";

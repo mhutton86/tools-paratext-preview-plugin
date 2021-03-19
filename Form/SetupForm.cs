@@ -108,7 +108,7 @@ namespace TptMain.Form
             toolTip.SetToolTip(cbParallelPassages, MainConsts.INCLUDE_PARALLEL);
             toolTip.SetToolTip(cbAcrostic, MainConsts.INCLUDE_ACROSTIC);
 
-            toolTip.SetToolTip(cbDownloadTypsettingFiles, MainConsts.DOWNLOAD_TYPESETTING);
+            toolTip.SetToolTip(cbDownloadTypesettingFiles, MainConsts.DOWNLOAD_TYPESETTING);
             toolTip.SetToolTip(cbUseProjectFonts, MainConsts.USE_PROJECT_FONTS);
 
             SetAdminView(ProjectName);
@@ -160,7 +160,6 @@ namespace TptMain.Form
         {
             if (PopulatePreviewJob())
             {
-                //IsArchive = onDownloadTypesettingMenuItem.Checked;
                 Close();
             }
         }
@@ -399,8 +398,8 @@ namespace TptMain.Form
         /// <summary>
         /// This method controls what happens when an item in the "Advanced" menu is clicked.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Event source</param>
+        /// <param name="e">event</param>
         private void OnAdvancedMenuItemClick(object sender, EventArgs e)
         {
             // When invoked by a ToolStripMenuItem, flip the state of that menu item
@@ -415,8 +414,8 @@ namespace TptMain.Form
         /// <summary>
         /// Show EULA dialog
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Event source</param>
+        /// <param name="e">event</param>
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string pluginName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
@@ -433,8 +432,8 @@ namespace TptMain.Form
         /// <summary>
         /// Show text box when allowing custom book ranges to be entered
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Event source</param>
+        /// <param name="e">event</param>
         private void rbCustom_CheckedChanged(object sender, EventArgs e)
         {
             tbCustomBookSet.Enabled = rbCustom.Checked;
@@ -444,8 +443,8 @@ namespace TptMain.Form
         /// Uncheck some items when selecting TBOTB based on
         /// https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Event source</param>
+        /// <param name="e">event</param>
         private void rdoLayoutTbotb_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoLayoutTbotb.Checked) {
@@ -461,8 +460,8 @@ namespace TptMain.Form
         /// Check some items when selecting CAV based on
         /// https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Event source</param>
+        /// <param name="e">event</param>
         private void rdoLayoutCav_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoLayoutCav.Checked)
