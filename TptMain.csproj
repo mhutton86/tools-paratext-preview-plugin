@@ -41,11 +41,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TptMain</RootNamespace>
     <AssemblyName>TypesettingPreviewPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -82,8 +83,8 @@
     <Reference Include="DotNetZip, Version=1.13.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>packages\DotNetZip.1.13.8\lib\net40\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="icu.net, Version=2.6.0.0, Culture=neutral, PublicKeyToken=416fdd914afa6b66, processorArchitecture=MSIL">
-      <HintPath>packages\icu.net.2.6.0\lib\net451\icu.net.dll</HintPath>
+    <Reference Include="icu.net, Version=2.7.0.0, Culture=neutral, PublicKeyToken=416fdd914afa6b66, processorArchitecture=MSIL">
+      <HintPath>packages\icu.net.2.7.1\lib\net451\icu.net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=3.1.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -282,11 +283,14 @@
     <Compile Include="Form\SetupForm.Designer.cs">
       <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Import\ImportManager.cs" />
     <Compile Include="Models\BookFormat.cs" />
     <Compile Include="Models\ParatextProjectModels.cs" />
     <Compile Include="Models\PreviewJob.cs" />
     <Compile Include="Models\ServerStatus.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
+    <Compile Include="Project\FileManager.cs" />
+    <Compile Include="Project\ProjectUserAccess.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -340,13 +344,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="ArchiveBuild" AfterTargets="Build" Condition="$(Configuration) == 'Release'">
-    <ItemGroup>
-      <ZipFiles Include="$(OutputPath)*.dll" />
-      <ZipFiles Include="$(OutputPath)*.pdb" />
-      <ZipFiles Include="$(OutputPath)*.config" />
-      <ZipFiles Include="$(OutputPath)*.xml" />
-    </ItemGroup>
-    <Zip OutputFilename="$(OutputPath)$(TargetName).zip" Files="@(ZipFiles)" />
+	<ZipDirectory SourceDirectory="$(OutputPath)zip\" DestinationFile="$(OutputPath)\..\$(AssemblyName).zip" Overwrite="true" />
   </Target>
   <Import Project="packages\Icu4c.Win.Min.59.1.7\build\Icu4c.Win.Min.targets" Condition="Exists('packages\Icu4c.Win.Min.59.1.7\build\Icu4c.Win.Min.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -355,4 +353,19 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\Icu4c.Win.Min.59.1.7\build\Icu4c.Win.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Icu4c.Win.Min.59.1.7\build\Icu4c.Win.Min.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(TargetDir)zip\lib\win-x64"
+mkdir "$(TargetDir)zip\lib\win-x86"
+copy *.dll "$(TargetDir)zip"
+copy "$(TargetDir)lib\win-x86\icudt59.dll" "$(TargetDir)zip\lib\win-x86"
+copy "$(TargetDir)lib\win-x86\icuin59.dll" "$(TargetDir)zip\lib\win-x86"
+copy "$(TargetDir)lib\win-x86\icuuc59.dll" "$(TargetDir)zip\lib\win-x86"
+copy "$(TargetDir)lib\win-x64\icudt59.dll" "$(TargetDir)zip\lib\win-x64"
+copy "$(TargetDir)lib\win-x64\icuin59.dll" "$(TargetDir)zip\lib\win-x64"
+copy "$(TargetDir)lib\win-x64\icuuc59.dll" "$(TargetDir)zip\lib\win-x64"
+copy *.pdb "$(TargetDir)zip"
+copy *.config "$(TargetDir)zip"
+copy *.xml "$(TargetDir)zip"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
