@@ -8,7 +8,6 @@ namespace TptMain.Models
     /// </summary>
     public enum PreviewJobState
     {
-        Created,
         Submitted,
         Started,
         GeneratingTemplate,
@@ -17,6 +16,7 @@ namespace TptMain.Models
         TaggedTextGenerated,
         GeneratingPreview,
         PreviewGenerated,
+        Cancelled,
         Error
     }
     
@@ -84,7 +84,7 @@ namespace TptMain.Models
         /// The current state of the Preview Job
         /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public PreviewJobState State { get; set; } = PreviewJobState.Created;
+        public PreviewJobState State { get; set; }
 
         /// <summary>
         /// User-friendly message regarding the error; <c>null</c> otherwise.

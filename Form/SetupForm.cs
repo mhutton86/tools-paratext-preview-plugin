@@ -234,6 +234,7 @@ namespace TptMain.Form
             _previewJob.TypesettingParams.PageWidthInPts = PageWidthInPts;
             _previewJob.TypesettingParams.PageHeaderInPts = PageHeaderInPts;
             _previewJob.TypesettingParams.UseCustomFootnotes = UseCustomFootnotes;
+            _previewJob.TypesettingParams.UseHyphenation = UseHyphenation;
             _previewJob.TypesettingParams.UseProjectFont = UseProjectFont;
             _previewJob.TypesettingParams.IncludeFootnotes = IncludeFootnotes;
             _previewJob.TypesettingParams.IncludeIntros = IncludeIntros;
@@ -356,11 +357,16 @@ namespace TptMain.Form
         /// Book format accessor.
         /// </summary>
         public BookFormat BookFormat => rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb;
-
+        
         /// <summary>
         /// Use custom footnote accessor.
         /// </summary>
-        public bool UseCustomFootnotes => cbFootnotes.Checked;
+        public bool UseCustomFootnotes => cbLocalizeFootnotes.Checked;
+        
+        /// <summary>
+        /// Whether to apply hyphenation to the preview
+        /// </summary>
+        public bool UseHyphenation => cbHyphenate.Checked;
 
         /// <summary>
         /// Determines whether the project font will be used when generating the preview.
