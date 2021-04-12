@@ -222,9 +222,11 @@ namespace TptMain.Form
             {
                 return false;
             }
-         
-            _previewJob.BibleSelectionParams.ProjectName = ProjectName;
+
             _previewJob.User = User;
+            _previewJob.BibleSelectionParams.ProjectName = ProjectName;
+            _previewJob.BibleSelectionParams.IncludeAncillary = IncludeAncillary;
+            _previewJob.BibleSelectionParams.SelectedBooks = SelectedBooks;
             _previewJob.TypesettingParams.BookFormat = BookFormat;
             _previewJob.TypesettingParams.FontSizeInPts = FontSizeInPts;
             _previewJob.TypesettingParams.FontLeadingInPts = FontLeadingInPts;
@@ -233,6 +235,12 @@ namespace TptMain.Form
             _previewJob.TypesettingParams.PageHeaderInPts = PageHeaderInPts;
             _previewJob.TypesettingParams.UseCustomFootnotes = UseCustomFootnotes;
             _previewJob.TypesettingParams.UseProjectFont = UseProjectFont;
+            _previewJob.TypesettingParams.IncludeFootnotes = IncludeFootnotes;
+            _previewJob.TypesettingParams.IncludeIntros = IncludeIntros;
+            _previewJob.TypesettingParams.IncludeAcrosticPoetry = IncludeAcrosticPoetry;
+            _previewJob.TypesettingParams.IncludeChapterNumbers = IncludeChapterNumbers;
+            _previewJob.TypesettingParams.IncludeParallelPassages = IncludeParallelPassages;
+            _previewJob.TypesettingParams.IncludeVerseNumbers = IncludeVerseNumbers;
 
             return true;
         }
@@ -358,6 +366,46 @@ namespace TptMain.Form
         /// Determines whether the project font will be used when generating the preview.
         /// </summary>
         public bool UseProjectFont => cbUseProjectFonts.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Footnotes.
+        ///</summary>
+        public bool IncludeFootnotes => cbFootnotes.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Intros.
+        ///</summary>
+        public bool IncludeIntros => cbIntros.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Acrostic Poetry.
+        ///</summary>
+        public bool IncludeAcrosticPoetry => cbAcrostic.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Chapter Numbers.
+        ///</summary>
+        public bool IncludeChapterNumbers => cbChapterNumbers.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Parallel Passages.
+        ///</summary>
+        public bool IncludeParallelPassages => cbParallelPassages.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Verse Numbers.
+        ///</summary>
+        public bool IncludeVerseNumbers => cbVerseNumbers.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Ancillary material.
+        ///</summary>
+        public bool IncludeAncillary => cbIncludeAncillary.Checked;
+        
+        /// <summary>
+        /// Defines which books should be included in the preview.
+        /// </summary>
+        public string SelectedBooks => null; // TODO && ensure validation in field if empty but "custom" selected
 
         /// <summary>
         /// Project name accessor.
