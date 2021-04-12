@@ -401,11 +401,11 @@ namespace TptMain.Form
         /// Determines whether the preview should include Ancillary material.
         ///</summary>
         public bool IncludeAncillary => cbIncludeAncillary.Checked;
-        
+
         /// <summary>
         /// Defines which books should be included in the preview.
         /// </summary>
-        public string SelectedBooks => null; // TODO && ensure validation in field if empty but "custom" selected
+        public string SelectedBooks => DetermineSelectedBooks();
 
         /// <summary>
         /// Project name accessor.
@@ -520,6 +520,26 @@ namespace TptMain.Form
                 cbParallelPassages.Checked = true;
             }
 
+        }
+
+        /// <summary>
+        /// This method returns which books should be included with the preview.
+        /// </summary>
+        /// <returns></returns>
+        private string DetermineSelectedBooks()
+        {
+            if (rbFullBible.Checked)
+            {
+                return MainConsts.SELECT_FULL_BIBLE;
+            }
+
+            if (rbNewTestament.Checked)
+            {
+                return MainConsts.SELECT_NEW_TESTAMENT;
+            }
+            
+            // Return the list of books specified by the user
+            return tbCustomBookSet.Text.Trim().Replace(" ", "");
         }
     }
 }
