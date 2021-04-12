@@ -224,13 +224,13 @@ namespace TptMain.Workflow
 
                     if (_isArchive)
                     {
-                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.zip";
+                        saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.zip";
                         saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
                         saveFile.DefaultExt = "zip";                        
                     }
                     else
                     {
-                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
+                        saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.pdf";
                         saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
                         saveFile.DefaultExt = "pdf";
                     }

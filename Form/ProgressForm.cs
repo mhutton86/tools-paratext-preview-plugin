@@ -41,7 +41,7 @@ namespace TptMain.Form
         public virtual void SetStatus(PreviewJob previewJob)
         {
             _previewJob = previewJob ?? throw new ArgumentNullException(nameof(previewJob));
-            Text = $"Project: \"{_previewJob.ProjectName}\", Format: {_previewJob.BookFormat}, Font: {_previewJob.FontSizeInPts}pt, Leading: {_previewJob.FontLeadingInPts}pt";
+            Text = $"Project: \"{_previewJob.BibleSelectionParams.ProjectName}\", Format: {_previewJob.TypesettingParams.BookFormat}, Font: {_previewJob.TypesettingParams.FontSizeInPts}pt, Leading: {_previewJob.TypesettingParams.FontLeadingInPts}pt";
 
             var nowTime = DateTime.UtcNow;
             if (_previewJob.IsStarted)

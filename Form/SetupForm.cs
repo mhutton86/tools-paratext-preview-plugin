@@ -223,16 +223,16 @@ namespace TptMain.Form
                 return false;
             }
          
-            _previewJob.ProjectName = ProjectName;
+            _previewJob.BibleSelectionParams.ProjectName = ProjectName;
             _previewJob.User = User;
-            _previewJob.BookFormat = BookFormat;
-            _previewJob.FontSizeInPts = FontSizeInPts;
-            _previewJob.FontLeadingInPts = FontLeadingInPts;
-            _previewJob.PageHeightInPts = PageHeightInPts;
-            _previewJob.PageWidthInPts = PageWidthInPts;
-            _previewJob.PageHeaderInPts = PageHeaderInPts;
-            _previewJob.UseCustomFootnotes = UseCustomFootnotes;
-            _previewJob.UseProjectFont = UseProjectFont;
+            _previewJob.TypesettingParams.BookFormat = BookFormat;
+            _previewJob.TypesettingParams.FontSizeInPts = FontSizeInPts;
+            _previewJob.TypesettingParams.FontLeadingInPts = FontLeadingInPts;
+            _previewJob.TypesettingParams.PageHeightInPts = PageHeightInPts;
+            _previewJob.TypesettingParams.PageWidthInPts = PageWidthInPts;
+            _previewJob.TypesettingParams.PageHeaderInPts = PageHeaderInPts;
+            _previewJob.TypesettingParams.UseCustomFootnotes = UseCustomFootnotes;
+            _previewJob.TypesettingParams.UseProjectFont = UseProjectFont;
 
             return true;
         }
