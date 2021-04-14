@@ -222,17 +222,26 @@ namespace TptMain.Form
             {
                 return false;
             }
-         
-            _previewJob.ProjectName = ProjectName;
+
             _previewJob.User = User;
-            _previewJob.BookFormat = BookFormat;
-            _previewJob.FontSizeInPts = FontSizeInPts;
-            _previewJob.FontLeadingInPts = FontLeadingInPts;
-            _previewJob.PageHeightInPts = PageHeightInPts;
-            _previewJob.PageWidthInPts = PageWidthInPts;
-            _previewJob.PageHeaderInPts = PageHeaderInPts;
-            _previewJob.UseCustomFootnotes = UseCustomFootnotes;
-            _previewJob.UseProjectFont = UseProjectFont;
+            _previewJob.BibleSelectionParams.ProjectName = ProjectName;
+            _previewJob.BibleSelectionParams.IncludeAncillary = IncludeAncillary;
+            _previewJob.BibleSelectionParams.SelectedBooks = SelectedBooks;
+            _previewJob.TypesettingParams.BookFormat = BookFormat;
+            _previewJob.TypesettingParams.FontSizeInPts = FontSizeInPts;
+            _previewJob.TypesettingParams.FontLeadingInPts = FontLeadingInPts;
+            _previewJob.TypesettingParams.PageHeightInPts = PageHeightInPts;
+            _previewJob.TypesettingParams.PageWidthInPts = PageWidthInPts;
+            _previewJob.TypesettingParams.PageHeaderInPts = PageHeaderInPts;
+            _previewJob.TypesettingParams.UseCustomFootnotes = UseCustomFootnotes;
+            _previewJob.TypesettingParams.UseHyphenation = UseHyphenation;
+            _previewJob.TypesettingParams.UseProjectFont = UseProjectFont;
+            _previewJob.TypesettingParams.IncludeFootnotes = IncludeFootnotes;
+            _previewJob.TypesettingParams.IncludeIntros = IncludeIntros;
+            _previewJob.TypesettingParams.IncludeAcrosticPoetry = IncludeAcrosticPoetry;
+            _previewJob.TypesettingParams.IncludeChapterNumbers = IncludeChapterNumbers;
+            _previewJob.TypesettingParams.IncludeParallelPassages = IncludeParallelPassages;
+            _previewJob.TypesettingParams.IncludeVerseNumbers = IncludeVerseNumbers;
 
             return true;
         }
@@ -348,16 +357,61 @@ namespace TptMain.Form
         /// Book format accessor.
         /// </summary>
         public BookFormat BookFormat => rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb;
-
+        
         /// <summary>
         /// Use custom footnote accessor.
         /// </summary>
-        public bool UseCustomFootnotes => cbFootnotes.Checked;
+        public bool UseCustomFootnotes => cbLocalizeFootnotes.Checked;
+        
+        /// <summary>
+        /// Whether to apply hyphenation to the preview
+        /// </summary>
+        public bool UseHyphenation => cbHyphenate.Checked;
 
         /// <summary>
         /// Determines whether the project font will be used when generating the preview.
         /// </summary>
         public bool UseProjectFont => cbUseProjectFonts.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Footnotes.
+        ///</summary>
+        public bool IncludeFootnotes => cbFootnotes.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Intros.
+        ///</summary>
+        public bool IncludeIntros => cbIntros.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Acrostic Poetry.
+        ///</summary>
+        public bool IncludeAcrosticPoetry => cbAcrostic.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Chapter Numbers.
+        ///</summary>
+        public bool IncludeChapterNumbers => cbChapterNumbers.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Parallel Passages.
+        ///</summary>
+        public bool IncludeParallelPassages => cbParallelPassages.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Verse Numbers.
+        ///</summary>
+        public bool IncludeVerseNumbers => cbVerseNumbers.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Ancillary material.
+        ///</summary>
+        public bool IncludeAncillary => cbIncludeAncillary.Checked;
+
+        /// <summary>
+        /// Defines which books should be included in the preview.
+        /// </summary>
+        public string SelectedBooks => DetermineSelectedBooks();
 
         /// <summary>
         /// Project name accessor.
@@ -472,6 +526,26 @@ namespace TptMain.Form
                 cbParallelPassages.Checked = true;
             }
 
+        }
+
+        /// <summary>
+        /// This method returns which books should be included with the preview.
+        /// </summary>
+        /// <returns></returns>
+        private string DetermineSelectedBooks()
+        {
+            if (rbFullBible.Checked)
+            {
+                return MainConsts.SELECT_FULL_BIBLE;
+            }
+
+            if (rbNewTestament.Checked)
+            {
+                return MainConsts.SELECT_NEW_TESTAMENT;
+            }
+            
+            // Return the list of books specified by the user
+            return tbCustomBookSet.Text.Trim().Replace(" ", "");
         }
     }
 }

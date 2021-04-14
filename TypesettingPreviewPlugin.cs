@@ -115,7 +115,7 @@ namespace TptMain
                                 if (_previewJob != null)
                                 {
                                     errorDetails.Add("Job ID", _previewJob.Id);
-                                    errorDetails.Add("Project", _previewJob.ProjectName);
+                                    errorDetails.Add("Project", _previewJob.BibleSelectionParams.ProjectName);
 
                                     if (_previewJob.IsError)
                                     {
