@@ -460,9 +460,9 @@
             this.lblProjectUpdated.AutoSize = true;
             this.lblProjectUpdated.Location = new System.Drawing.Point(376, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
-            this.lblProjectUpdated.Size = new System.Drawing.Size(123, 13);
+            this.lblProjectUpdated.Size = new System.Drawing.Size(156, 13);
             this.lblProjectUpdated.TabIndex = 7;
-            this.lblProjectUpdated.Text = "Last Updated on Server:";
+            this.lblProjectUpdated.Text = "Last Updated on Server (GMT):";
             // 
             // lblProjectName
             // 
