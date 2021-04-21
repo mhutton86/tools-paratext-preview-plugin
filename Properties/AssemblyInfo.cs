@@ -1,6 +1,7 @@
 ﻿using System.Resources;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using TptMain.Util;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -10,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Biblica")]
 [assembly: AssemblyProduct("TypesettingPreviewPlugin")]
-[assembly: AssemblyCopyright("© 2020-2021 Biblica, Inc.")]
+[assembly: AssemblyCopyright(MainConsts.COPYRIGHT)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

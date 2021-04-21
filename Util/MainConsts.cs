@@ -109,7 +109,7 @@ namespace TptMain.Util
         /// <summary>
         /// The copyright for this plugin.
         /// </summary>
-        public const string COPYRIGHT = "© 2020 Biblica, Inc.";
+        public const string COPYRIGHT = "© 2020-2021 Biblica, Inc.";
 
         // from: https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
 

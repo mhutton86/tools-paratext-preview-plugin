@@ -1,4 +1,6 @@
-﻿namespace TptMain.Form
+﻿using TptMain.Util;
+
+namespace TptMain.Form
 {
     partial class LicenseForm
     {
@@ -89,7 +91,7 @@
             this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.Copyright.Size = new System.Drawing.Size(101, 23);
             this.Copyright.TabIndex = 5;
-            this.Copyright.Text = "© 2020 Biblica, Inc.";
+            this.Copyright.Text = MainConsts.COPYRIGHT;
             // 
             // LicenseForm
             // 
