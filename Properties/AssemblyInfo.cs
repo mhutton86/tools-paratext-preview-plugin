@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Biblica")]
 [assembly: AssemblyProduct("TypesettingPreviewPlugin")]
-[assembly: AssemblyCopyright("© 2021 Biblica, Inc.")]
+[assembly: AssemblyCopyright("© 2020-2021 Biblica, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
