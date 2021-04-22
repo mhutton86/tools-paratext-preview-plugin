@@ -17,7 +17,7 @@ namespace TptMain
     /// <summary>
     /// Typesetting preview plugin root class.
     /// </summary>
-    [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = "1.3.0.1", Publisher = "Biblica")]
+    [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = "1.9.0.0", Publisher = "Biblica")]
     [QualificationData(PluginMetaDataKeys.menuText, "Typesetting-Preview")]
     [QualificationData(PluginMetaDataKeys.insertAfterMenuName, "Tools|")]
     [QualificationData(PluginMetaDataKeys.enableWhen, WhenToEnable.anyProjectActive)]
@@ -115,7 +115,7 @@ namespace TptMain
                                 if (_previewJob != null)
                                 {
                                     errorDetails.Add("Job ID", _previewJob.Id);
-                                    errorDetails.Add("Project", _previewJob.ProjectName);
+                                    errorDetails.Add("Project", _previewJob.BibleSelectionParams.ProjectName);
 
                                     if (_previewJob.IsError)
                                     {

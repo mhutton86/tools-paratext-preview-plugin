@@ -5,7 +5,9 @@ using AddInSideViews;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TptMain.Form;
+using TptMain.Import;
 using TptMain.Models;
+using TptMain.Util;
 using TptMain.Workflow;
 
 namespace TptTest
@@ -25,6 +27,7 @@ namespace TptTest
         /// Test user.
         /// </summary>
         private const string TestUser = "testUser";
+
         private const string TestVersion = "1.2.3";
 
         /// <summary>
@@ -39,13 +42,14 @@ namespace TptTest
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
 
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(It.IsAny<string>()))
+                    workflowItem.CheckProjectName(It.IsAny<string>()))
                 .Throws<WorkflowException>();
 
             // execute
@@ -70,36 +74,44 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
-            var testServerStatus = CreateTestServerStatus();
 
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
+                (string projectName) =>
+                {
+                    // do nothing
+                });
+            var testServerStatus = CreateTestServerStatus();
+
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckServerStatus())
+                    workflowItem.CheckServerStatus())
                 .Returns(testServerStatus);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TestProjectName))
+                    workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
+                    workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
                 .Returns(true);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                    workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
             mockSetupForm.Setup(
-                formItem => formItem.IsCancelled)
+                    formItem => formItem.IsCancelled)
                 .Returns(true);
 
             // execute
@@ -113,9 +125,10 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                    It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -134,42 +147,50 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
-            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
+            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
 
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            // override with no-op so ParatextData is not initialized during testing
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
+                (string projectName) =>
+                {
+                    // do nothing
+                });
+
             mockHost.Setup(hostItem => hostItem.UserName)
-               .Returns(TestUser);
+                .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TestProjectName))
+                    workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                    workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
             mockSetupForm.Setup(
-                formItem => formItem.IsCancelled)
+                    formItem => formItem.IsCancelled)
                 .Returns(false);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateProgressForm())
+                    workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModelessForm(It.IsAny<Form>()));
             mockSetupForm.Setup(
-                formItem => formItem.PreviewJob)
+                    formItem => formItem.PreviewJob)
                 .Returns(testPreviewJob);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreatePreviewJob(testPreviewJob))
+                    workflowItem.CreatePreviewJob(testPreviewJob))
                 .Throws(new IOException());
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
@@ -183,9 +204,10 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                    It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -214,49 +236,57 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
-            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
+            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            // override with no-op so ParatextData is not initialized during testing
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
+                (string projectName) =>
+                {
+                    // do nothing
+                });
+
             mockHost.Setup(hostItem => hostItem.UserName)
-               .Returns(TestUser);
+                .Returns(TestUser);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TestProjectName))
+                    workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                    workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
             mockSetupForm.Setup(
-                formItem => formItem.IsCancelled)
+                    formItem => formItem.IsCancelled)
                 .Returns(false);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateProgressForm())
+                    workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModelessForm(It.IsAny<Form>()));
             mockSetupForm.Setup(
-                formItem => formItem.PreviewJob)
+                    formItem => formItem.PreviewJob)
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreatePreviewJob(testPreviewJob1))
+                    workflowItem.CreatePreviewJob(testPreviewJob1))
                 .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
-                formItem.SetStatus(testPreviewJob2))
+                    formItem.SetStatus(testPreviewJob2))
                 .Throws(new IOException());
 
             // execute
@@ -268,9 +298,10 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                    It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -303,50 +334,58 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
-            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
+            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            // override with no-op so ParatextData is not initialized during testing
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
+                (string projectName) =>
+                {
+                    // do nothing
+                });
+
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TestProjectName))
+                    workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                    workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
             mockSetupForm.Setup(
-                formItem => formItem.IsCancelled)
+                    formItem => formItem.IsCancelled)
                 .Returns(false);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateProgressForm())
+                    workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModelessForm(It.IsAny<Form>()));
             mockSetupForm.Setup(
-                formItem => formItem.PreviewJob)
+                    formItem => formItem.PreviewJob)
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreatePreviewJob(testPreviewJob1))
+                    workflowItem.CreatePreviewJob(testPreviewJob1))
                 .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
-                formItem.SetStatus(testPreviewJob2))
+                    formItem.SetStatus(testPreviewJob2))
                 .Callback(() =>
                 {
                     setStatusCtr++;
@@ -370,9 +409,10 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                    It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -405,50 +445,58 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
-            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
+            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            // override with no-op so ParatextData is not initialized during testing
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
+                (string projectName) =>
+                {
+                    // do nothing
+                });
+
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TestProjectName))
+                    workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                    workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
             mockSetupForm.Setup(
-                formItem => formItem.IsCancelled)
+                    formItem => formItem.IsCancelled)
                 .Returns(false);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateProgressForm())
+                    workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModelessForm(It.IsAny<Form>()));
             mockSetupForm.Setup(
-                formItem => formItem.PreviewJob)
+                    formItem => formItem.PreviewJob)
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreatePreviewJob(testPreviewJob1))
+                    workflowItem.CreatePreviewJob(testPreviewJob1))
                 .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
-                formItem.SetStatus(testPreviewJob2))
+                    formItem.SetStatus(testPreviewJob2))
                 .Callback(() =>
                 {
                     setStatusCtr++;
@@ -463,7 +511,7 @@ namespace TptTest
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2, It.IsAny<bool>()))
+                    workflowItem.DownloadPreviewFile(testPreviewJob2, It.IsAny<bool>()))
                 .Throws(new IOException());
 
             // execute
@@ -475,9 +523,10 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.Once);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                    It.IsAny<MessageBoxIcon>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -511,14 +560,21 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockSetupForm = new Mock<SetupForm>() { CallBase = true };
-            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
+            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
             var testServerStatus = CreateTestServerStatus();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
             var testPreviewFile = new FileInfo(Path.GetTempFileName());
+
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            // override with no-op so ParatextData is not initialized during testing
+            mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
+                (string projectName) =>
+                {
+                    // do nothing
+                });
 
             // ensure temp file (preview file) exists before we get started
             testPreviewFile.Refresh();
@@ -528,60 +584,61 @@ namespace TptTest
                 .Returns(TestUser);
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
+                    workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
                 .CallBase();
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()))
+                    workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                        It.IsAny<MessageBoxIcon>()))
                 .Returns(DialogResult.OK);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckServerStatus())
+                    workflowItem.CheckServerStatus())
                 .Returns(testServerStatus);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CheckProjectName(TestProjectName))
+                    workflowItem.CheckProjectName(TestProjectName))
                 .Returns(testProjectDetails);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
+                    workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
                 .Returns(true);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateSetupForm())
+                    workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()))
                 .Returns(mockSetupForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
             mockSetupForm.Setup(
-                formItem => formItem.IsCancelled)
+                    formItem => formItem.IsCancelled)
                 .Returns(false);
 
             // Setup form mock to address when archive is requested or otherwise.
             if (isArchive)
             {
                 mockSetupForm.Setup(
-                    formItem => formItem.IsArchive)
+                        formItem => formItem.IsArchive)
                     .Returns(true);
             }
             else
             {
                 mockSetupForm.Setup(
-                 formItem => formItem.IsArchive)
-                 .Returns(false);
+                        formItem => formItem.IsArchive)
+                    .Returns(false);
             }
 
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreateProgressForm())
+                    workflowItem.CreateProgressForm())
                 .Returns(mockProgressForm.Object);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.ShowModelessForm(It.IsAny<Form>()));
             mockSetupForm.Setup(
-                formItem => formItem.PreviewJob)
+                    formItem => formItem.PreviewJob)
                 .Returns(testPreviewJob1);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.CreatePreviewJob(testPreviewJob1))
+                    workflowItem.CreatePreviewJob(testPreviewJob1))
                 .Returns(() => testPreviewJob2);
             mockWorkflow.Setup(workflowItem =>
                 workflowItem.HideModelessForm(It.IsAny<Form>()));
             mockProgressForm.Setup(formItem =>
-                formItem.SetStatus(testPreviewJob2))
+                    formItem.SetStatus(testPreviewJob2))
                 .Callback(() =>
                 {
                     setStatusCtr++;
@@ -596,7 +653,7 @@ namespace TptTest
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.DownloadPreviewFile(testPreviewJob2, isArchive))
+                    workflowItem.DownloadPreviewFile(testPreviewJob2, isArchive))
                 .Returns(testPreviewFile);
 
             // execute
@@ -610,9 +667,10 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CheckProjectName(TestProjectName), Times.Once);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(), It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
+                workflowItem.ShowMessageBox(It.IsAny<string>(), It.IsAny<MessageBoxButtons>(),
+                    It.IsAny<MessageBoxIcon>()), Times.AtMostOnce);
             mockWorkflow.Verify(workflowItem =>
-                workflowItem.CreateSetupForm(), Times.Once);
+                workflowItem.CreateSetupForm(It.IsAny<ProjectDetails>()), Times.Once);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModalForm(mockSetupForm.Object), Times.Once);
             mockSetupForm.Verify(formItem =>
@@ -622,7 +680,7 @@ namespace TptTest
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.CreateProgressForm(), Times.Once);
             mockWorkflow.Setup(workflowItem =>
-                workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
+                    workflowItem.IsFootnoteCallerSequenceDefined(TestProjectName))
                 .Returns(true);
             mockWorkflow.Verify(workflowItem =>
                 workflowItem.ShowModelessForm(mockProgressForm.Object), Times.Once);
@@ -677,15 +735,21 @@ namespace TptTest
         {
             return new PreviewJob
             {
-                ProjectName = TestProjectName,
+                BibleSelectionParams = new BibleSelectionParams
+                {
+                    ProjectName = TestProjectName,
+                },
                 User = TestUser,
-                BookFormat = BookFormat.cav,
-                UseCustomFootnotes = true,
-                FontSizeInPts = 123.4f,
-                FontLeadingInPts = 234.5f,
-                PageHeightInPts = 345.6f,
-                PageWidthInPts = 456.7f,
-                PageHeaderInPts = 567.8f
+                TypesettingParams = new TypesettingParams
+                {
+                    BookFormat = BookFormat.cav,
+                    UseCustomFootnotes = true,
+                    FontSizeInPts = 123.4f,
+                    FontLeadingInPts = 234.5f,
+                    PageHeightInPts = 345.6f,
+                    PageWidthInPts = 456.7f,
+                    PageHeaderInPts = 567.8f
+                }
             };
         }
 
