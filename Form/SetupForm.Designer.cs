@@ -460,9 +460,9 @@
             this.lblProjectUpdated.AutoSize = true;
             this.lblProjectUpdated.Location = new System.Drawing.Point(376, 27);
             this.lblProjectUpdated.Name = "lblProjectUpdated";
-            this.lblProjectUpdated.Size = new System.Drawing.Size(123, 13);
+            this.lblProjectUpdated.Size = new System.Drawing.Size(156, 13);
             this.lblProjectUpdated.TabIndex = 7;
-            this.lblProjectUpdated.Text = "Last Updated on Server:";
+            this.lblProjectUpdated.Text = "Last Updated on Server (GMT):";
             // 
             // lblProjectName
             // 
@@ -533,9 +533,9 @@
             this.Copyright.Location = new System.Drawing.Point(12, 587);
             this.Copyright.Name = "Copyright";
             this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.Copyright.Size = new System.Drawing.Size(101, 23);
+            this.Copyright.Size = new System.Drawing.Size(128, 23);
             this.Copyright.TabIndex = 20;
-            this.Copyright.Text = "© 2020 Biblica, Inc.";
+            this.Copyright.Text = "© 2020-2021 Biblica, Inc.";
             // 
             // lblVersions
             // 
