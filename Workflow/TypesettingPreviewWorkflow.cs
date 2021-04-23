@@ -99,8 +99,7 @@ namespace TptMain.Workflow
                 DetailsUpdated?.Invoke(this, _projectDetails);
 
                 // Create & show setup form to user to get preview input.
-                var setupForm = CreateSetupForm();
-                setupForm.SetProjectDetails(_projectDetails);
+                var setupForm = CreateSetupForm(_projectDetails);
                 setupForm.SetServerStatus(_serverStatus);
                 setupForm.User = host.UserName;
 
@@ -225,13 +224,13 @@ namespace TptMain.Workflow
 
                     if (_isArchive)
                     {
-                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.zip";
+                        saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.zip";
                         saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
                         saveFile.DefaultExt = "zip";                        
                     }
                     else
                     {
-                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
+                        saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.pdf";
                         saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
                         saveFile.DefaultExt = "pdf";
                     }
@@ -487,9 +486,9 @@ namespace TptMain.Workflow
         /// Overridable utility method to create setup form.
         /// </summary>
         /// <returns>Setup form.</returns>
-        public virtual SetupForm CreateSetupForm()
+        public virtual SetupForm CreateSetupForm(ProjectDetails projectDetails)
         {
-            return new SetupForm();
+            return new SetupForm(projectDetails);
         }
 
         /// <summary>
