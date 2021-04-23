@@ -1,7 +1,25 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace TptMain.Models
 {
+    /// <summary>
+    /// Represents the possible states of a Preview Job
+    /// </summary>
+    public enum PreviewJobState
+    {
+        Submitted,
+        Started,
+        GeneratingTemplate,
+        TemplateGenerated,
+        GeneratingTaggedText,
+        TaggedTextGenerated,
+        GeneratingPreview,
+        PreviewGenerated,
+        Cancelled,
+        Error
+    }
+    
     /// <summary>
     /// Model for tracking Typesetting Preview jobs.
     /// </summary>
@@ -31,11 +49,6 @@ namespace TptMain.Models
         /// The <c>DateTime</c> a job was cancelled.
         /// </summary>
         public DateTime? DateCancelled { get; set; }
-
-        /// <summary>
-        /// The PT short project name to generate a typesetting preview of.
-        /// </summary>
-        public string ProjectName { get; set; }
 
         /// <summary>
         /// The user requesting the job.
@@ -68,6 +81,12 @@ namespace TptMain.Models
         public bool IsError { get; set; } = false;
 
         /// <summary>
+        /// The current state of the Preview Job
+        /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public PreviewJobState State { get; set; }
+
+        /// <summary>
         /// User-friendly message regarding the error; <c>null</c> otherwise.
         /// </summary>
         public string ErrorMessage { get; set; }
@@ -78,39 +97,14 @@ namespace TptMain.Models
         public string ErrorDetail { get; set; }
 
         /// <summary>
-        /// Font size in points.
+        /// Which Bible books to include
         /// </summary>
-        public float? FontSizeInPts { get; set; }
+        public BibleSelectionParams BibleSelectionParams { get; set; } = new BibleSelectionParams();
 
         /// <summary>
-        /// Font leading in points.
+        /// Parameters to use for the typesetting preview
         /// </summary>
-        public float? FontLeadingInPts { get; set; }
-
-        /// <summary>
-        /// Page width in points.
-        /// </summary>
-        public float? PageWidthInPts { get; set; }
-
-        /// <summary>
-        /// Page height in points.
-        /// </summary>
-        public float? PageHeightInPts { get; set; }
-
-        /// <summary>
-        /// Page header in points.
-        /// </summary>
-        public float? PageHeaderInPts { get; set; }
-
-        /// <summary>
-        /// Book format, either TBOTB or CAV.
-        /// </summary>
-        public BookFormat? BookFormat { get; set; }
-
-        /// <summary>
-        /// Generate preview with custom footnote markers; defaults to false.
-        /// </summary>
-        public bool? UseCustomFootnotes { get; set; } = false;
+        public TypesettingParams TypesettingParams { get; set; } = new TypesettingParams();
 
         /// <summary>
         /// Function used for indicating an error occurred and provide a message for the reason.

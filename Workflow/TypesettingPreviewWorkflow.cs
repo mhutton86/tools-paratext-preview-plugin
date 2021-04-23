@@ -1,5 +1,4 @@
 ﻿using AddInSideViews;
-using Paratext.Data.ProjectSettingsAccess;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,11 @@ namespace TptMain.Workflow
         /// Current, observed project details from server.
         /// </summary>
         private ProjectDetails _projectDetails;
+
+        /// <summary>
+        /// Current, observed status from server.
+        /// </summary>
+        private ServerStatus _serverStatus;
 
         /// <summary>
         /// Current, observed preview job from server.
@@ -68,9 +72,6 @@ namespace TptMain.Workflow
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-        // Get footnote caller sequence
-        //public ParatextProjectSettings() = Paratext.Data.ProjectSettingsAccess.ProjectSettings;
-
         /// <summary>
         /// Entry point method.
         /// </summary>
@@ -90,13 +91,16 @@ namespace TptMain.Workflow
 
             try
             {
+                // Retrieve the server's status (which includes the version)
+                _serverStatus = CheckServerStatus();
+
                 // Ensures the active project is available on the server.
                 _projectDetails = CheckProjectName(activeProjectName);
                 DetailsUpdated?.Invoke(this, _projectDetails);
 
                 // Create & show setup form to user to get preview input.
-                var setupForm = CreateSetupForm();
-                setupForm.SetProjectDetails(_projectDetails);
+                var setupForm = CreateSetupForm(_projectDetails);
+                setupForm.SetServerStatus(_serverStatus);
                 setupForm.User = host.UserName;
 
                 // Enable the setup form's custom footnote option based on the availability of footnotes.
@@ -154,7 +158,7 @@ namespace TptMain.Workflow
                             // Check if it's time to update status and do so, as needed.
                             var nowTime = DateTime.Now;
                             if (!(nowTime.Subtract(lastCheckTime).TotalSeconds >
-                                  MainConsts.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC))
+                                  Properties.Settings.Default.PREVIEW_JOB_UPDATE_INTERVAL_IN_SEC))
                             {
                                 continue;
                             }
@@ -220,13 +224,13 @@ namespace TptMain.Workflow
 
                     if (_isArchive)
                     {
-                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.zip";
+                        saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.zip";
                         saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
                         saveFile.DefaultExt = "zip";                        
                     }
                     else
                     {
-                        saveFile.FileName = $"preview-{_previewJob.ProjectName}-{_previewJob.BookFormat}-{dateTimeText}.pdf";
+                        saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.pdf";
                         saveFile.Filter = "Adobe PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
                         saveFile.DefaultExt = "pdf";
                     }
@@ -263,9 +267,9 @@ namespace TptMain.Workflow
               downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
             }
             
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
+            var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
             webRequest.Method = HttpMethod.Get.Method;
-            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+            webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (var inputStream = webRequest.GetResponse().GetResponseStream())
             {
@@ -294,9 +298,9 @@ namespace TptMain.Workflow
 
             lock (this)
             {
-                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
+                var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewJobs/{_previewJob.Id}");
                 webRequest.Method = HttpMethod.Delete.Method;
-                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+                webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (var streamReader = new StreamReader(webRequest.GetResponse()
                                                                .GetResponseStream()
@@ -314,9 +318,9 @@ namespace TptMain.Workflow
         /// <returns>Created preview job, with user settings, server-side status, and ID.</returns>
         public virtual PreviewJob CreatePreviewJob(PreviewJob previewJob)
         {
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs");
+            var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewJobs");
             webRequest.Method = HttpMethod.Post.Method;
-            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+            webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
             webRequest.ContentType = MainConsts.APPLICATION_JSON_MIME_TYPE;
 
             using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
@@ -337,9 +341,9 @@ namespace TptMain.Workflow
         /// <returns>Updated preview job, with user settings, server-side status, and ID.</returns>
         public virtual PreviewJob UpdatePreviewJob(string jobId)
         {
-            var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
+            var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewJobs/{jobId}");
             webRequest.Method = HttpMethod.Get.Method;
-            webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+            webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
             using (var streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream()
                         ?? throw new InvalidOperationException("Can't open response stream")))
@@ -357,9 +361,9 @@ namespace TptMain.Workflow
         {
             try
             {
-                var webRequest = WebRequest.Create($"{MainConsts.DEFAULT_SERVER_URI}/ProjectDetails");
+                var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/ProjectDetails");
                 webRequest.Method = HttpMethod.Get.Method;
-                webRequest.Timeout = MainConsts.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+                webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
 
                 using (var streamReader = new StreamReader(webRequest
                                               .GetResponse()
@@ -399,6 +403,44 @@ namespace TptMain.Workflow
             {
                 throw new WorkflowException($"Can't contact typesetting preview server.\n\nPlease check Internet connection and try again, or contact support (Details: {ex.Message}).", ex);
             }
+        }
+
+        /// <summary>
+        /// This function requests the server's status.
+        /// </summary>
+        /// <returns>The server's status.</returns>
+        public virtual ServerStatus CheckServerStatus()
+        {
+            try
+            {
+                var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/ServerStatus");
+                webRequest.Method = HttpMethod.Get.Method;
+                webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
+
+                using (var streamReader = new StreamReader(webRequest
+                                              .GetResponse()
+                                              .GetResponseStream())
+                    ?? throw new InvalidOperationException("Can't open response stream"))
+                {
+                    var serverStatus = JsonConvert.DeserializeObject<ServerStatus>(streamReader.ReadToEnd());
+
+                    return serverStatus;
+                }
+            }
+            catch (WorkflowException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                HostUtil.Instance.LogLine("The server failed or doesn't support the server status request. Please notify an administrator. Exception message: " + ex.Message, false);
+            }
+
+            // We don't have a server status, return one that represents that.
+            return new ServerStatus
+            {
+                Version = "N/A"
+            };
         }
 
         /// <summary>
@@ -444,9 +486,9 @@ namespace TptMain.Workflow
         /// Overridable utility method to create setup form.
         /// </summary>
         /// <returns>Setup form.</returns>
-        public virtual SetupForm CreateSetupForm()
+        public virtual SetupForm CreateSetupForm(ProjectDetails projectDetails)
         {
-            return new SetupForm();
+            return new SetupForm(projectDetails);
         }
 
         /// <summary>
@@ -461,8 +503,8 @@ namespace TptMain.Workflow
         /// <summary>
         /// Checks the paratext project directory for a footnote caller sequence.
         /// </summary>
-        /// <param name="projectName"></param>
-        /// <returns></returns>
+        /// <param name="projectName">A Paratext project's shortname, we want the directory of EG: "usNIVv3"</param>
+        /// <returns>A given Paratext project's footnote caller sequence.</returns>
         public virtual bool IsFootnoteCallerSequenceDefined(string projectName)
         {
             // get the project's directory
