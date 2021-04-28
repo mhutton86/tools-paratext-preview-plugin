@@ -1,4 +1,6 @@
-﻿namespace TptMain.Form
+﻿using TptMain.Util;
+
+namespace TptMain.Form
 {
     partial class SetupForm
     {
@@ -535,7 +537,7 @@
             this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.Copyright.Size = new System.Drawing.Size(128, 23);
             this.Copyright.TabIndex = 20;
-            this.Copyright.Text = "© 2020-2021 Biblica, Inc.";
+            this.Copyright.Text = MainConsts.COPYRIGHT;
             // 
             // lblVersions
             // 
