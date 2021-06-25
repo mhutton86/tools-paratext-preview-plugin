@@ -8,4 +8,4 @@ RUN nuget.exe restore -SolutionDirectory ./
 
 # Copy everything else and build
 COPY . ./
-RUN msbuild.exe TptMain.csproj -p:Configuration=Release -p:Platform=AnyCPU
+RUN msbuild.exe TptMain.csproj -p:Configuration=Release -p:Platform=x64

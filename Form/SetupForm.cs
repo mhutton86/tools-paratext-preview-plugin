@@ -49,8 +49,8 @@ namespace TptMain.Form
         /// True if a user wants typesetting files downloaded with a preview, 
         /// false if just a PDF is wanted.
         /// </summary>
-        public virtual bool IsArchive { get; protected set; }
-   
+        public virtual bool IsArchive => cbDownloadTypesettingFiles.Checked;
+
         /// <summary>
         /// User setter/getter.
         /// </summary>
