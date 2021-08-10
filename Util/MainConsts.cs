@@ -149,7 +149,6 @@ namespace TptMain.Util
         public const string USE_PROJECT_FONTS = "Use the font specified in a project's Language Settings for the entire document.";
 
         // Book selection ranges
-        public const string SELECT_FULL_BIBLE = "fullBible";
         public const string SELECT_NEW_TESTAMENT = "newTestament";
     }
 }
