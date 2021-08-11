@@ -391,12 +391,12 @@ namespace TptTest
                     setStatusCtr++;
                     if (setStatusCtr > 1)
                     {
-                        testPreviewJob2.IsError = true;
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Error));
                     }
                     else if (setStatusCtr > 0)
                     {
-                        testPreviewJob2.DateSubmitted = DateTime.UtcNow;
-                        testPreviewJob2.DateStarted = DateTime.UtcNow;
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Submitted));
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Started));
                     }
                 });
 
@@ -502,12 +502,12 @@ namespace TptTest
                     setStatusCtr++;
                     if (setStatusCtr > 1)
                     {
-                        testPreviewJob2.DateCompleted = DateTime.UtcNow;
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.PreviewGenerated));
                     }
                     else if (setStatusCtr > 0)
                     {
-                        testPreviewJob2.DateSubmitted = DateTime.UtcNow;
-                        testPreviewJob2.DateStarted = DateTime.UtcNow;
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Submitted));
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Started));
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
@@ -644,12 +644,12 @@ namespace TptTest
                     setStatusCtr++;
                     if (setStatusCtr > 1)
                     {
-                        testPreviewJob2.DateCompleted = DateTime.UtcNow;
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.PreviewGenerated));
                     }
                     else if (setStatusCtr > 0)
                     {
-                        testPreviewJob2.DateSubmitted = DateTime.UtcNow;
-                        testPreviewJob2.DateStarted = DateTime.UtcNow;
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Submitted));
+                        testPreviewJob2.State.Add(new PreviewJobState(JobStateEnum.Started));
                     }
                 });
             mockWorkflow.Setup(workflowItem =>
