@@ -224,9 +224,11 @@ namespace TptMain.Form
             }
 
             _previewJob.User = User;
+            _previewJob.BibleSelectionParams ??= new BibleSelectionParams();
             _previewJob.BibleSelectionParams.ProjectName = ProjectName;
             _previewJob.BibleSelectionParams.IncludeAncillary = IncludeAncillary;
             _previewJob.BibleSelectionParams.SelectedBooks = SelectedBooks;
+            _previewJob.TypesettingParams ??= new TypesettingParams();
             _previewJob.TypesettingParams.BookFormat = BookFormat;
             _previewJob.TypesettingParams.FontSizeInPts = FontSizeInPts;
             _previewJob.TypesettingParams.FontLeadingInPts = FontLeadingInPts;
@@ -536,7 +538,7 @@ namespace TptMain.Form
         {
             if (rbFullBible.Checked)
             {
-                return MainConsts.SELECT_FULL_BIBLE;
+                return null;
             }
 
             if (rbNewTestament.Checked)
