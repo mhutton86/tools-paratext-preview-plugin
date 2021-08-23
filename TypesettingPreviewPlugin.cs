@@ -119,7 +119,11 @@ namespace TptMain
 
                                     if (_previewJob.IsError)
                                     {
-                                        errorDetails.Add("Detail", _previewJob.ErrorDetail);
+                                        errorDetails.Add("Message", _previewJob.ErrorMessage);
+                                        if (!string.IsNullOrWhiteSpace(_previewJob.ErrorDetail))
+                                        {
+                                            errorDetails.Add("Detail", _previewJob.ErrorDetail);
+                                        }
                                     }
                                 }
 
