@@ -84,6 +84,7 @@ namespace TptMain.Form
             this.cbLocalizeFootnotes = new System.Windows.Forms.CheckBox();
             this.cbHyphenate = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.contactSupportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpLayout.SuspendLayout();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
@@ -516,6 +517,7 @@ namespace TptMain.Form
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contactSupportToolStripMenuItem,
             this.licenseToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -524,7 +526,7 @@ namespace TptMain.Form
             // licenseToolStripMenuItem
             // 
             this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
-            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.licenseToolStripMenuItem.Text = "License";
             this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
             // 
@@ -535,9 +537,8 @@ namespace TptMain.Form
             this.Copyright.Location = new System.Drawing.Point(12, 587);
             this.Copyright.Name = "Copyright";
             this.Copyright.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.Copyright.Size = new System.Drawing.Size(128, 23);
+            this.Copyright.Size = new System.Drawing.Size(0, 23);
             this.Copyright.TabIndex = 20;
-            this.Copyright.Text = MainConsts.COPYRIGHT;
             // 
             // lblVersions
             // 
@@ -782,6 +783,13 @@ namespace TptMain.Form
             this.cbHyphenate.Text = "Hyphenate";
             this.cbHyphenate.UseVisualStyleBackColor = true;
             // 
+            // contactSupportToolStripMenuItem
+            // 
+            this.contactSupportToolStripMenuItem.Name = "contactSupportToolStripMenuItem";
+            this.contactSupportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.contactSupportToolStripMenuItem.Text = "Contact Support";
+            this.contactSupportToolStripMenuItem.Click += new System.EventHandler(this.contactSupportToolStripMenuItem_Click);
+            // 
             // SetupForm
             // 
             this.AcceptButton = this.btnCreate;
@@ -887,5 +895,6 @@ namespace TptMain.Form
         private System.Windows.Forms.CheckBox cbChapterNumbers;
         private System.Windows.Forms.CheckBox cbFootnotes;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.ToolStripMenuItem contactSupportToolStripMenuItem;
     }
 }

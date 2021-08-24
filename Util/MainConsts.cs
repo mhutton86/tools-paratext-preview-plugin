@@ -150,5 +150,10 @@ namespace TptMain.Util
 
         // Book selection ranges
         public const string SELECT_NEW_TESTAMENT = "newTestament";
+
+        /// <summary>
+        /// This is the URL to get support for the plugin.
+        /// </summary>
+        public const string SUPPORT_URL = "https://translationtools.biblica.com/en/support/home";
     }
 }
