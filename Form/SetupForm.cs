@@ -7,6 +7,7 @@ using Paratext.Data.ProjectSettingsAccess;
 using TptMain.Properties;
 using System.Reflection;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace TptMain.Form
 {
@@ -224,9 +225,11 @@ namespace TptMain.Form
             }
 
             _previewJob.User = User;
+            _previewJob.BibleSelectionParams ??= new BibleSelectionParams();
             _previewJob.BibleSelectionParams.ProjectName = ProjectName;
             _previewJob.BibleSelectionParams.IncludeAncillary = IncludeAncillary;
             _previewJob.BibleSelectionParams.SelectedBooks = SelectedBooks;
+            _previewJob.TypesettingParams ??= new TypesettingParams();
             _previewJob.TypesettingParams.BookFormat = BookFormat;
             _previewJob.TypesettingParams.FontSizeInPts = FontSizeInPts;
             _previewJob.TypesettingParams.FontLeadingInPts = FontLeadingInPts;
@@ -536,7 +539,7 @@ namespace TptMain.Form
         {
             if (rbFullBible.Checked)
             {
-                return MainConsts.SELECT_FULL_BIBLE;
+                return null;
             }
 
             if (rbNewTestament.Checked)
@@ -546,6 +549,18 @@ namespace TptMain.Form
             
             // Return the list of books specified by the user
             return tbCustomBookSet.Text.Trim().Replace(" ", "");
+        }
+
+        /// <summary>
+        /// Opens a link to the support URL from the plugin
+        /// </summary>
+        /// <param name="sender">The control that sent this event</param>
+        /// <param name="e">The event information that triggered this call</param>
+        private void contactSupportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Call the Process.Start method to open the default browser
+            //with a URL:
+            Process.Start(MainConsts.SUPPORT_URL);
         }
     }
 }

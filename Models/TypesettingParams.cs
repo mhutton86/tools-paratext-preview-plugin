@@ -9,7 +9,7 @@
         /// Unique identifier
         /// </summary>
         public string Id { get; set; }
-        
+
         /// <summary>
         /// Font size in points.
         /// </summary>
@@ -44,7 +44,7 @@
         /// (Optional) Whether or not to use hyphenation. Defaults to false.
         /// </summary>
         public bool UseHyphenation { get; set; } = false;
-        
+
         /// <summary>
         /// (Optional) Whether or not to use custom footnotes. Defaults to false.
         /// 
