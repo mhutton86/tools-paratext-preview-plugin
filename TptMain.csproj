@@ -324,10 +324,12 @@
       <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Import\ImportManager.cs" />
+    <Compile Include="Models\AdditionalPreviewParams.cs" />
     <Compile Include="Models\BibleSelectionParams.cs" />
     <Compile Include="Models\BookFormat.cs" />
     <Compile Include="Models\ParatextProjectModels.cs" />
     <Compile Include="Models\PreviewJob.cs" />
+    <Compile Include="Models\PreviewJobState.cs" />
     <Compile Include="Models\ServerStatus.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="Models\TextDirection.cs" />
@@ -387,7 +389,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="ArchiveBuild" AfterTargets="Build" Condition="$(Configuration) == 'Release'">
+  <Target Name="ArchiveBuild" AfterTargets="Build" Condition="$(Configuration) == 'Release' Or $(Configuration) == 'Debug'">
     <ZipDirectory SourceDirectory="$(OutputPath)zip\" DestinationFile="$(OutputPath)\..\$(AssemblyName).zip" Overwrite="true" />
   </Target>
   <PropertyGroup>
