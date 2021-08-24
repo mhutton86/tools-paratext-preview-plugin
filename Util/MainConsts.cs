@@ -149,7 +149,11 @@ namespace TptMain.Util
         public const string USE_PROJECT_FONTS = "Use the font specified in a project's Language Settings for the entire document.";
 
         // Book selection ranges
-        public const string SELECT_FULL_BIBLE = "fullBible";
         public const string SELECT_NEW_TESTAMENT = "newTestament";
+
+        /// <summary>
+        /// This is the URL to get support for the plugin.
+        /// </summary>
+        public const string SUPPORT_URL = "https://translationtools.biblica.com/en/support/home";
     }
 }
