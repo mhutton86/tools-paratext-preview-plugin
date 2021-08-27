@@ -1,4 +1,5 @@
-﻿using TptMain.Models;
+﻿using System.Collections.Generic;
+using TptMain.Models;
 
 namespace TptMain.Util
 {
@@ -121,8 +122,8 @@ namespace TptMain.Util
         public const string BOOK_RANGE = "Changes the Bible books to be previewed";
         public const string BOOK_RANGE_FULL = "Preview the full Bible";
         public const string BOOK_RANGE_NT = "Preview the New Testament";
-        public const string BOOK_RANGE_CUSTOM = "Preview a custom book range, using book abbreviations (e.g., GEN-DEU or GEN-LEV, 2KI)";
-        public const string BOOK_RANGE_ANCILLARY = "Include ancillary books(e.g, FRT, GLO, XXA, etc.)";
+        public const string BOOK_RANGE_CUSTOM = "Preview a custom book list, using book IDs and abbreviations (e.g., 01GEN, 05DEU or 01GEN, 03LEV, 122KI)";
+        public const string BOOK_RANGE_ANCILLARY = "Include ancillary books(e.g, A0FRT, A9GLO, 94XXA, etc.)";
 
         public const string TEXT_OPTS = "Changes the previewed text. Use the default options or specify custom ones.";
         public const string TEXT_FONT = "Font Size: Min 6; Max 24";
@@ -148,8 +149,39 @@ namespace TptMain.Util
         public const string DOWNLOAD_TYPESETTING = "Download all typesetting files in addition to the preview.";
         public const string USE_PROJECT_FONTS = "Use the font specified in a project's Language Settings for the entire document.";
 
-        // Book selection ranges
-        public const string SELECT_NEW_TESTAMENT = "newTestament";
+        /// <summary>
+        /// The new testament book IDs
+        /// </summary>
+        public static readonly List<string> NEW_TESTAMENT_BOOKS = new List<string>()
+        {
+            "41MAT",
+            "42MRK",
+            "43LUK",
+            "44JHN",
+            "45ACT",
+            "46ROM",
+            "471CO",
+            "482CO",
+            "49GAL",
+            "50EPH",
+            "51PHP",
+            "52COL",
+            "531TH",
+            "542TH",
+            "551TI",
+            "562TI",
+            "57TIT",
+            "58PHM",
+            "59HEB",
+            "60JAS",
+            "611PE",
+            "622PE",
+            "631JN",
+            "642JN",
+            "653JN",
+            "66JUD",
+            "67REV"
+        };
 
         /// <summary>
         /// This is the URL to get support for the plugin.

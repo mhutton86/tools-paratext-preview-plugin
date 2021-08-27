@@ -544,7 +544,8 @@ namespace TptMain.Form
 
             if (rbNewTestament.Checked)
             {
-                return MainConsts.SELECT_NEW_TESTAMENT;
+                // send the books of the new testament
+                return String.Join(",", MainConsts.NEW_TESTAMENT_BOOKS);
             }
             
             // Return the list of books specified by the user
