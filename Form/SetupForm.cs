@@ -240,6 +240,7 @@ namespace TptMain.Form
             _previewJob.TypesettingParams.UseHyphenation = UseHyphenation;
             _previewJob.TypesettingParams.UseProjectFont = UseProjectFont;
             _previewJob.TypesettingParams.IncludeFootnotes = IncludeFootnotes;
+            _previewJob.TypesettingParams.IncludeHeadings = IncludeHeadings;
             _previewJob.TypesettingParams.IncludeIntros = IncludeIntros;
             _previewJob.TypesettingParams.IncludeAcrosticPoetry = IncludeAcrosticPoetry;
             _previewJob.TypesettingParams.IncludeChapterNumbers = IncludeChapterNumbers;
@@ -380,6 +381,11 @@ namespace TptMain.Form
         /// Determines whether the preview should include Footnotes.
         ///</summary>
         public bool IncludeFootnotes => cbFootnotes.Checked;
+        
+        /// <summary>
+        /// Determines whether the preview should include Headings.
+        ///</summary>
+        public bool IncludeHeadings => cbHeadings.Checked;
         
         /// <summary>
         /// Determines whether the preview should include Intros.
