@@ -112,8 +112,9 @@ namespace TptMain.Form
             toolTip.SetToolTip(cbDownloadTypesettingFiles, MainConsts.DOWNLOAD_TYPESETTING);
             toolTip.SetToolTip(cbUseProjectFonts, MainConsts.USE_PROJECT_FONTS);
 
+            // Set starting form view based on user status and starting layout
             SetAdminView(ProjectName);
-
+            grpLayout_Changed(null, null);
         }
 
         /// <summary>
@@ -181,7 +182,7 @@ namespace TptMain.Form
         /// <param name="footnotesDefined"></param>
         internal void SetCustomFootnotesEnabled(bool footnotesDefined)
         {
-            cbFootnotes.Enabled = footnotesDefined;
+            cbLocalizeFootnotes.Enabled = footnotesDefined;
         }
 
         /// <summary>
@@ -496,39 +497,50 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Uncheck some items when selecting TBOTB based on
-        /// https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
+        /// Update form fields based on the selected layout.
         /// </summary>
-        /// <param name="sender">Event source</param>
-        /// <param name="e">event</param>
-        private void rdoLayoutTbotb_CheckedChanged(object sender, EventArgs e)
+        /// <param name="bookFormat">The selected layout.</param>
+        private void UpdateFieldsByLayout(BookFormat bookFormat)
         {
-            if (rdoLayoutTbotb.Checked) {
-                cbHeadings.Checked = false;
-                cbFootnotes.Checked = false;
-                cbChapterNumbers.Checked = false;
-                cbVerseNumbers.Checked = false;
-                cbParallelPassages.Checked = false;
+            switch (bookFormat)
+            {
+                case BookFormat.tbotb:
+                    {
+                        cbHeadings.Checked = false;
+                        cbFootnotes.Checked = false;
+                        cbChapterNumbers.Checked = false;
+                        cbVerseNumbers.Checked = false;
+                        cbParallelPassages.Checked = false;
+
+                        break;
+                    }
+                case BookFormat.cav:
+                    {
+                        cbHeadings.Checked = true;
+                        cbFootnotes.Checked = true;
+                        cbChapterNumbers.Checked = true;
+                        cbVerseNumbers.Checked = true;
+                        cbParallelPassages.Checked = true;
+
+                        break;
+                    }
             }
         }
 
         /// <summary>
-        /// Check some items when selecting CAV based on
+        /// Set preview job options based on selected layout
         /// https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
         /// </summary>
         /// <param name="sender">Event source</param>
         /// <param name="e">event</param>
-        private void rdoLayoutCav_CheckedChanged(object sender, EventArgs e)
+        private void grpLayout_Changed(object sender, EventArgs e)
         {
-            if (rdoLayoutCav.Checked)
-            {
-                cbHeadings.Checked = true;
-                cbFootnotes.Checked = true;
-                cbChapterNumbers.Checked = true;
-                cbVerseNumbers.Checked = true;
-                cbParallelPassages.Checked = true;
+            var bookLayout = BookFormat.cav;
+            if (rdoLayoutTbotb.Checked) {
+                bookLayout = BookFormat.tbotb;
             }
 
+            UpdateFieldsByLayout(bookLayout);
         }
 
         /// <summary>
