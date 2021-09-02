@@ -122,8 +122,8 @@ namespace TptMain.Util
         public const string BOOK_RANGE = "Changes the Bible books to be previewed";
         public const string BOOK_RANGE_FULL = "Preview the full Bible";
         public const string BOOK_RANGE_NT = "Preview the New Testament";
-        public const string BOOK_RANGE_CUSTOM = "Preview a custom book list, using book IDs and abbreviations (e.g., 01GEN, 05DEU or 01GEN, 03LEV, 122KI)";
-        public const string BOOK_RANGE_ANCILLARY = "Include ancillary books(e.g, A0FRT, A9GLO, 94XXA, etc.)";
+        public const string BOOK_RANGE_CUSTOM = "Preview a custom book list, using the canonical book IDs (e.g., GEN, DEU or GEN, LEV, 2KI)";
+        public const string BOOK_RANGE_ANCILLARY = "Include ancillary books(e.g, FRT, GLO, XXA, etc.)";
 
         public const string TEXT_OPTS = "Changes the previewed text. Use the default options or specify custom ones.";
         public const string TEXT_FONT = "Font Size: Min 6; Max 24";
@@ -154,33 +154,33 @@ namespace TptMain.Util
         /// </summary>
         public static readonly List<string> NEW_TESTAMENT_BOOKS = new List<string>()
         {
-            "41MAT",
-            "42MRK",
-            "43LUK",
-            "44JHN",
-            "45ACT",
-            "46ROM",
-            "471CO",
-            "482CO",
-            "49GAL",
-            "50EPH",
-            "51PHP",
-            "52COL",
-            "531TH",
-            "542TH",
-            "551TI",
-            "562TI",
-            "57TIT",
-            "58PHM",
-            "59HEB",
-            "60JAS",
-            "611PE",
-            "622PE",
-            "631JN",
-            "642JN",
-            "653JN",
-            "66JUD",
-            "67REV"
+            "MAT",
+            "MRK",
+            "LUK",
+            "JHN",
+            "ACT",
+            "ROM",
+            "1CO",
+            "2CO",
+            "GAL",
+            "EPH",
+            "PHP",
+            "COL",
+            "1TH",
+            "2TH",
+            "1TI",
+            "2TI",
+            "TIT",
+            "PHM",
+            "HEB",
+            "JAS",
+            "1PE",
+            "2PE",
+            "1JN",
+            "2JN",
+            "3JN",
+            "JUD",
+            "REV"
         };
 
         /// <summary>
