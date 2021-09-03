@@ -1,4 +1,5 @@
-﻿using TptMain.Models;
+﻿using System.Collections.Generic;
+using TptMain.Models;
 
 namespace TptMain.Util
 {
@@ -121,7 +122,7 @@ namespace TptMain.Util
         public const string BOOK_RANGE = "Changes the Bible books to be previewed";
         public const string BOOK_RANGE_FULL = "Preview the full Bible";
         public const string BOOK_RANGE_NT = "Preview the New Testament";
-        public const string BOOK_RANGE_CUSTOM = "Preview a custom book range, using book abbreviations (e.g., GEN-DEU or GEN-LEV, 2KI)";
+        public const string BOOK_RANGE_CUSTOM = "Preview a custom book list, using the canonical book IDs (e.g., GEN, DEU or GEN, LEV, 2KI)";
         public const string BOOK_RANGE_ANCILLARY = "Include ancillary books(e.g, FRT, GLO, XXA, etc.)";
 
         public const string TEXT_OPTS = "Changes the previewed text. Use the default options or specify custom ones.";
@@ -148,8 +149,39 @@ namespace TptMain.Util
         public const string DOWNLOAD_TYPESETTING = "Download all typesetting files in addition to the preview.";
         public const string USE_PROJECT_FONTS = "Use the font specified in a project's Language Settings for the entire document.";
 
-        // Book selection ranges
-        public const string SELECT_NEW_TESTAMENT = "newTestament";
+        /// <summary>
+        /// The new testament book IDs
+        /// </summary>
+        public static readonly List<string> NEW_TESTAMENT_BOOKS = new List<string>()
+        {
+            "MAT",
+            "MRK",
+            "LUK",
+            "JHN",
+            "ACT",
+            "ROM",
+            "1CO",
+            "2CO",
+            "GAL",
+            "EPH",
+            "PHP",
+            "COL",
+            "1TH",
+            "2TH",
+            "1TI",
+            "2TI",
+            "TIT",
+            "PHM",
+            "HEB",
+            "JAS",
+            "1PE",
+            "2PE",
+            "1JN",
+            "2JN",
+            "3JN",
+            "JUD",
+            "REV"
+        };
 
         /// <summary>
         /// This is the URL to get support for the plugin.
