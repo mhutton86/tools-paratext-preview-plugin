@@ -177,7 +177,7 @@ namespace TptMain.Workflow
                     }
                     else if (_previewJob.IsError)
                     {
-                        throw new WorkflowException($"A server error occurred: {_previewJob.ErrorMessage}");
+                        throw new WorkflowException($"A server error occurred");
                     }
                 }
                 finally
