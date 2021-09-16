@@ -716,9 +716,9 @@ namespace TptMain.Form
             this.cbDownloadTypesettingFiles.AutoSize = true;
             this.cbDownloadTypesettingFiles.Location = new System.Drawing.Point(248, 186);
             this.cbDownloadTypesettingFiles.Name = "cbDownloadTypesettingFiles";
-            this.cbDownloadTypesettingFiles.Size = new System.Drawing.Size(150, 17);
+            this.cbDownloadTypesettingFiles.Size = new System.Drawing.Size(156, 17);
             this.cbDownloadTypesettingFiles.TabIndex = 3;
-            this.cbDownloadTypesettingFiles.Text = "Download Typsetting Files";
+            this.cbDownloadTypesettingFiles.Text = "Download Typesetting Files";
             this.cbDownloadTypesettingFiles.UseVisualStyleBackColor = true;
             // 
             // cbUseProjectFonts
