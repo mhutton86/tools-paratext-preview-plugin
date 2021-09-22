@@ -58,6 +58,11 @@
         public bool UseProjectFont { get; set; } = true;
 
         /// <summary>
+        /// Whether to include Headings
+        /// </summary>
+        public bool IncludeHeadings { get; set; }
+
+        /// <summary>
         /// Whether to include Intros
         /// </summary>
         public bool IncludeIntros { get; set; }

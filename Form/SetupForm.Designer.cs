@@ -32,9 +32,6 @@ namespace TptMain.Form
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupForm));
-            this.grpLayout = new System.Windows.Forms.GroupBox();
-            this.rdoLayoutTbotb = new System.Windows.Forms.RadioButton();
-            this.rdoLayoutCav = new System.Windows.Forms.RadioButton();
             this.grpTextOptions = new System.Windows.Forms.GroupBox();
             this.nudFontLeading = new System.Windows.Forms.NumericUpDown();
             this.nudFontSize = new System.Windows.Forms.NumericUpDown();
@@ -61,6 +58,7 @@ namespace TptMain.Form
             this.lblProjectNameText = new System.Windows.Forms.Label();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contactSupportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Copyright = new System.Windows.Forms.Label();
             this.lblVersions = new System.Windows.Forms.Label();
@@ -84,8 +82,9 @@ namespace TptMain.Form
             this.cbLocalizeFootnotes = new System.Windows.Forms.CheckBox();
             this.cbHyphenate = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.contactSupportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grpLayout.SuspendLayout();
+            this.rdoLayoutCav = new System.Windows.Forms.RadioButton();
+            this.rdoLayoutTbotb = new System.Windows.Forms.RadioButton();
+            this.grpLayout = new System.Windows.Forms.GroupBox();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
@@ -98,44 +97,8 @@ namespace TptMain.Form
             this.grpBookRange.SuspendLayout();
             this.gbAdvanced.SuspendLayout();
             this.gbInclusions.SuspendLayout();
+            this.grpLayout.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // grpLayout
-            // 
-            this.grpLayout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpLayout.Controls.Add(this.rdoLayoutTbotb);
-            this.grpLayout.Controls.Add(this.rdoLayoutCav);
-            this.grpLayout.Location = new System.Drawing.Point(12, 113);
-            this.grpLayout.Name = "grpLayout";
-            this.grpLayout.Size = new System.Drawing.Size(366, 84);
-            this.grpLayout.TabIndex = 11;
-            this.grpLayout.TabStop = false;
-            this.grpLayout.Text = "Layout";
-            // 
-            // rdoLayoutTbotb
-            // 
-            this.rdoLayoutTbotb.AutoSize = true;
-            this.rdoLayoutTbotb.Location = new System.Drawing.Point(19, 42);
-            this.rdoLayoutTbotb.Name = "rdoLayoutTbotb";
-            this.rdoLayoutTbotb.Size = new System.Drawing.Size(181, 17);
-            this.rdoLayoutTbotb.TabIndex = 10;
-            this.rdoLayoutTbotb.Text = " The Books of the Bible (TBOTB)";
-            this.rdoLayoutTbotb.UseVisualStyleBackColor = true;
-            this.rdoLayoutTbotb.CheckedChanged += new System.EventHandler(this.rdoLayoutTbotb_CheckedChanged);
-            // 
-            // rdoLayoutCav
-            // 
-            this.rdoLayoutCav.AutoSize = true;
-            this.rdoLayoutCav.Checked = true;
-            this.rdoLayoutCav.Location = new System.Drawing.Point(19, 19);
-            this.rdoLayoutCav.Name = "rdoLayoutCav";
-            this.rdoLayoutCav.Size = new System.Drawing.Size(146, 17);
-            this.rdoLayoutCav.TabIndex = 9;
-            this.rdoLayoutCav.TabStop = true;
-            this.rdoLayoutCav.Text = " Chapter and Verse (CAV)";
-            this.rdoLayoutCav.UseVisualStyleBackColor = true;
-            this.rdoLayoutCav.CheckedChanged += new System.EventHandler(this.rdoLayoutCav_CheckedChanged);
             // 
             // grpTextOptions
             // 
@@ -523,10 +486,17 @@ namespace TptMain.Form
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // contactSupportToolStripMenuItem
+            // 
+            this.contactSupportToolStripMenuItem.Name = "contactSupportToolStripMenuItem";
+            this.contactSupportToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.contactSupportToolStripMenuItem.Text = "Contact Support";
+            this.contactSupportToolStripMenuItem.Click += new System.EventHandler(this.contactSupportToolStripMenuItem_Click);
+            // 
             // licenseToolStripMenuItem
             // 
             this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
-            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.licenseToolStripMenuItem.Text = "License";
             this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
             // 
@@ -746,9 +716,9 @@ namespace TptMain.Form
             this.cbDownloadTypesettingFiles.AutoSize = true;
             this.cbDownloadTypesettingFiles.Location = new System.Drawing.Point(248, 186);
             this.cbDownloadTypesettingFiles.Name = "cbDownloadTypesettingFiles";
-            this.cbDownloadTypesettingFiles.Size = new System.Drawing.Size(150, 17);
+            this.cbDownloadTypesettingFiles.Size = new System.Drawing.Size(156, 17);
             this.cbDownloadTypesettingFiles.TabIndex = 3;
-            this.cbDownloadTypesettingFiles.Text = "Download Typsetting Files";
+            this.cbDownloadTypesettingFiles.Text = "Download Typesetting Files";
             this.cbDownloadTypesettingFiles.UseVisualStyleBackColor = true;
             // 
             // cbUseProjectFonts
@@ -783,12 +753,42 @@ namespace TptMain.Form
             this.cbHyphenate.Text = "Hyphenate";
             this.cbHyphenate.UseVisualStyleBackColor = true;
             // 
-            // contactSupportToolStripMenuItem
+            // rdoLayoutCav
             // 
-            this.contactSupportToolStripMenuItem.Name = "contactSupportToolStripMenuItem";
-            this.contactSupportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.contactSupportToolStripMenuItem.Text = "Contact Support";
-            this.contactSupportToolStripMenuItem.Click += new System.EventHandler(this.contactSupportToolStripMenuItem_Click);
+            this.rdoLayoutCav.AutoSize = true;
+            this.rdoLayoutCav.Checked = true;
+            this.rdoLayoutCav.Location = new System.Drawing.Point(19, 19);
+            this.rdoLayoutCav.Name = "rdoLayoutCav";
+            this.rdoLayoutCav.Size = new System.Drawing.Size(146, 17);
+            this.rdoLayoutCav.TabIndex = 9;
+            this.rdoLayoutCav.TabStop = true;
+            this.rdoLayoutCav.Text = " Chapter and Verse (CAV)";
+            this.rdoLayoutCav.UseVisualStyleBackColor = true;
+            this.rdoLayoutCav.CheckedChanged += new System.EventHandler(this.grpLayout_Changed);
+            // 
+            // rdoLayoutTbotb
+            // 
+            this.rdoLayoutTbotb.AutoSize = true;
+            this.rdoLayoutTbotb.Location = new System.Drawing.Point(19, 42);
+            this.rdoLayoutTbotb.Name = "rdoLayoutTbotb";
+            this.rdoLayoutTbotb.Size = new System.Drawing.Size(181, 17);
+            this.rdoLayoutTbotb.TabIndex = 10;
+            this.rdoLayoutTbotb.Text = " The Books of the Bible (TBOTB)";
+            this.rdoLayoutTbotb.UseVisualStyleBackColor = true;
+            this.rdoLayoutTbotb.CheckedChanged += new System.EventHandler(this.grpLayout_Changed);
+            // 
+            // grpLayout
+            // 
+            this.grpLayout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpLayout.Controls.Add(this.rdoLayoutTbotb);
+            this.grpLayout.Controls.Add(this.rdoLayoutCav);
+            this.grpLayout.Location = new System.Drawing.Point(12, 113);
+            this.grpLayout.Name = "grpLayout";
+            this.grpLayout.Size = new System.Drawing.Size(366, 84);
+            this.grpLayout.TabIndex = 11;
+            this.grpLayout.TabStop = false;
+            this.grpLayout.Text = "Layout";
             // 
             // SetupForm
             // 
@@ -816,8 +816,6 @@ namespace TptMain.Form
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create Print Preview...";
-            this.grpLayout.ResumeLayout(false);
-            this.grpLayout.PerformLayout();
             this.grpTextOptions.ResumeLayout(false);
             this.grpTextOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).EndInit();
@@ -837,15 +835,14 @@ namespace TptMain.Form
             this.gbAdvanced.PerformLayout();
             this.gbInclusions.ResumeLayout(false);
             this.gbInclusions.PerformLayout();
+            this.grpLayout.ResumeLayout(false);
+            this.grpLayout.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.GroupBox grpLayout;
-        private System.Windows.Forms.RadioButton rdoLayoutTbotb;
-        private System.Windows.Forms.RadioButton rdoLayoutCav;
         private System.Windows.Forms.GroupBox grpTextOptions;
         private System.Windows.Forms.Label lblFontLeading;
         private System.Windows.Forms.Label lblFontSize;
@@ -896,5 +893,8 @@ namespace TptMain.Form
         private System.Windows.Forms.CheckBox cbFootnotes;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripMenuItem contactSupportToolStripMenuItem;
+        private System.Windows.Forms.RadioButton rdoLayoutCav;
+        private System.Windows.Forms.RadioButton rdoLayoutTbotb;
+        private System.Windows.Forms.GroupBox grpLayout;
     }
 }
