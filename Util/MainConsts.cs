@@ -18,6 +18,46 @@ namespace TptMain.Util
     public static class MainConsts
     {
         /// <summary>
+        /// Default separator for a sequence of book names.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_BOOK_SEQUENCE_SEPARATOR = ";";
+
+        /// <summary>
+        /// Default separator for a sequence of chapter numbers.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_CHAPTER_SEQUENCE_SEPARATOR = ";";
+
+        /// <summary>
+        /// Default separator for a range of chapter numbers.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_BOOK_OR_CHAPTER_RANGE_SEPARATOR = "–";
+
+        /// <summary>
+        /// Default separator for chapters and verses.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_CHAPTER_AND_VERSE_SEPARATOR = ":";
+
+        /// <summary>
+        /// Default separator for verse sequences.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_VERSE_SEQUENCE_SEPARATOR = ",";
+
+        /// <summary>
+        /// Default separator for verse ranges.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_VERSE_RANGE_SEPARATOR = "-";
+
+        /// <summary>
+        /// Default prefix or suffix for references.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_PREFIX_OR_SUFFIX = "";
+
+        /// <summary>
+        /// Default final punctuation for references.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_FINAL_PUNCTUATION = "";
+
+        /// <summary>
         /// JSON MIME type (this is .NET core, but not framework).
         /// </summary>
         public const string APPLICATION_JSON_MIME_TYPE = "application/json";
@@ -191,6 +231,11 @@ namespace TptMain.Util
             "JUD",
             "REV"
         };
+
+        /// <summary>
+        /// The max size for displaying book names
+        /// </summary>
+        public const int MAX_BOOK_NAME_DISPLAY_LENGTH = 20;
 
         /// <summary>
         /// This is the URL to get support for the plugin.
