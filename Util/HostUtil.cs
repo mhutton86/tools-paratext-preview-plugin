@@ -57,11 +57,6 @@ namespace TptMain.Util
         private TypesettingPreviewPlugin _typesettingPreviewPlugin;
 
         /// <summary>
-        /// Global reference to host interface, providing Paratext services including logging.
-        /// </summary>
-        private IHost _host;
-
-        /// <summary>
         /// Property for assignment from plugin entry method.
         /// </summary>
         public TypesettingPreviewPlugin TypesettingPreviewPlugin { set => _typesettingPreviewPlugin = value; }
@@ -69,7 +64,7 @@ namespace TptMain.Util
         /// <summary>
         /// Property for assignment from plugin entry method.
         /// </summary>
-        public IHost Host { set => _host = value; }
+        public IHost Host { get; set; }
 
         /// <summary>
         /// Reports exception to log and message box w/prefix text.
@@ -102,7 +97,7 @@ namespace TptMain.Util
         public void LogLine(string inputText, bool isError)
         {
             (isError ? Console.Error : Console.Out).WriteLine(inputText);
-            _host?.WriteLineToLog(_typesettingPreviewPlugin, inputText);
+            Host?.WriteLineToLog(_typesettingPreviewPlugin, inputText);
         }
 
         /// <summary>
@@ -117,12 +112,12 @@ namespace TptMain.Util
 
             // We're using the host's figure path to determine project directory, 
             // as the Paratext AddinViews doesn't appear to provide a function to do this
-            var figurePath = _host.GetFigurePath(projectName, false);
+            var figurePath = Host.GetFigurePath(projectName, false);
 
             // If the non-local figure path is unavailable, get the local figure path
             if (figurePath == null)
             {
-                figurePath = _host.GetFigurePath(projectName, true);
+                figurePath = Host.GetFigurePath(projectName, true);
 
                 if (figurePath == null)
                 {
@@ -144,7 +139,7 @@ namespace TptMain.Util
         /// <returns>True, if the current user is an Admin for the given project</returns>
         public virtual bool isCurrentUserAdmin(string projectName)
         {
-            ImportManager importManager = new ImportManager(Instance._host, projectName);
+            ImportManager importManager = new ImportManager(Instance.Host, projectName);
 
             // using this method requires including ImportManager
             string rolename = importManager.ProjectScrText.Permissions.GetRole().ToString();

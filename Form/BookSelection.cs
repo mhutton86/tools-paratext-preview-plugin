@@ -10,7 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 using System;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
 using TptMain.Project;
 using TptMain.Text;
 
@@ -145,14 +144,14 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Used to display the list of books selected. If there are more than 4 then truncate in the middle.
+        /// Used to display the truncated list of books selected. If there are more than 4 then truncate in the middle.
         /// </summary>
         /// <param name="selectedBooks">This allows for passing in the currently selected books, 
         /// in case this dialog has already been used previously, 
         /// to prefill the dialog with
         /// the currently selected items.</param>
         /// <returns>A string created by the list of <see cref="BookNameItem"/>s, if greater than 4, ellipsized.</returns>
-        public static string stringFromSelectedBooks(BookNameItem[] selectedBooks)
+        public static string truncatedStringFromSelectedBooks(BookNameItem[] selectedBooks)
         {
             string names = "";
 
@@ -167,11 +166,23 @@ namespace TptMain.Form
             }
             else
             {
-                names = string.Join(", ", Array.ConvertAll<BookNameItem, string>(selectedBooks, bni => bni.BookCode.ToString()));
+                names = stringFromSelectedBooks(selectedBooks);
             }
 
             return names;
         }
 
+        /// <summary>
+        /// Used to display the full list of books selected. If there are more than 4 then truncate in the middle.
+        /// </summary>
+        /// <param name="selectedBooks">This allows for passing in the currently selected books, 
+        /// in case this dialog has already been used previously, 
+        /// to prefill the dialog with
+        /// the currently selected items.</param>
+        /// <returns>A string created by the list of <see cref="BookNameItem"/>s, if greater than 4, ellipsized.</returns>
+        public static string stringFromSelectedBooks(BookNameItem[] selectedBooks)
+        {
+            return string.Join(", ", Array.ConvertAll<BookNameItem, string>(selectedBooks, bni => bni.BookCode.ToString()));
+        }
     }
 }

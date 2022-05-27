@@ -94,6 +94,7 @@ namespace TptMain.Form
             this.rdoLayoutCav = new System.Windows.Forms.RadioButton();
             this.rdoLayoutTbotb = new System.Windows.Forms.RadioButton();
             this.grpLayout = new System.Windows.Forms.GroupBox();
+            this.chooseBookButton = new System.Windows.Forms.Button();
             this.grpTextOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontLeading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
@@ -536,6 +537,7 @@ namespace TptMain.Form
             // 
             this.grpBookRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpBookRange.Controls.Add(this.chooseBookButton);
             this.grpBookRange.Controls.Add(this.cbIncludeAncillary);
             this.grpBookRange.Controls.Add(this.tbCustomBookSet);
             this.grpBookRange.Controls.Add(this.rbCustom);
@@ -566,7 +568,7 @@ namespace TptMain.Form
             this.tbCustomBookSet.Enabled = false;
             this.tbCustomBookSet.Location = new System.Drawing.Point(39, 88);
             this.tbCustomBookSet.Name = "tbCustomBookSet";
-            this.tbCustomBookSet.Size = new System.Drawing.Size(320, 20);
+            this.tbCustomBookSet.Size = new System.Drawing.Size(220, 20);
             this.tbCustomBookSet.TabIndex = 3;
             // 
             // rbCustom
@@ -578,7 +580,6 @@ namespace TptMain.Form
             this.rbCustom.TabIndex = 2;
             this.rbCustom.Text = "Custom";
             this.rbCustom.UseVisualStyleBackColor = true;
-            this.rbCustom.CheckedChanged += new System.EventHandler(this.rbCustom_CheckedChanged);
             // 
             // rbNewTestament
             // 
@@ -799,6 +800,16 @@ namespace TptMain.Form
             this.grpLayout.TabStop = false;
             this.grpLayout.Text = "Layout";
             // 
+            // chooseBookButton
+            // 
+            this.chooseBookButton.Location = new System.Drawing.Point(265, 88);
+            this.chooseBookButton.Name = "chooseBookButton";
+            this.chooseBookButton.Size = new System.Drawing.Size(94, 20);
+            this.chooseBookButton.TabIndex = 5;
+            this.chooseBookButton.Text = "Choose...";
+            this.chooseBookButton.UseVisualStyleBackColor = true;
+            this.chooseBookButton.Click += new System.EventHandler(this.chooseBooksButton_Click);
+            // 
             // SetupForm
             // 
             this.AcceptButton = this.btnCreate;
@@ -905,5 +916,6 @@ namespace TptMain.Form
         private System.Windows.Forms.RadioButton rdoLayoutCav;
         private System.Windows.Forms.RadioButton rdoLayoutTbotb;
         private System.Windows.Forms.GroupBox grpLayout;
+        private System.Windows.Forms.Button chooseBookButton;
     }
 }

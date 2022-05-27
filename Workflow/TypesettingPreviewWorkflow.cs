@@ -110,6 +110,7 @@ namespace TptMain.Workflow
                 // Create & show setup form to user to get preview input.
                 var setupForm = CreateSetupForm(_projectDetails);
                 setupForm.SetServerStatus(_serverStatus);
+                setupForm.SetActiveProject(activeProjectName);
                 setupForm.User = host.UserName;
 
                 // Enable the setup form's custom footnote option based on the availability of footnotes.
@@ -206,9 +207,9 @@ namespace TptMain.Workflow
             {
                 throw;
             }
-            catch (IOException ex)
+            catch (IOException ioex)
             {
-                throw new WorkflowException("Error: Can't read or write data. Please contact support.", ex);
+                throw new WorkflowException("Error: Can't read or write data. Please contact support.", ioex);
             }
             catch (Exception ex)
             {

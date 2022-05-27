@@ -58,6 +58,21 @@ namespace TptMain.Util
         public const string DEFAULT_REFERENCE_FINAL_PUNCTUATION = "";
 
         /// <summary>
+        /// Multiplier for book numbers in BCV-style references.
+        /// </summary>
+        public const int BookRefMultiplier = 1000000;
+
+        /// <summary>
+        /// Multiplier for chapter numbers in BCV-style references.
+        /// </summary>
+        public const int ChapRefMultiplier = 1000;
+
+        /// <summary>
+        /// Range ref parts (i.e., chapters, verses).
+        /// </summary>
+        public const int RefPartRange = 1000;
+
+        /// <summary>
         /// JSON MIME type (this is .NET core, but not framework).
         /// </summary>
         public const string APPLICATION_JSON_MIME_TYPE = "application/json";

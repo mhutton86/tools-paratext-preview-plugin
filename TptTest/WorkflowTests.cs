@@ -119,6 +119,8 @@ namespace TptTest
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
+            mockSetupForm.Setup(formItem =>
+                formItem.SetActiveProject(It.IsAny<string>()));
             mockSetupForm.Setup(
                     formItem => formItem.IsCancelled)
                 .Returns(true);
@@ -591,6 +593,7 @@ namespace TptTest
 
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
+
             var setStatusCtr = 0;
             mockWorkflow.Setup(workflowItem =>
                     workflowItem.Run(It.IsAny<IHost>(), It.IsAny<string>()))
@@ -615,6 +618,8 @@ namespace TptTest
                 workflowItem.ShowModalForm(It.IsAny<Form>()));
             mockSetupForm.Setup(formItem =>
                 formItem.SetProjectDetails(It.IsAny<ProjectDetails>()));
+            mockSetupForm.Setup(formItem =>
+                formItem.SetActiveProject(It.IsAny<string>()));
             mockSetupForm.Setup(
                     formItem => formItem.IsCancelled)
                 .Returns(false);
