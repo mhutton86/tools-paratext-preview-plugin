@@ -1,5 +1,5 @@
 ﻿/*
-Copyright © 2021 by Biblica, Inc.
+Copyright © 2022 by Biblica, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -174,7 +174,7 @@ namespace TptMain.Util
         /// <summary>
         /// The copyright for this plugin.
         /// </summary>
-        public const string COPYRIGHT = "© 2020-2021 Biblica, Inc.";
+        public const string COPYRIGHT = "© 2020-2022 Biblica, Inc.";
 
         // from: https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
 
