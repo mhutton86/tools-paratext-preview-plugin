@@ -621,8 +621,6 @@ namespace TptMain.Form
             BookUtil.RefToBcv(HostUtil.Instance.Host.GetCurrentRef(versificationName),
                 out var runBookNum, out _, out _);
 
-            var defaultCurrentBook = runBookNum;
-
             // check that the current book by ID is available first
             if (!_projectManager.BookNamesByNum.ContainsKey(runBookNum))
             {
@@ -640,7 +638,7 @@ namespace TptMain.Form
 
 
         /// <summary>
-        /// Select which books, if not using the default single book, to seach through
+        /// Bring up the choose books form to decide which books to generate a preview of.
         /// </summary>
         /// <param name="sender">The control that sent this event</param>
         /// <param name="e">The event information that triggered this call</param>

@@ -552,6 +552,9 @@ namespace TptMain.Form
             // 
             // chooseBookButton
             // 
+            this.chooseBookButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.chooseBookButton.Location = new System.Drawing.Point(265, 88);
             this.chooseBookButton.Name = "chooseBookButton";
             this.chooseBookButton.Size = new System.Drawing.Size(94, 20);
@@ -572,9 +575,8 @@ namespace TptMain.Form
             // 
             // tbCustomBookSet
             // 
-            this.tbCustomBookSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbCustomBookSet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tbCustomBookSet.Enabled = false;
             this.tbCustomBookSet.Location = new System.Drawing.Point(39, 88);
             this.tbCustomBookSet.Name = "tbCustomBookSet";

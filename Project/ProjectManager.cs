@@ -219,7 +219,6 @@ namespace TptMain.Project
             ReadBooksPresent();
             ReadSeparators();
             ReadBookNames();
-            CreateRegexes();
             ReadLanguage();
         }
 
@@ -422,49 +421,6 @@ namespace TptMain.Project
             // additional name-related settings
             TargetNameType = GetBookNameTypeSetting("BookSourceForMarkerXt", BookNameType.Abbreviation);
             PassageNameType = GetBookNameTypeSetting("BookSourceForMarkerR", BookNameType.ShortName);
-        }
-
-        /// <summary>
-        /// Creates project-specific fluid api language to form regular expressions to be used later.
-        /// 
-        /// </summary>
-        private void CreateRegexes()
-        {
-            var punctuationParts =
-                ChapterAndVerseSeparators
-                    .Concat(VerseRangeSeparators)
-                    .Concat(VerseSequenceSeparators)
-                    .Concat(BookOrChapterRangeSeparators)
-                    .Concat(BookSequenceSeparators)
-                    .Concat(ChapterSequenceSeparators)
-                    .Select(punctuationItem => punctuationItem.Trim())
-                    .Distinct()
-                    .Select(Regex.Escape);
-
-            var abbrevBookNames = BookNamesByNum.Values
-                .Where(nameItem => nameItem.IsAbbreviation)
-                .Select(nameItem => nameItem.Abbreviation);
-            var shortBookNames = BookNamesByNum.Values
-                .Where(nameItem => nameItem.IsShortName)
-                .Select(nameItem => nameItem.ShortName);
-            var longBookNames = BookNamesByNum.Values
-                .Where(nameItem => nameItem.IsLongName)
-                .Select(nameItem => nameItem.LongName);
-            var allBookNames = abbrevBookNames
-                .Concat(shortBookNames)
-                .Concat(longBookNames)
-                .Distinct()
-                .Select(Regex.Escape);
-
-            TargetReferenceRegexes = new List<Regex>()
-                {
-                    VerseRegexUtil.CreateTargetReferenceGroupRegex(
-                        VerseRegexUtil.TargetReferencePairedTags.Select(Regex.Escape),
-                        allBookNames
-                            .Concat(VerseRegexUtil.STANDARD_BOOK_NAME_REGEX_TEXT.ToSingletonEnumerable()),
-                        punctuationParts),
-                }.Concat(VerseRegexUtil.StandardTargetReferenceRegexes)
-                .ToImmutableList();
         }
 
         /// <summary>

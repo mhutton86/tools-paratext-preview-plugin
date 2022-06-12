@@ -91,7 +91,7 @@ namespace TptMain.Project
         {
             if (inputTypes == null)
             {
-                HostUtil.Instance.LogLine("Instance types is null, responding with default book code", true);
+                HostUtil.Instance.LogLine("The parameter inputTypes is null, responding with default book code", true);
                 return BookCode;
             }
 
@@ -135,7 +135,7 @@ namespace TptMain.Project
         }
 
         /// <summary>
-        /// In some cases the default length is very-very long, need to truncate for display purposes.
+        /// In some cases the default length is very long, need to truncate for display purposes.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="maxLength"></param>
