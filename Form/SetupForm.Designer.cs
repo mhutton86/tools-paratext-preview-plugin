@@ -1,4 +1,13 @@
-﻿using TptMain.Util;
+﻿/*
+Copyright © 2022 by Biblica, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+using TptMain.Util;
 
 namespace TptMain.Form
 {
@@ -63,6 +72,7 @@ namespace TptMain.Form
             this.Copyright = new System.Windows.Forms.Label();
             this.lblVersions = new System.Windows.Forms.Label();
             this.grpBookRange = new System.Windows.Forms.GroupBox();
+            this.chooseBookButton = new System.Windows.Forms.Button();
             this.cbIncludeAncillary = new System.Windows.Forms.CheckBox();
             this.tbCustomBookSet = new System.Windows.Forms.TextBox();
             this.rbCustom = new System.Windows.Forms.RadioButton();
@@ -527,6 +537,7 @@ namespace TptMain.Form
             // 
             this.grpBookRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpBookRange.Controls.Add(this.chooseBookButton);
             this.grpBookRange.Controls.Add(this.cbIncludeAncillary);
             this.grpBookRange.Controls.Add(this.tbCustomBookSet);
             this.grpBookRange.Controls.Add(this.rbCustom);
@@ -538,6 +549,19 @@ namespace TptMain.Form
             this.grpBookRange.TabIndex = 22;
             this.grpBookRange.TabStop = false;
             this.grpBookRange.Text = "Book Range";
+            // 
+            // chooseBookButton
+            // 
+            this.chooseBookButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chooseBookButton.Location = new System.Drawing.Point(265, 88);
+            this.chooseBookButton.Name = "chooseBookButton";
+            this.chooseBookButton.Size = new System.Drawing.Size(94, 20);
+            this.chooseBookButton.TabIndex = 5;
+            this.chooseBookButton.Text = "Choose...";
+            this.chooseBookButton.UseVisualStyleBackColor = true;
+            this.chooseBookButton.Click += new System.EventHandler(this.chooseBooksButton_Click);
             // 
             // cbIncludeAncillary
             // 
@@ -551,25 +575,25 @@ namespace TptMain.Form
             // 
             // tbCustomBookSet
             // 
-            this.tbCustomBookSet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbCustomBookSet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tbCustomBookSet.Enabled = false;
             this.tbCustomBookSet.Location = new System.Drawing.Point(39, 88);
             this.tbCustomBookSet.Name = "tbCustomBookSet";
-            this.tbCustomBookSet.Size = new System.Drawing.Size(320, 20);
+            this.tbCustomBookSet.Size = new System.Drawing.Size(220, 20);
             this.tbCustomBookSet.TabIndex = 3;
             // 
             // rbCustom
             // 
             this.rbCustom.AutoSize = true;
+            this.rbCustom.Checked = true;
             this.rbCustom.Location = new System.Drawing.Point(18, 65);
             this.rbCustom.Name = "rbCustom";
             this.rbCustom.Size = new System.Drawing.Size(60, 17);
             this.rbCustom.TabIndex = 2;
+            this.rbCustom.TabStop = true;
             this.rbCustom.Text = "Custom";
             this.rbCustom.UseVisualStyleBackColor = true;
-            this.rbCustom.CheckedChanged += new System.EventHandler(this.rbCustom_CheckedChanged);
             // 
             // rbNewTestament
             // 
@@ -584,12 +608,10 @@ namespace TptMain.Form
             // rbFullBible
             // 
             this.rbFullBible.AutoSize = true;
-            this.rbFullBible.Checked = true;
             this.rbFullBible.Location = new System.Drawing.Point(18, 19);
             this.rbFullBible.Name = "rbFullBible";
             this.rbFullBible.Size = new System.Drawing.Size(67, 17);
             this.rbFullBible.TabIndex = 0;
-            this.rbFullBible.TabStop = true;
             this.rbFullBible.Text = "Full Bible";
             this.rbFullBible.UseVisualStyleBackColor = true;
             // 
@@ -896,5 +918,6 @@ namespace TptMain.Form
         private System.Windows.Forms.RadioButton rdoLayoutCav;
         private System.Windows.Forms.RadioButton rdoLayoutTbotb;
         private System.Windows.Forms.GroupBox grpLayout;
+        private System.Windows.Forms.Button chooseBookButton;
     }
 }

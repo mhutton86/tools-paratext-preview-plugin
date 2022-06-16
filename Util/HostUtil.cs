@@ -1,4 +1,13 @@
-﻿using AddInSideViews;
+﻿/*
+Copyright © 2022 by Biblica, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+using AddInSideViews;
 using Paratext.Data;
 using System;
 using System.IO;
@@ -48,11 +57,6 @@ namespace TptMain.Util
         private TypesettingPreviewPlugin _typesettingPreviewPlugin;
 
         /// <summary>
-        /// Global reference to host interface, providing Paratext services including logging.
-        /// </summary>
-        private IHost _host;
-
-        /// <summary>
         /// Property for assignment from plugin entry method.
         /// </summary>
         public TypesettingPreviewPlugin TypesettingPreviewPlugin { set => _typesettingPreviewPlugin = value; }
@@ -60,7 +64,7 @@ namespace TptMain.Util
         /// <summary>
         /// Property for assignment from plugin entry method.
         /// </summary>
-        public IHost Host { set => _host = value; }
+        public IHost Host { get; set; }
 
         /// <summary>
         /// Reports exception to log and message box w/prefix text.
@@ -93,7 +97,7 @@ namespace TptMain.Util
         public void LogLine(string inputText, bool isError)
         {
             (isError ? Console.Error : Console.Out).WriteLine(inputText);
-            _host?.WriteLineToLog(_typesettingPreviewPlugin, inputText);
+            Host?.WriteLineToLog(_typesettingPreviewPlugin, inputText);
         }
 
         /// <summary>
@@ -108,12 +112,12 @@ namespace TptMain.Util
 
             // We're using the host's figure path to determine project directory, 
             // as the Paratext AddinViews doesn't appear to provide a function to do this
-            var figurePath = _host.GetFigurePath(projectName, false);
+            var figurePath = Host.GetFigurePath(projectName, false);
 
             // If the non-local figure path is unavailable, get the local figure path
             if (figurePath == null)
             {
-                figurePath = _host.GetFigurePath(projectName, true);
+                figurePath = Host.GetFigurePath(projectName, true);
 
                 if (figurePath == null)
                 {
@@ -135,7 +139,7 @@ namespace TptMain.Util
         /// <returns>True, if the current user is an Admin for the given project</returns>
         public virtual bool isCurrentUserAdmin(string projectName)
         {
-            ImportManager importManager = new ImportManager(Instance._host, projectName);
+            ImportManager importManager = new ImportManager(Instance.Host, projectName);
 
             // using this method requires including ImportManager
             string rolename = importManager.ProjectScrText.Permissions.GetRole().ToString();

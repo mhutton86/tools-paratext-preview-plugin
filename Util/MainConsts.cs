@@ -1,4 +1,13 @@
-﻿using System.Collections.Generic;
+﻿/*
+Copyright © 2022 by Biblica, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+using System.Collections.Generic;
 using TptMain.Models;
 
 namespace TptMain.Util
@@ -8,6 +17,61 @@ namespace TptMain.Util
     /// </summary>
     public static class MainConsts
     {
+        /// <summary>
+        /// Default separator for a sequence of book names.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_BOOK_SEQUENCE_SEPARATOR = ";";
+
+        /// <summary>
+        /// Default separator for a sequence of chapter numbers.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_CHAPTER_SEQUENCE_SEPARATOR = ";";
+
+        /// <summary>
+        /// Default separator for a range of chapter numbers.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_BOOK_OR_CHAPTER_RANGE_SEPARATOR = "–";
+
+        /// <summary>
+        /// Default separator for chapters and verses.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_CHAPTER_AND_VERSE_SEPARATOR = ":";
+
+        /// <summary>
+        /// Default separator for verse sequences.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_VERSE_SEQUENCE_SEPARATOR = ",";
+
+        /// <summary>
+        /// Default separator for verse ranges.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_VERSE_RANGE_SEPARATOR = "-";
+
+        /// <summary>
+        /// Default prefix or suffix for references.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_PREFIX_OR_SUFFIX = "";
+
+        /// <summary>
+        /// Default final punctuation for references.
+        /// </summary>
+        public const string DEFAULT_REFERENCE_FINAL_PUNCTUATION = "";
+
+        /// <summary>
+        /// Multiplier for book numbers in BCV-style references.
+        /// </summary>
+        public const int BookRefMultiplier = 1000000;
+
+        /// <summary>
+        /// Multiplier for chapter numbers in BCV-style references.
+        /// </summary>
+        public const int ChapRefMultiplier = 1000;
+
+        /// <summary>
+        /// Range ref parts (i.e., chapters, verses).
+        /// </summary>
+        public const int RefPartRange = 1000;
+
         /// <summary>
         /// JSON MIME type (this is .NET core, but not framework).
         /// </summary>
@@ -110,7 +174,7 @@ namespace TptMain.Util
         /// <summary>
         /// The copyright for this plugin.
         /// </summary>
-        public const string COPYRIGHT = "© 2020-2021 Biblica, Inc.";
+        public const string COPYRIGHT = "© 2020-2022 Biblica, Inc.";
 
         // from: https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
 
@@ -182,6 +246,11 @@ namespace TptMain.Util
             "JUD",
             "REV"
         };
+
+        /// <summary>
+        /// The max size for displaying book names
+        /// </summary>
+        public const int MAX_BOOK_NAME_DISPLAY_LENGTH = 20;
 
         /// <summary>
         /// This is the URL to get support for the plugin.

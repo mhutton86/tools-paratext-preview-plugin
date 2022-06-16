@@ -1,13 +1,24 @@
-﻿using System;
+﻿/*
+Copyright © 2022 by Biblica, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 using TptMain.Models;
 using TptMain.Util;
-using Paratext.Data.ProjectSettingsAccess;
 using TptMain.Properties;
 using System.Reflection;
 using System.Drawing;
 using System.Diagnostics;
+using TptMain.Project;
+using System.Collections.Generic;
+using TptMain.Text;
 
 namespace TptMain.Form
 {
@@ -25,6 +36,21 @@ namespace TptMain.Form
         /// Project details, from server.
         /// </summary>
         private ProjectDetails _projectDetails;
+
+        /// <summary>
+        /// Provides project setting & metadata access.
+        /// </summary>
+        private ProjectManager _projectManager;
+
+        /// <summary>
+        /// Active project name.
+        /// </summary>
+        private string _activeProjectName;
+
+        /// <summary>
+        /// The list of selected books to check
+        /// </summary>
+        private BookNameItem[] _selectedBooks;
 
         /// <summary>
         /// Server's status.
@@ -493,16 +519,6 @@ namespace TptMain.Form
         }
 
         /// <summary>
-        /// Show text box when allowing custom book ranges to be entered
-        /// </summary>
-        /// <param name="sender">Event source</param>
-        /// <param name="e">event</param>
-        private void rbCustom_CheckedChanged(object sender, EventArgs e)
-        {
-            tbCustomBookSet.Enabled = rbCustom.Checked;
-        }
-
-        /// <summary>
         /// Update form fields based on the selected layout.
         /// </summary>
         /// <param name="bookFormat">The selected layout.</param>
@@ -565,9 +581,10 @@ namespace TptMain.Form
                 // send the books of the new testament
                 return String.Join(",", MainConsts.NEW_TESTAMENT_BOOKS);
             }
-            
+
             // Return the list of books specified by the user
-            return tbCustomBookSet.Text.Trim().Replace(" ", "");
+            var selectedBooksString = BookSelection.stringFromSelectedBooks(_selectedBooks);
+            return selectedBooksString.Trim().Replace(" ", "");
         }
 
         /// <summary>
@@ -580,6 +597,69 @@ namespace TptMain.Form
             //Call the Process.Start method to open the default browser
             //with a URL:
             Process.Start(MainConsts.SUPPORT_URL);
+        }
+
+        /// <summary>
+        /// Set up to support selecting a different project when we enable that. Right now the Plugin API
+        /// does not allow for getting a list of projects.
+        /// </summary>
+        /// <param name="activeProjectName">Allows for setting the current project to work against</param>
+        public virtual void SetActiveProject(string activeProjectName)
+        {
+            _activeProjectName = activeProjectName;
+            _projectManager = new ProjectManager(HostUtil.Instance.Host, _activeProjectName);
+            SetCurrentBookDefault();
+        }
+
+
+        /// <summary>
+        /// Sets the defaults for the current book, including the name and chapter counts
+        /// </summary>
+        private void SetCurrentBookDefault()
+        {
+            var versificationName = HostUtil.Instance.Host.GetProjectVersificationName(_activeProjectName);
+            BookUtil.RefToBcv(HostUtil.Instance.Host.GetCurrentRef(versificationName),
+                out var runBookNum, out _, out _);
+
+            // check that the current book by ID is available first
+            if (!_projectManager.BookNamesByNum.ContainsKey(runBookNum))
+            {
+                var currentBook = BookUtil.BookIdsByNum[runBookNum];
+
+                // let the user know they have not set the book's abbreviation, shortname, or longname
+                throw new Exception(
+                    $"The Book '{currentBook.BookCode}' has not had its Book Names set: abbreviation, short name, or long name. Please set these before continuing.");
+            }
+
+            // set the current book name
+            tbCustomBookSet.Text = _projectManager.BookNamesByNum[runBookNum].BookCode;
+            _selectedBooks = new[] { _projectManager.BookNamesByNum[runBookNum] };
+        }
+
+
+        /// <summary>
+        /// Bring up the choose books form to decide which books to generate a preview of.
+        /// </summary>
+        /// <param name="sender">The control that sent this event</param>
+        /// <param name="e">The event information that triggered this call</param>
+        private void chooseBooksButton_Click(object sender, EventArgs e)
+        {
+            // bring up book selection dialog, use current selection to initialize
+            using (var form = new BookSelection(_projectManager, _selectedBooks))
+            {
+                form.StartPosition = FormStartPosition.CenterParent;
+
+                var result = form.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    // update which books were selected
+                    _selectedBooks = form.GetSelected();
+                    var selectedBooksString = BookSelection.truncatedStringFromSelectedBooks(_selectedBooks);
+                    tbCustomBookSet.Text = selectedBooksString;
+                }
+            }
+
+            rbCustom.Checked = true;
         }
     }
 }

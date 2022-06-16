@@ -7,34 +7,16 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Collections.Generic;
-
-namespace TptMain.Models
+namespace TptMain.Text
 {
     /// <summary>
-    /// Model for tracking parameters derived from Paratext project settings.
+    /// Context of checked text.
     /// </summary>
-    public class AdditionalPreviewParams
+    public enum PartContext
     {
-        /// <summary>
-        /// Unique identifier for params
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Project's custom footnote markers.
-        /// </summary>
-        public string CustomFootnoteMarkers { get; set; }
-
-        /// <summary>
-        /// The font we want to use in our preview generation instead; Otherwise, null to use the default.
-        /// </summary>
-        public string OverrideFont { get; set;}
-
-        /// <summary>
-        /// The text direction of the content.
-        /// </summary>
-        public TextDirection TextDirection { get; set; }
+        MainText, // Main verse text (i.e., not obviously tagged other than with "\p"; expected in verse 1+).
+        Outlines, // Outlines (i.e., \io- paragraph tags; expected in verse 0)
+        Introductions, // Introductions (i.e., non-outline \i- paragraph tags; expected in verse 0)
+        NoteOrReference // Notes or references (i.e., \f, \x, and related \e- character tags; expected in verse 1+)
     }
 }
