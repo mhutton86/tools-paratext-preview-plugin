@@ -7,34 +7,33 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 
-namespace TptMain.Models
+namespace TptMain.Util
 {
     /// <summary>
-    /// Model for tracking parameters derived from Paratext project settings.
+    /// Standard object utilities and extension methods.
     /// </summary>
-    public class AdditionalPreviewParams
+    public static class ObjectUtil
     {
         /// <summary>
-        /// Unique identifier for params
+        /// Creates immutable, singleton list of one item.
         /// </summary>
-        public string Id { get; set; }
+        /// <typeparam name="T">Item type (provided).</typeparam>
+        /// <param name="thisObject">This object (provided).</param>
+        /// <returns>Object wrapped in immutable, singleton list.</returns>
+        public static IList<T> ToSingletonList<T>(this T thisObject) =>
+            Enumerable.Repeat(thisObject, 1).ToImmutableList();
 
         /// <summary>
-        /// Project's custom footnote markers.
+        /// Creates singleton enumerable of one item.
         /// </summary>
-        public string CustomFootnoteMarkers { get; set; }
-
-        /// <summary>
-        /// The font we want to use in our preview generation instead; Otherwise, null to use the default.
-        /// </summary>
-        public string OverrideFont { get; set;}
-
-        /// <summary>
-        /// The text direction of the content.
-        /// </summary>
-        public TextDirection TextDirection { get; set; }
+        /// <typeparam name="T">Item type (provided).</typeparam>
+        /// <param name="thisObject">This object (provided).</param>
+        /// <returns>Object wrapped in singleton enumerable.</returns>
+        public static IEnumerable<T> ToSingletonEnumerable<T>(this T thisObject) =>
+            Enumerable.Repeat(thisObject, 1);
     }
 }
