@@ -147,7 +147,7 @@ namespace TptMain
                                 }
 
                                 // Report the error
-                                ReportErrorWithDetails(message, errorDetails);
+                                ReportErrorWithDetails(message, errorDetails, false, ex);
                             }
                             finally
                             {
@@ -169,7 +169,7 @@ namespace TptMain
                 catch (Exception ex)
                 {
                     // Log any errors that make it this far and re-throw to give Paratext a heads-up.
-                    HostUtil.Instance.ReportError(null, ex);
+                    HostUtil.Instance.ReportError(null, true, ex);
                     throw;
                 }
             }
@@ -209,14 +209,7 @@ namespace TptMain
             }
 
             // report the prettified error
-            if (printException)
-            {
-                HostUtil.Instance.ReportError(msgSb.ToString(), ex);
-            }
-            else
-            {
-                HostUtil.Instance.ReportError(msgSb.ToString(), null);
-            }
+            HostUtil.Instance.ReportError(msgSb.ToString(), printException, ex);
         }
     }
 }

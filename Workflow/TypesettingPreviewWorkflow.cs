@@ -187,7 +187,7 @@ namespace TptMain.Workflow
                     }
                     else if (_previewJob.IsError)
                     {
-                        throw new WorkflowException($"A server error occurred");
+                        throw new WorkflowException("A server error occurred.");
                     }
                 }
                 finally
@@ -209,11 +209,11 @@ namespace TptMain.Workflow
             }
             catch (IOException ioex)
             {
-                throw new WorkflowException("Error: Can't read or write data. Please contact support.", ioex);
+                throw new WorkflowException($"Can't read or write data. Please contact support. Message: '{ioex.Message}'", ioex);
             }
             catch (Exception ex)
             {
-                throw new WorkflowException("Error: Can't generate preview. Please contact support.", ex);
+                throw new WorkflowException($"An unexpected exception occurred. Please contact support. Message: '{ex.Message}'", ex);
             }
         }
 
