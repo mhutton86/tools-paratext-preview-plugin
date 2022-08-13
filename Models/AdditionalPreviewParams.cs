@@ -30,7 +30,7 @@ namespace TptMain.Models
         /// <summary>
         /// The font we want to use in our preview generation instead; Otherwise, null to use the default.
         /// </summary>
-        public string OverrideFont { get; set;}
+        public string OverrideFont { get; set; }
 
         /// <summary>
         /// The text direction of the content.

@@ -26,8 +26,8 @@ namespace TptMain
     /// <summary>
     /// Typesetting preview plugin root class.
     /// </summary>
-    [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = MainConsts.VERSION, Publisher = "Biblica")]
-    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting-Preview")]
+    [AddIn("Typesetting Preview Plugin", Description = "Provides a printable typesetting preview.", Version = MainConsts.VERSION, Publisher = "Biblica")]
+    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting Preview")]
     [QualificationData(PluginMetaDataKeys.insertAfterMenuName, "Tools|")]
     [QualificationData(PluginMetaDataKeys.enableWhen, WhenToEnable.anyProjectActive)]
     [QualificationData(PluginMetaDataKeys.multipleInstances, CreateInstanceRule.always)]

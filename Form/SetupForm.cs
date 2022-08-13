@@ -8,17 +8,17 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
+using System.Reflection;
 using System.Windows.Forms;
 using TptMain.Models;
-using TptMain.Util;
-using TptMain.Properties;
-using System.Reflection;
-using System.Drawing;
-using System.Diagnostics;
 using TptMain.Project;
-using System.Collections.Generic;
+using TptMain.Properties;
 using TptMain.Text;
+using TptMain.Util;
 
 namespace TptMain.Form
 {
@@ -388,12 +388,12 @@ namespace TptMain.Form
         /// Book format accessor.
         /// </summary>
         public BookFormat BookFormat => rdoLayoutCav.Checked ? BookFormat.cav : BookFormat.tbotb;
-        
+
         /// <summary>
         /// Use custom footnote accessor.
         /// </summary>
         public bool UseCustomFootnotes => cbLocalizeFootnotes.Checked;
-        
+
         /// <summary>
         /// Whether to apply hyphenation to the preview
         /// </summary>
@@ -403,42 +403,42 @@ namespace TptMain.Form
         /// Determines whether the project font will be used when generating the preview.
         /// </summary>
         public bool UseProjectFont => cbUseProjectFonts.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Footnotes.
         ///</summary>
         public bool IncludeFootnotes => cbFootnotes.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Headings.
         ///</summary>
         public bool IncludeHeadings => cbHeadings.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Intros.
         ///</summary>
         public bool IncludeIntros => cbIntros.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Acrostic Poetry.
         ///</summary>
         public bool IncludeAcrosticPoetry => cbAcrostic.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Chapter Numbers.
         ///</summary>
         public bool IncludeChapterNumbers => cbChapterNumbers.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Parallel Passages.
         ///</summary>
         public bool IncludeParallelPassages => cbParallelPassages.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Verse Numbers.
         ///</summary>
         public bool IncludeVerseNumbers => cbVerseNumbers.Checked;
-        
+
         /// <summary>
         /// Determines whether the preview should include Ancillary material.
         ///</summary>
@@ -558,7 +558,8 @@ namespace TptMain.Form
         private void grpLayout_Changed(object sender, EventArgs e)
         {
             var bookLayout = BookFormat.cav;
-            if (rdoLayoutTbotb.Checked) {
+            if (rdoLayoutTbotb.Checked)
+            {
                 bookLayout = BookFormat.tbotb;
             }
 
