@@ -70,7 +70,7 @@ namespace TptMain.Form
                     pbrStatus.Style = ProgressBarStyle.Continuous;
                     pbrStatus.Value = Math.Min(
                         Math.Abs((int)((runTimeInSec / (float)MainConsts.TARGET_PREVIEW_JOB_TIME_IN_SEC) * 100f)),
-                        (int) pbrStatus.Maximum);
+                        (int)pbrStatus.Maximum);
                 }
             }
             else

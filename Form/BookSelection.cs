@@ -65,7 +65,7 @@ namespace TptMain.Form
         public BookNameItem[] GetSelected()
         {
             // Return a BookNameItem based on the BookCode strings passed in from the BookSelection
-            return bookList.SelectedItems.Cast<String>().Select(item => 
+            return bookList.SelectedItems.Cast<String>().Select(item =>
             _projectManager.BookNamesByNum[BookUtil.BookIdsByCode[item].BookNum]).ToArray();
         }
 
@@ -157,11 +157,11 @@ namespace TptMain.Form
 
             if (selectedBooks.Length > 5)
             {
-                names = selectedBooks[0].BookCode.ToString() 
-                    + ", " + selectedBooks[1].BookCode.ToString()  
-                    + ", " + selectedBooks[2].BookCode.ToString()  
+                names = selectedBooks[0].BookCode.ToString()
+                    + ", " + selectedBooks[1].BookCode.ToString()
+                    + ", " + selectedBooks[2].BookCode.ToString()
                     + ", " + selectedBooks[3].BookCode.ToString()
-                    + ", ..., " 
+                    + ", ..., "
                     + selectedBooks[selectedBooks.Length - 1].BookCode.ToString();
             }
             else
