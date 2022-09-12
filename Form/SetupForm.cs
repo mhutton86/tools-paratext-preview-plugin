@@ -346,7 +346,7 @@ namespace TptMain.Form
                 : (decimal)fieldSettings.DefaultValue;
 
             // copy value to text (not always aligned)
-            fieldControl.Text = fieldControl.Value.ToString(CultureInfo.CurrentCulture);
+            fieldControl.Text = fieldControl.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>

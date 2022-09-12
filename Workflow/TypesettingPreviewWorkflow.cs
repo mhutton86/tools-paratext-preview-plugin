@@ -390,7 +390,7 @@ namespace TptMain.Workflow
 
                     // Find the one that matters to us.
                     var result = allProjectDetails
-                        .FirstOrDefault(detailsItem => detailsItem.ProjectName.Equals(projectName, StringComparison.CurrentCultureIgnoreCase));
+                        .FirstOrDefault(detailsItem => detailsItem.ProjectName.Equals(projectName, StringComparison.InvariantCultureIgnoreCase));
 
                     // Not found = error, done.
                     if (result == null)
