@@ -1,7 +1,7 @@
 {
   "name": "Typesetting Preview Tool",
   "shortName": "tpt",
-  "version": "2.0.0.5",
+  "version": "2.0.0.6",
   "description": "This plugin captures preview parameters from the user (e.g., project to render, font size, page height), triggers IDML, INDD, INDB, and PDF file generation, and retrieves completed preview files from the server for the user in a concise, self-contained workflow.",
   "versionDescription": "",
   "ptVersions": [

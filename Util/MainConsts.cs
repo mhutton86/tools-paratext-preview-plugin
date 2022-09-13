@@ -25,7 +25,7 @@ namespace TptMain.Util
         /// <summary>
         /// The plugin's versions
         /// </summary>
-        public const string VERSION = "2.0.0.5";
+        public const string VERSION = "2.0.0.6";
 
         /// <summary>
         /// Default separator for a sequence of book names.
