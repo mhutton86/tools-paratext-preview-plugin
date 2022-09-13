@@ -187,7 +187,7 @@ namespace TptMain.Workflow
                     }
                     else if (_previewJob.IsError)
                     {
-                        throw new WorkflowException($"A server error occurred");
+                        throw new WorkflowException("A server error occurred.");
                     }
                 }
                 finally
@@ -201,7 +201,7 @@ namespace TptMain.Workflow
                 // (download errors will throw from here).
                 _previewFile = DownloadPreviewFile(_previewJob, _isArchive);
                 FileDownloaded?.Invoke(this, _previewFile);
-                
+
             }
             catch (WorkflowException)
             {
@@ -209,11 +209,11 @@ namespace TptMain.Workflow
             }
             catch (IOException ioex)
             {
-                throw new WorkflowException("Error: Can't read or write data. Please contact support.", ioex);
+                throw new WorkflowException($"Can't read or write data. Please contact support. Message: '{ioex.Message}'", ioex);
             }
             catch (Exception ex)
             {
-                throw new WorkflowException("Error: Can't generate preview. Please contact support.", ex);
+                throw new WorkflowException($"An unexpected exception occurred. Please contact support. Message: '{ex.Message}'", ex);
             }
         }
 
@@ -236,7 +236,7 @@ namespace TptMain.Workflow
                     {
                         saveFile.FileName = $"preview-{_previewJob.BibleSelectionParams.ProjectName}-{_previewJob.TypesettingParams.BookFormat}-{dateTimeText}.zip";
                         saveFile.Filter = "Zip file (*.zip)|*.zip|All files (*.*)|*.*";
-                        saveFile.DefaultExt = "zip";                        
+                        saveFile.DefaultExt = "zip";
                     }
                     else
                     {
@@ -270,13 +270,13 @@ namespace TptMain.Workflow
             FileInfo downloadFile;
             if (isArchive)
             {
-              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.zip"));
+                downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.zip"));
             }
             else
             {
-              downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
+                downloadFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"preview-{previewJob.Id}.pdf"));
             }
-            
+
             var webRequest = WebRequest.Create($"{TptMain.Properties.Settings.Default.DEFAULT_SERVER_URI}/PreviewFile/{previewJob.Id}?archive={isArchive}");
             webRequest.Method = HttpMethod.Get.Method;
             webRequest.Timeout = Properties.Settings.Default.DEFAULT_REQUEST_TIMEOUT_IN_MS;
@@ -390,7 +390,7 @@ namespace TptMain.Workflow
 
                     // Find the one that matters to us.
                     var result = allProjectDetails
-                        .FirstOrDefault(detailsItem => detailsItem.ProjectName.Equals(projectName, StringComparison.CurrentCultureIgnoreCase));
+                        .FirstOrDefault(detailsItem => detailsItem.ProjectName.Equals(projectName, StringComparison.InvariantCultureIgnoreCase));
 
                     // Not found = error, done.
                     if (result == null)

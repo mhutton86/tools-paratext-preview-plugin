@@ -363,14 +363,14 @@ namespace TptMain.Project
                             if (string.IsNullOrWhiteSpace(codeAttrib))
                             {
                                 continue;
-                            } 
+                            }
                             else if (!BookUtil.BookIdsByCode.TryGetValue(codeAttrib, out var bookId))
                             {
                                 HostUtil.Instance.LogLine($"No book ID found for {codeAttrib}", false);
                                 continue;
                             }
-                            else 
-                            { 
+                            else
+                            {
                                 var abbrAttrib = nodeItem.Attributes["abbr"]?.Value?.Trim();
                                 var shortAttrib = nodeItem.Attributes["short"]?.Value?.Trim();
                                 var longAttrib = nodeItem.Attributes["long"]?.Value?.Trim();

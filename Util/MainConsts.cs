@@ -18,6 +18,16 @@ namespace TptMain.Util
     public static class MainConsts
     {
         /// <summary>
+        /// The copyright for this plugin.
+        /// </summary>
+        public const string COPYRIGHT = "© 2020-2022 Biblica, Inc.";
+
+        /// <summary>
+        /// The plugin's versions
+        /// </summary>
+        public const string VERSION = "2.0.0.6";
+
+        /// <summary>
         /// Default separator for a sequence of book names.
         /// </summary>
         public const string DEFAULT_REFERENCE_BOOK_SEQUENCE_SEPARATOR = ";";
@@ -170,11 +180,6 @@ namespace TptMain.Util
                 DefaultValue = defaultValue;
             }
         }
-
-        /// <summary>
-        /// The copyright for this plugin.
-        /// </summary>
-        public const string COPYRIGHT = "© 2020-2022 Biblica, Inc.";
 
         // from: https://docs.google.com/spreadsheets/d/1wXMY_M8Dts8ATNt_autcU4MrtMl9LIAPOKvzA3w8eAI/edit?skip_itp2_check=true#gid=0
 
