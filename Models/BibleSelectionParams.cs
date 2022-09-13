@@ -28,7 +28,7 @@ namespace TptMain.Models
         /// A comma-separated list of Bible books to include
         /// </summary>
         public string SelectedBooks { get; set; }
-        
+
         /// <summary>
         /// Whether to include ancillary material
         /// </summary>

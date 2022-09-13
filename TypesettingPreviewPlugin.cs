@@ -26,8 +26,8 @@ namespace TptMain
     /// <summary>
     /// Typesetting preview plugin root class.
     /// </summary>
-    [AddIn("Typesetting Preview Plugin", Description = "Provides printable typesetting preview.", Version = "2.0.0.4", Publisher = "Biblica")]
-    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting-Preview")]
+    [AddIn("Typesetting Preview Plugin", Description = "Provides a printable typesetting preview.", Version = MainConsts.VERSION, Publisher = "Biblica")]
+    [QualificationData(PluginMetaDataKeys.menuText, "Typesetting Preview")]
     [QualificationData(PluginMetaDataKeys.insertAfterMenuName, "Tools|")]
     [QualificationData(PluginMetaDataKeys.enableWhen, WhenToEnable.anyProjectActive)]
     [QualificationData(PluginMetaDataKeys.multipleInstances, CreateInstanceRule.always)]
@@ -147,7 +147,7 @@ namespace TptMain
                                 }
 
                                 // Report the error
-                                ReportErrorWithDetails(message, errorDetails);
+                                ReportErrorWithDetails(message, errorDetails, false, ex);
                             }
                             finally
                             {
@@ -169,7 +169,7 @@ namespace TptMain
                 catch (Exception ex)
                 {
                     // Log any errors that make it this far and re-throw to give Paratext a heads-up.
-                    HostUtil.Instance.ReportError(null, ex);
+                    HostUtil.Instance.ReportError(null, true, ex);
                     throw;
                 }
             }
@@ -209,14 +209,7 @@ namespace TptMain
             }
 
             // report the prettified error
-            if (printException)
-            {
-                HostUtil.Instance.ReportError(msgSb.ToString(), ex);
-            }
-            else
-            {
-                HostUtil.Instance.ReportError(msgSb.ToString(), null);
-            }
+            HostUtil.Instance.ReportError(msgSb.ToString(), printException, ex);
         }
     }
 }

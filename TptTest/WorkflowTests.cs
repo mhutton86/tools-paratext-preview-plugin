@@ -7,16 +7,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.IO;
-using System.Windows.Forms;
 using AddInSideViews;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.IO;
+using System.Windows.Forms;
 using TptMain.Form;
-using TptMain.Import;
 using TptMain.Models;
-using TptMain.Util;
 using TptMain.Workflow;
 
 namespace TptTest
@@ -88,7 +86,7 @@ namespace TptTest
             mockHost.Setup(hostItem => hostItem.UserName)
                 .Returns(TestUser);
 
-            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
                 (string projectName) =>
                 {
@@ -158,11 +156,11 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
+            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob = CreateTestPreviewJob();
 
-            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
             // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
                 (string projectName) =>
@@ -247,13 +245,13 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
+            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
-            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
             // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
                 (string projectName) =>
@@ -345,13 +343,13 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
+            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
-            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
             // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
                 (string projectName) =>
@@ -456,13 +454,13 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
+            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
             var testPreviewJob2 = CreateTestPreviewJob();
             testPreviewJob2.Id = Guid.NewGuid().ToString();
 
-            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
             // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
                 (string projectName) =>
@@ -571,7 +569,7 @@ namespace TptTest
             // setup
             var mockHost = new Mock<IHost>(MockBehavior.Strict);
             var mockWorkflow = new Mock<TypesettingPreviewWorkflow>(MockBehavior.Strict);
-            var mockProgressForm = new Mock<ProgressForm>() {CallBase = true};
+            var mockProgressForm = new Mock<ProgressForm>() { CallBase = true };
             var testServerStatus = CreateTestServerStatus();
             var testProjectDetails = CreateTestProjectDetails();
             var testPreviewJob1 = CreateTestPreviewJob();
@@ -579,7 +577,7 @@ namespace TptTest
             testPreviewJob2.Id = Guid.NewGuid().ToString();
             var testPreviewFile = new FileInfo(Path.GetTempFileName());
 
-            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) {CallBase = true};
+            var mockSetupForm = new Mock<SetupForm>(testProjectDetails) { CallBase = true };
             // override with no-op so ParatextData is not initialized during testing
             mockSetupForm.Setup(mockSetupForm => mockSetupForm.SetAdminView(testProjectDetails.ProjectName)).Callback(
                 (string projectName) =>

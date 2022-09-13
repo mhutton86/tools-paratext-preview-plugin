@@ -67,29 +67,6 @@ namespace TptMain.Util
         public IHost Host { get; set; }
 
         /// <summary>
-        /// Reports exception to log and message box w/prefix text.
-        ///
-        /// Either prefixText (or) ex must be non-null.
-        /// </summary>
-        /// <param name="prefixText">Prefix text (optional, may be null; default used when null).</param>
-        /// <param name="ex">Exception (optional, may be null).</param>
-        public void ReportError(string prefixText, Exception ex)
-        {
-            if (prefixText == null && ex == null)
-            {
-                throw new ArgumentNullException("prefixText (or) ex must be non-null");
-            }
-
-            var messageText = (prefixText ?? "Error: Please contact support.")
-                + (ex == null ? string.Empty
-                    : Environment.NewLine + Environment.NewLine
-                    + "Details: " + ex + Environment.NewLine);
-
-            MessageBox.Show(messageText, "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            LogLine($"Error: {messageText}", true);
-        }
-
-        /// <summary>
         /// Log text to Paratext's app log and the console.
         /// </summary>
         /// <param name="inputText">Input text (required).</param>
@@ -225,34 +202,27 @@ namespace TptMain.Util
 
         /// <summary>
         /// Reports exception to log and message box w/prefix text.
+        ///
+        /// Either prefixText (or) ex must be non-null.
         /// </summary>
         /// <param name="prefixText">Prefix text (optional, may be null; default used when null).</param>
-        /// <param name="includeStackTrace">True to include stack trace, false otherwise.</param>
+        /// <param name="displayExToUser">True to display exception stack trace, false otherwise.</param>
         /// <param name="ex">Exception (optional, may be null).</param>
-        public void ReportError(string prefixText, bool includeStackTrace, Exception ex)
+        public void ReportError(string prefixText, bool displayExToUser = false, Exception ex = null)
         {
-            string messageText = null;
-            if (ex == null)
+            if (prefixText == null && ex == null)
             {
-                messageText = (prefixText ?? "Error: Please contact support");
-            }
-            else
-            {
-                if (includeStackTrace)
-                {
-                    messageText = (prefixText ?? "Error: Please contact support.")
-                                  + Environment.NewLine + Environment.NewLine
-                                  + "Details: " + ex.ToString() + Environment.NewLine;
-                }
-                else
-                {
-                    messageText = (prefixText ?? "Error: Please contact support")
-                                  + $" (Details: {ex.Message}).";
-                }
+                throw new ArgumentNullException("prefixText (or) ex must be non-null");
             }
 
-            MessageBox.Show(messageText, "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            LogLine(messageText, true);
+            var messageText = (prefixText ?? "Error: Please contact support.");
+
+            var messageTextWithEx = messageText + (ex == null ? string.Empty
+                    : Environment.NewLine + Environment.NewLine
+                    + "Details: " + ex + Environment.NewLine);
+
+            MessageBox.Show(displayExToUser ? messageTextWithEx : messageText, "Notice...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            LogLine(messageTextWithEx, true);
         }
     }
 }
